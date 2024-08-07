@@ -15,7 +15,8 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 add_executable(${CMAKE_PROJECT_NAME}
-        src/main.cpp)
+        src/main.cpp
+        src/Canvas.cpp)
 
 enable_testing()
 
