@@ -15,13 +15,13 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 add_executable(${CMAKE_PROJECT_NAME}
-        main.cpp)
+        src/main.cpp)
 
 enable_testing()
 
 add_executable(
         test_app
-        test1.cpp
+        test/test1.cpp
 )
 target_link_libraries(
         test_app
