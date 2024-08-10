@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <fstream>
 #include <sstream>
+#include <iostream>
 #include <filesystem>
 #include <array>
 #include <vector>
