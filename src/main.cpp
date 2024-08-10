@@ -2,6 +2,7 @@
 
 
 #include "../include/Canvas.h"
+#include "../include/Tuple.h"
 
 static constexpr uint16_t HEIGHT = 250;
 static constexpr uint16_t WIDTH = 500;
