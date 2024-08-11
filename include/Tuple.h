@@ -12,7 +12,7 @@
 template<typename T, size_t N>
 class Tuple {
 public:
-    explicit Tuple(std::initializer_list<T>& data) {
+    Tuple(std::initializer_list<T>& data) {
         if(data.size() != N) {
             std::string error_msg = "Must intitialize " + std::to_string(N) +
                                     "-tuple with " + std::to_string(N) + " elements, not "
@@ -25,6 +25,48 @@ public:
             data[index] = element;
             index++;
         }
+    }
+
+    T operator[](size_t i) {
+        // Fix this
+        if(i >= N || i < 0)
+            throw std::logic_error("Index must be within bounds!");
+
+        return data_[i];
+    }
+
+    Tuple<T, N>& operator-() {
+        std::for_each(data_.begin(), data_.end(), [](T& elem) {
+            elem = -elem;
+        });
+
+        return *this;
+    }
+
+    Tuple<T, N>& operator+=(const Tuple<T, N>& other) {
+        size_t index = 0;
+        std::for_each(data_.begin(), data_.end(), [&other, &index](T& elem){
+            elem += other[index];
+            index++;
+        });
+
+        return *this;
+    }
+
+    Tuple<T, N>& operator-=(const Tuple<T, N>& other) {
+        return (*this += -other);
+    }
+
+    Tuple<T, N>& operator*=(const T& scalar) {
+        std::for_each(data_.begin(), data_.end(), [&scalar](T& elem){
+            elem *= scalar;
+        });
+
+        return *this;
+    }
+
+    Tuple<T. N>& operator/=(const T& scalar) {
+        return *this *= 1/scalar;
     }
 
 private:
