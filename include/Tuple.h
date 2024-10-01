@@ -20,7 +20,6 @@ public:
             throw std::logic_error(error_msg);
         }
 
-        // Update compiler
         for(size_t index = 0; T& element : data) {
             data[index] = element;
             index++;
@@ -65,12 +64,28 @@ public:
         return *this;
     }
 
-    Tuple<T. N>& operator/=(const T& scalar) {
+    Tuple<T, N>& operator/=(const T& scalar) {
         return *this *= 1/scalar;
     }
 
 private:
     std::array<T, N> data_;
 };
+
+template<typename T, size_t N>
+static Tuple<T, N> operator+(const Tuple<T,N>& v1, const Tuple<T, N>& v2) {
+    Tuple<T, N> v_plus;
+    for(int i = 0; i < N; i++) {
+        v_plus[i] = v1[i] + v2[i];
+    }
+
+    return v_plus;
+}
+
+template<typename T, size_t N>
+static Tuple<T, N>operator-(const Tuple<T,N>& v1, const Tuple<T, N>& v2){
+    return v1 + (-v2);
+}
+
 
 #endif //TUPLE_H

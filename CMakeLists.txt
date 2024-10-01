@@ -16,7 +16,8 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(${CMAKE_PROJECT_NAME}
         src/main.cpp
-        src/Canvas.cpp)
+        src/Canvas.cpp
+        src/Tuple.cpp)
 
 enable_testing()
 
