@@ -5,9 +5,13 @@
 #ifndef TUPLE_H
 #define TUPLE_H
 
+#include <algorithm>
 #include <array>
-#include <string>
+#include <cstring>
 #include <initializer_list>
+#include <stdexcept>
+#include <string>
+
 
 template<typename T, size_t N>
 class Vector {

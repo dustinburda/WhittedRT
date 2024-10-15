@@ -20,10 +20,10 @@ add_executable(${CMAKE_PROJECT_NAME}
         src/main.cpp
         src/Canvas.cpp
         src/Vector.cpp
-        Normal.cpp
-        Normal.h
-        Point.cpp
-        Point.h)
+        src/Normal.cpp
+        include/Normal.h
+        src/Point.cpp
+        include/Point.h)
 
 enable_testing()
 

@@ -4,7 +4,6 @@
 
 #include "../include/Canvas.h"
 
-
 Canvas::Canvas(uint16_t width, uint16_t height) : width_(width), height_(height) {
     buffer_.resize(width_ * height_);
 
@@ -27,9 +26,9 @@ Color Canvas::GetColorAt(uint16_t i, uint16_t j) const {
 
 void Canvas::Flush(const std::string& filename) {
     auto current_dir = std::filesystem::current_path().parent_path();
-    std::string dir = current_dir;
+    std::string dir = current_dir.string();
     current_dir += (filename.empty()) ? "/image.ppm" : filename;
-    dir = current_dir;
+    dir = current_dir.string();
 
     std::stringstream image_content;
 
