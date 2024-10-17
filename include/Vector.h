@@ -120,7 +120,13 @@ static Vector<T, N> cross(const Vector<T,N>& v1, const Vector<T, N>& v2) {
     if (N != 3)
         throw std::logic_error("The cross product is defined for vectors of dimension 3!");
 
+    Vector<T, N> cross_product = {
+            v1[1] * v2[2] - v1[2] * v2[1],
+            v2[0] * v1[2] - v1[0] * v2[2],
+            v1[0] * v2[1] - v1[1] * v2[0]
+    };
 
+    return cross_product;
 }
 
 
