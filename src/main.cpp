@@ -15,6 +15,7 @@ int main() {
 
     auto vec3 = vec1 + vec2;
     auto vec4 = vec3 - vec2;
+    auto dot_product = dot(vec3, vec4);
 
 
     canvas.SetColorAt({1,1,1}, 1, 1);
