@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <array>
 #include <cstring>
+#include <cmath>
 #include <initializer_list>
 #include <stdexcept>
 #include <string>
@@ -86,6 +87,21 @@ public:
         return *this *= 1/scalar;
     }
 
+
+    double length_squared() const {
+         double magnitude = 0;
+         for(int i = 0; i < N; i++){
+             magnitude += data_[i] * data_[i];
+         }
+
+         return magnitude;
+    }
+
+    double length() const {
+         return std::sqrt(length_squared());
+     }
+
+
 private:
     std::array<T, N> data_;
 };
@@ -103,6 +119,37 @@ static Vector<T, N> operator+(const Vector<T,N>& v1, const Vector<T, N>& v2) {
 template<typename T, size_t N>
 static Vector<T, N>operator-(const Vector<T,N>& v1, const Vector<T, N>& v2){
     return v1 + (-v2);
+}
+
+template<typename T, size_t N>
+static Vector<double, N> operator*(const Vector<T,N>& v1, const double t) {
+    Vector<double, N> v;
+    for(int i = 0; i < N; i++) {
+        v[i] = static_cast<double>(v1[i]) * t;
+    }
+
+    return v;
+}
+
+template<typename T, size_t N>
+static Vector<double, N> operator*(const double t, const Vector<T,N>& v1) {
+    return v1 * t;
+}
+
+template<typename T, size_t N>
+static Vector<double, N> operator/(const Vector<T,N>& v1, const double t) {
+    return v1 * 1/t;
+}
+
+
+template<typename T, size_t N>
+static bool operator==(const Vector<T, N>& v1, Vector<T,N> &v2){
+    for(int i = 0; i < N; i++){
+        if(v1[i] != v2[i])
+            return false;
+    }
+
+    return true;
 }
 
 template<typename T, size_t N>
@@ -128,6 +175,13 @@ static Vector<T, N> cross(const Vector<T,N>& v1, const Vector<T, N>& v2) {
 
     return cross_product;
 }
+
+using Vec3f = Vector<float, 3>;
+using Vec3d = Vector<double, 3>;
+using Ve3i = Vector<int, 3>;
+using Vec2f = Vector<float, 2>;
+using Vec2d = Vector<double, 2>;
+using Ve2i = Vector<int, 2>;
 
 
 
