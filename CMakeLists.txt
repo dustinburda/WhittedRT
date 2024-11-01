@@ -29,7 +29,7 @@ enable_testing()
 
 add_executable(
         test_app
-        test/test1.cpp
+        test/VectorTest.cpp
 )
 target_link_libraries(
         test_app

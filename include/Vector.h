@@ -10,6 +10,7 @@
 #include <cstring>
 #include <cmath>
 #include <initializer_list>
+#include <iostream>
 #include <stdexcept>
 #include <string>
 
@@ -21,11 +22,14 @@ public:
 
      Vector(const std::initializer_list<T>& data) {
         if(data.size() != N) {
-            std::string error_msg = "Must intitialize " + std::to_string(N) +
+            std::string error_msg = "Must initialize " + std::to_string(N) +
                                     "-tuple with " + std::to_string(N) + " elements, not "
                                     + std::to_string(data.size()) + " elements";
             throw std::logic_error(error_msg);
         }
+
+        // Pad with zeroes
+         std::memset(data_.data(), 0, N * sizeof (T));
 
         for(size_t index = 0; const T& element : data) {
             data_[index] = element;
@@ -54,9 +58,9 @@ public:
 
     Vector<T, N> operator-() const {
         Vector<T, N> negative;
-        std::for_each(negative.data_.begin(), negative.data_.end(), [](T& elem) {
-            elem = -elem;
-        });
+
+        for(int i = 0; i < N; i++)
+            negative[i] = -data_[i];
 
         return negative;
     }
@@ -176,6 +180,37 @@ static Vector<T, N> cross(const Vector<T,N>& v1, const Vector<T, N>& v2) {
     return cross_product;
 }
 
+template<typename T, size_t N>
+static bool operator==(const Vector<T,N>& v1, const Vector<T, N>& v2)
+{
+    for(int i = 0; i < N; i++)
+    {
+        if(v1[i] != v2[i])
+            return false;
+    }
+
+    return true;
+}
+
+template<typename T, size_t N>
+static std::ostream& operator<<(std::ostream& os, const Vector<T,N> &v)
+{
+    os << "Vector: [";
+    for(int i = 0; i < N; i++)
+    {
+        os << " " <<  v[i];
+        if (i != N - 1)
+            os << ", ";
+    }
+    os << "]";
+
+    return os;
+}
+
+
+using Vec4f = Vector<float, 4>;
+using Vec4d = Vector<double, 4>;
+using Ve4i = Vector<int, 4>;
 using Vec3f = Vector<float, 3>;
 using Vec3d = Vector<double, 3>;
 using Ve3i = Vector<int, 3>;
