@@ -92,7 +92,7 @@ public:
     }
 
 
-    double length_squared() const {
+    double LengthSquared() const {
          double magnitude = 0;
          for(int i = 0; i < N; i++){
              magnitude += data_[i] * data_[i];
@@ -101,11 +101,13 @@ public:
          return magnitude;
     }
 
-    double length() const {
-         return std::sqrt(length_squared());
+    double Length() const {
+         return std::sqrt(LengthSquared());
      }
 
-
+    Vector<T, N> UnitVector() const {
+         return (*this) / Length();
+     }
 private:
     std::array<T, N> data_;
 };
@@ -157,8 +159,8 @@ static bool operator==(const Vector<T, N>& v1, Vector<T,N> &v2){
 }
 
 template<typename T, size_t N>
-static T dot(const Vector<T,N>& v1, const Vector<T, N>& v2) {
-    T dot_product = 0;
+static double Dot(const Vector<T,N>& v1, const Vector<T, N>& v2) {
+    double dot_product = 0;
     for(size_t i = 0; i < N; i++) {
         dot_product += v1[i] * v2[i];
     }
@@ -167,7 +169,7 @@ static T dot(const Vector<T,N>& v1, const Vector<T, N>& v2) {
 }
 
 template<typename  T, size_t N = 3>
-static Vector<T, N> cross(const Vector<T,N>& v1, const Vector<T, N>& v2) {
+static Vector<T, N> Cross(const Vector<T,N>& v1, const Vector<T, N>& v2) {
     if (N != 3)
         throw std::logic_error("The cross product is defined for vectors of dimension 3!");
 
@@ -205,6 +207,17 @@ static std::ostream& operator<<(std::ostream& os, const Vector<T,N> &v)
     os << "]";
 
     return os;
+}
+
+
+// IN RADIANS
+template<typename T, size_t N>
+static double Angle(const Vector<T, N>& v1, const Vector<T, N>& v2)
+{
+    double dot_product = dot(v1, v2);
+    double cos_theta = dot_product / (v1.length() * v2.length());
+
+    return acos(cos_theta);
 }
 
 
