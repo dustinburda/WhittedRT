@@ -64,7 +64,7 @@ private:
 };
 
 template<typename T, size_t N>
-static Point<T, N> operator+(Point<T,N>& p, Vector<T,N>& v) {
+static Point<T, N> operator+(const Point<T,N>& p, const Vector<T,N>& v) {
     Point<T,N> translate;
 
     for(int i = 0; i < N; i++){
@@ -75,12 +75,12 @@ static Point<T, N> operator+(Point<T,N>& p, Vector<T,N>& v) {
 }
 
 template<typename T, size_t N>
-static Point<T, N> operator-(Point<T,N>& p, Vector<T,N>& v) {
+static Point<T, N> operator-(const Point<T,N>& p, const Vector<T,N>& v) {
     return p + (-v);
 }
 
 template<typename T, size_t N>
-static Vector<T, N> operator-(Point<T,N>& p1, Point<T,N>& p2) {
+static Vector<T, N> operator-(const Point<T,N>& p1, const Point<T,N>& p2) {
     Vector<T,N> difference;
 
     for(int i = 0; i < N; i++){
@@ -91,7 +91,7 @@ static Vector<T, N> operator-(Point<T,N>& p1, Point<T,N>& p2) {
 }
 
 template<typename T, size_t N>
-static Point<double, N> operator*(Point<T,N>& p, double t) {
+static Point<double, N> operator*(const Point<T,N>& p, double t) {
     Point<T,N> v;
 
     for(int i = 0; i < N; i++){
@@ -102,17 +102,17 @@ static Point<double, N> operator*(Point<T,N>& p, double t) {
 }
 
 template<typename T, size_t N>
-static Point<double, N> operator*(double t, Point<T,N>& p) {
+static Point<double, N> operator*(double t, const Point<T,N>& p) {
     return p * t;
 }
 
 template<typename T, size_t N>
-static Point<double, N> operator/(Point<T,N>& p, double t) {
+static Point<double, N> operator/(const Point<T,N>& p, double t) {
     return p * (1/t);
 }
 
 template<typename T, size_t N>
-static double DistanceSquared(Point<T,N>& p1, Point<T,N>& p2) {
+static double DistanceSquared(const Point<T,N>& p1, const Point<T,N>& p2) {
     double distance_squared = 0;
 
     for(int i = 0; i < N; i++){
@@ -123,7 +123,7 @@ static double DistanceSquared(Point<T,N>& p1, Point<T,N>& p2) {
 }
 
 template<typename T, size_t N>
-static double Distance(Point<T,N>& p1, Point<T,N>& p2) {
+static double Distance(const Point<T,N>& p1, const Point<T,N>& p2) {
     auto distance_squared = DistanceSquared(p1, p2);
     return std::sqrt(distance_squared);
 }

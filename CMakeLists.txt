@@ -23,7 +23,9 @@ add_executable(${CMAKE_PROJECT_NAME}
         src/Normal.cpp
         include/Normal.h
         src/Point.cpp
-        include/Point.h)
+        include/Point.h
+        src/Ray.cpp
+        include/Ray.h)
 
 enable_testing()
 
