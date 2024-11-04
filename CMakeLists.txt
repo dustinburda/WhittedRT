@@ -21,11 +21,13 @@ add_executable(${CMAKE_PROJECT_NAME}
         src/Canvas.cpp
         src/Vector.cpp
         src/Normal.cpp
-        include/Normal.h
         src/Point.cpp
-        include/Point.h
         src/Ray.cpp
-        include/Ray.h)
+        src/Camera.cpp
+        include/Camera.h
+        src/Color.cpp
+        include/Color.h
+)
 
 enable_testing()
 
