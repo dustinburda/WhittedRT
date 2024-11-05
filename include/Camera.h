@@ -8,7 +8,10 @@
 #include "Point.h"
 
 struct Viewport {
-
+private:
+    Point<double, 3> upper_left_corner_;
+    Vector<double, 3> x_;
+    Vector<double, 3> y_;
 };
 
 
@@ -20,7 +23,6 @@ public:
 private:
     Point<double, 3> origin_;
     Viewport vp_;
-
 };
 
 
