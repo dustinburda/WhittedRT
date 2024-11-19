@@ -21,7 +21,8 @@ public:
 
 	explicit Canvas(uint16_t width, uint16_t height);
 	~Canvas() {
-		Flush();
+        if(!flushed_)
+		    Flush();
 	}
 
 	void SetColorAt(const Color& color, uint16_t i, uint16_t j);
@@ -33,6 +34,7 @@ private:
 	const uint16_t width_;
 	const uint16_t height_;
 	std::vector<Color> buffer_;
+    bool flushed_;
 };
 
 #endif //CANVAS_H

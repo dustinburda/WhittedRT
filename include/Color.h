@@ -6,6 +6,7 @@
 #define WHITTED_COLOR_H
 
 
+
 class Color {
 
 };

@@ -27,6 +27,13 @@ add_executable(${CMAKE_PROJECT_NAME}
         include/Camera.h
         src/Color.cpp
         include/Color.h
+        include/Shape.h
+        src/Plane.cpp
+        include/Plane.h
+        src/Sphere.cpp
+        include/Sphere.h
+        src/ShadeContext.cpp
+        include/ShadeContext.h
 )
 
 enable_testing()

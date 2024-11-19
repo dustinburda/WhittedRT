@@ -15,22 +15,29 @@ enum class RayType {
     LightRay
 };
 
+// Ray Direction is normalized
 class Ray {
 public:
     Ray() = default;
-    Ray(Point<double, 3> origin, Vector<double, 3> direction, RayType type)
-        : origin_(origin), direction_(direction), type_(type) { }
+    Ray(Point3d origin, Vec3d direction, RayType type)
+        : origin_(origin), direction_(direction.UnitVector()), type_(type) { }
 
-    Point<double, 3> At(double t) { return origin_ + t * direction_; }
-    Point<double, 3> Origin() const { return origin_; }
-    Vector<double, 3> Direction() const { return direction_; }
+    Point3d At(double t) { return origin_ + t * direction_; }
+    Point3d Origin() const { return origin_; }
+    Vec3d Direction() const { return direction_; }
 
 
 private:
-    Point<double, 3> origin_;
-    Vector<double, 3> direction_;
+    Point3d origin_;
+    Vec3d direction_;
     RayType type_;
 };
+
+static std::ostream& operator<<(std::ostream& os, const Ray &r)
+{
+    os << r.Origin() << r.Direction();
+    return os;
+}
 
 
 #endif //WHITTED_RAY_H

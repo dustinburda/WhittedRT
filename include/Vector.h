@@ -144,7 +144,7 @@ static Vector<double, N> operator*(const double t, const Vector<T,N>& v1) {
 
 template<typename T, size_t N>
 static Vector<double, N> operator/(const Vector<T,N>& v1, const double t) {
-    return v1 * 1/t;
+    return v1 * (1/t);
 }
 
 

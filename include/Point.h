@@ -128,6 +128,22 @@ static double Distance(const Point<T,N>& p1, const Point<T,N>& p2) {
     return std::sqrt(distance_squared);
 }
 
+template<typename T, size_t N>
+static std::ostream& operator<<(std::ostream& os, const Point<T,N> &p)
+{
+    os << "Point: [";
+    for(int i = 0; i < N; i++)
+    {
+        os << " " <<  p[i];
+        if (i != N - 1)
+            os << ", ";
+    }
+    os << "]";
+
+    return os;
+}
+
+using Point3d = Point<double, 3>;
 
 
 
