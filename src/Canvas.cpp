@@ -13,14 +13,14 @@ Canvas::Canvas(uint16_t width, uint16_t height) : width_(width), height_(height)
 }
 
 void Canvas::SetColorAt(const Color& color, uint16_t i, uint16_t j) {
-    if(i >= height_ || i < 0 || j >= width_ || j < 0)
+    if(i >= width_ || i < 0 || j >= height_ || j < 0)
         throw std::logic_error("Array indices must stay in bounds!");
 
     buffer_[j * width_ + i] = color;
 }
 
 Color Canvas::GetColorAt(uint16_t i, uint16_t j) const {
-    if(i >= height_ || i < 0 || j >= width_ || j < 0)
+    if(i >= width_ || i < 0 || j >= height_ || j < 0)
         throw std::logic_error("Array indices must stay in bounds!");
 
     return buffer_[j * width_ + i];

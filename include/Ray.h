@@ -22,7 +22,7 @@ public:
     Ray(Point3d origin, Vec3d direction, RayType type)
         : origin_(origin), direction_(direction.UnitVector()), type_(type) { }
 
-    Point3d At(double t) { return origin_ + t * direction_; }
+    Point3d At(double t) const { return origin_ + t * direction_; }
     Point3d Origin() const { return origin_; }
     Vec3d Direction() const { return direction_; }
 

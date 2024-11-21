@@ -14,7 +14,7 @@
 #include <array>
 #include <vector>
 
-using Color = std::array<uint8_t, 3>;
+using Color = std::array<double, 3>;
 
 class Canvas {
 public:

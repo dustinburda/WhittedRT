@@ -34,6 +34,10 @@ add_executable(${CMAKE_PROJECT_NAME}
         include/Sphere.h
         src/ShadeContext.cpp
         include/ShadeContext.h
+        src/Material.cpp
+        include/Material.h
+        src/World.cpp
+        include/World.h
 )
 
 enable_testing()

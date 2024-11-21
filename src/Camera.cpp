@@ -14,7 +14,7 @@ Ray Camera::GetRayAt(int x, int y)
 
     Point3d pixel_coord = upper_left_corner + 0.5 * (v_x_ + v_y_) + x * v_x_ + y * v_y_;
 
-    std::cout << "x: "  << x <<  " ,y: " << y << " , " << pixel_coord << "\n";
+    // std::cout << "x: "  << x <<  " ,y: " << y << " , " << pixel_coord << "\n";
 
     Point3d origin {0.0, 0.0, -focal_distance_};
 

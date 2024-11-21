@@ -11,6 +11,6 @@
 #include "ShadeContext.h"
 
 class Shape {
-    virtual Normal<double, 3> NormalAt(Point<double, 3>& p) const = 0;
+    virtual Normal<double, 3> NormalAt(const Point<double, 3>& p) const = 0;
     virtual bool Hit(const Ray& r, ShadeContext& context) const = 0;
 };
