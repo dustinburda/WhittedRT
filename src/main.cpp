@@ -14,18 +14,19 @@ static constexpr uint16_t HEIGHT = 1080;
 static constexpr uint16_t WIDTH = 1920;
 
 /*
- * Add a World Class
  * Time core trace loop, make sure multithreading is on
  * Triangle
+ *
+ * Normal Constructor from Vector
  * */
 
 int main()
 {
     auto flat_green_color = std::make_shared<Material>(Color {0.0, 1.0, 0.0});
-    std::shared_ptr<Shape> s1  = std::make_shared<Sphere>(Point<double, 3>{0, 0, 10}, 3, flat_green_color);
+    std::shared_ptr<Shape> s1  = std::make_shared<Sphere>(Point<double, 3>{-2, 0, 20}, 3, flat_green_color);
 
     auto flat_red_color = std::make_shared<Material>(Color {1.0, 0.0, 0.0});
-    std::shared_ptr<Shape> s2  = std::make_shared<Sphere>(Point<double, 3>{0, 0, 15}, 3, flat_red_color);
+    std::shared_ptr<Shape> s2  = std::make_shared<Sphere>(Point<double, 3>{2, 0, 25}, 3, flat_red_color);
 
     World w {s1, s2};
 
@@ -39,6 +40,7 @@ int main()
         {
             auto ray = camera.GetRayAt(x, y);
             ShadeContext context;
+
 
             if(w.Hit(ray, context))
                 canvas.SetColorAt(context.mat_->color_, x, y);
