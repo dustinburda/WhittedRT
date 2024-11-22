@@ -1,13 +1,14 @@
+#include <chrono>
 #include <iostream>
 #include <memory>
-#include <chrono>
 
-#include "../include/Canvas.h"
-#include "../include/Vector.h"
-#include "../include/Point.h"
-#include "../include/Normal.h"
 #include "../include/Camera.h"
+#include "../include/Canvas.h"
+#include "../include/Normal.h"
+#include "../include/Point.h"
 #include "../include/Sphere.h"
+#include "../include/Vector.h"
+#include "../include/World.h"
 
 static constexpr uint16_t HEIGHT = 1080;
 static constexpr uint16_t WIDTH = 1920;
@@ -20,8 +21,13 @@ static constexpr uint16_t WIDTH = 1920;
 
 int main()
 {
-    auto flat_red_color = std::make_shared<Material>(Color {0.0, 1.0, 0.0});
-    Sphere s ({0, 0, 10}, 3, flat_red_color);
+    auto flat_green_color = std::make_shared<Material>(Color {0.0, 1.0, 0.0});
+    std::shared_ptr<Shape> s1  = std::make_shared<Sphere>(Point<double, 3>{0, 0, 10}, 3, flat_green_color);
+
+    auto flat_red_color = std::make_shared<Material>(Color {1.0, 0.0, 0.0});
+    std::shared_ptr<Shape> s2  = std::make_shared<Sphere>(Point<double, 3>{0, 0, 15}, 3, flat_red_color);
+
+    World w {s1, s2};
 
     Canvas canvas {WIDTH, HEIGHT};
     Camera camera {WIDTH, HEIGHT, 1.0};
@@ -34,7 +40,7 @@ int main()
             auto ray = camera.GetRayAt(x, y);
             ShadeContext context;
 
-            if(s.Hit(ray, context))
+            if(w.Hit(ray, context))
                 canvas.SetColorAt(context.mat_->color_, x, y);
 
         }

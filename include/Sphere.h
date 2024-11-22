@@ -27,8 +27,8 @@ public:
 
         double discriminant = b * b - 4 * a * c;
 
-        double t1 = (-b + std::sqrt(discriminant)) / (2 * a);
-        double t2 = (-b - std::sqrt(discriminant)) / (2 * a);
+        double t1 = (-b - std::sqrt(discriminant)) / (2 * a);
+        double t2 = (-b + std::sqrt(discriminant)) / (2 * a);
 
         double hit_time = t1;
         if (t1 > context.t_max_ || t1 < context.t_min_)
