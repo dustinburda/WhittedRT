@@ -38,6 +38,7 @@ add_executable(${CMAKE_PROJECT_NAME}
         include/Material.h
         src/World.cpp
         include/World.h
+        include/Globals.h
 )
 
 enable_testing()

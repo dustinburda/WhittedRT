@@ -5,6 +5,7 @@
 #include "../include/Camera.h"
 #include "../include/Canvas.h"
 #include "../include/Normal.h"
+#include "../include/Plane.h"
 #include "../include/Point.h"
 #include "../include/Sphere.h"
 #include "../include/Vector.h"
@@ -16,8 +17,8 @@ static constexpr uint16_t WIDTH = 1920;
 /*
  * Time core trace loop, make sure multithreading is on
  * Triangle
- *
  * Normal Constructor from Vector
+ * Color
  * */
 
 int main()
@@ -27,6 +28,12 @@ int main()
 
     auto flat_red_color = std::make_shared<Material>(Color {1.0, 0.0, 0.0});
     std::shared_ptr<Shape> s2  = std::make_shared<Sphere>(Point<double, 3>{2, 0, 25}, 3, flat_red_color);
+
+//    auto flat_blue_color = std::make_shared<Material>(Color{0.0, 0.0, 1.0});
+//    std::shared_ptr<Shape> s3 = std::make_shared<Plane>()
+
+    auto flat_gray_color = std::make_shared<Material>(Color{0.5, 0.5, 0.5});
+
 
     World w {s1, s2};
 
