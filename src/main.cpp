@@ -1,6 +1,7 @@
 #include <chrono>
 #include <iostream>
 #include <memory>
+#include <thread>
 
 #include "../include/Camera.h"
 #include "../include/Canvas.h"
@@ -16,6 +17,7 @@ static constexpr uint16_t WIDTH = 1920;
 
 /*
  * Time core trace loop, make sure multithreading is on
+ * Scene Parser [to make debugging and constructing scenes faster]
  * Triangle
  * Normal Constructor from Vector
  * Color
@@ -29,10 +31,17 @@ int main()
     auto flat_red_color = std::make_shared<Material>(Color {1.0, 0.0, 0.0});
     std::shared_ptr<Shape> s2  = std::make_shared<Sphere>(Point<double, 3>{2, 0, 25}, 3, flat_red_color);
 
-//    auto flat_blue_color = std::make_shared<Material>(Color{0.0, 0.0, 1.0});
-//    std::shared_ptr<Shape> s3 = std::make_shared<Plane>()
-
+    auto flat_blue_color = std::make_shared<Material>(Color{0.0, 0.0, 1.0});
     auto flat_gray_color = std::make_shared<Material>(Color{0.5, 0.5, 0.5});
+    auto flat_purple_color = std::make_shared<Material>(Color{1.0, 0.0, 1.0});
+    auto flat_yellow_color = std::make_shared<Material>(Color{1.0, 1.0, 0.0});
+    auto flat_cyan_color = std::make_shared<Material>(Color{0.0, 1.0, 1.0});
+
+
+    std::shared_ptr<Shape> s3 = std::make_shared<Plane>(Point<double, 3> {-4.0, 0.0, 0.0}, Normal<double, 3>{1.0, 0.0, 0.0}, flat_blue_color);
+    std::shared_ptr<Shape> s4 = std::make_shared<Plane>(Point<double, 3> {0.0, -4.0, 0.0}, Normal<double, 3>{0.0, 1.0, 0.0}, flat_purple_color);
+    std::shared_ptr<Shape> s5 = std::make_shared<Plane>(Point<double, 3> {0.0, 0.0, 30.0}, Normal<double, 3>{0.0, 0.0, 1.0}, flat_cyan_color);
+
 
 
     World w {s1, s2};
@@ -40,7 +49,6 @@ int main()
     Canvas canvas {WIDTH, HEIGHT};
     Camera camera {WIDTH, HEIGHT, 1.0};
 
-    #pragma omp parallel
     for (int y = 0; y < HEIGHT; y++)
     {
         for(int x = 0; x < WIDTH; x++)

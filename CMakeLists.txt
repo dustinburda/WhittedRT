@@ -39,6 +39,8 @@ add_executable(${CMAKE_PROJECT_NAME}
         src/World.cpp
         include/World.h
         include/Globals.h
+        src/Triangle.cpp
+        include/Triangle.h
 )
 
 enable_testing()
