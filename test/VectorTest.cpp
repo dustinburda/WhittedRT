@@ -38,7 +38,7 @@ TEST(VectorTest, Subtraction) {
     EXPECT_EQ(difference, expected);
 }
 
-TEST(VectorTest, CrossProdict) {
+TEST(VectorTest, CrossProduct) {
 
 }
 

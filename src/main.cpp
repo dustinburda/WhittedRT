@@ -9,6 +9,7 @@
 #include "../include/Plane.h"
 #include "../include/Point.h"
 #include "../include/Sphere.h"
+#include "../include/Triangle.h"
 #include "../include/World.h"
 
 static constexpr uint16_t HEIGHT = 1080;
@@ -17,9 +18,13 @@ static constexpr uint16_t WIDTH = 1920;
 /*
  * Time core trace loop, make sure multithreading is on
  * Scene Parser [to make debugging and constructing scenes faster]
- * Triangle
  * Normal Constructor from Vector
  * Color
+ * Mesh
+ * Bounding Box
+ * BVH
+ * Tons of Unit Tests...
+ * Matrix
  * */
 
 int main()
@@ -40,10 +45,9 @@ int main()
     std::shared_ptr<Shape> s3 = std::make_shared<Plane>(Point<double, 3> {-4.0, 0.0, 0.0}, Normal<double, 3>{1.0, 0.0, 0.0}, flat_blue_color);
     std::shared_ptr<Shape> s4 = std::make_shared<Plane>(Point<double, 3> {0.0, -4.0, 0.0}, Normal<double, 3>{0.0, 1.0, 0.0}, flat_purple_color);
     std::shared_ptr<Shape> s5 = std::make_shared<Plane>(Point<double, 3> {0.0, 0.0, 30.0}, Normal<double, 3>{0.0, 0.0, 1.0}, flat_cyan_color);
+    std::shared_ptr<Shape> s6 = std::make_shared<Triangle>(Point<double, 3> {0.0, 0.0, 0.0}, Point<double, 3> {1.0, 0.0, 0.0}, Point<double, 3> {0.5, 0.866, 0.0}, flat_yellow_color);
 
-
-
-    World w {s1, s2};
+    World w {s6};
 
     Canvas canvas {WIDTH, HEIGHT};
     Camera camera {WIDTH, HEIGHT, 1.0};

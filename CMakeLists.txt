@@ -24,24 +24,13 @@ add_executable(${CMAKE_PROJECT_NAME}
         src/Point.cpp
         src/Ray.cpp
         src/Camera.cpp
-        include/Camera.h
         src/Color.cpp
-        include/Color.h
-        include/Shape.h
         src/Plane.cpp
-        include/Plane.h
         src/Sphere.cpp
-        include/Sphere.h
         src/ShadeContext.cpp
-        include/ShadeContext.h
         src/Material.cpp
-        include/Material.h
         src/World.cpp
-        include/World.h
-        include/Globals.h
         src/Triangle.cpp
-        include/Triangle.h
-        include/SceneParser.h
 )
 
 enable_testing()
@@ -49,6 +38,8 @@ enable_testing()
 add_executable(
         test_app
         test/VectorTest.cpp
+        test/TriangleTest.cpp
+        test/SphereTest.cpp
 )
 target_link_libraries(
         test_app
