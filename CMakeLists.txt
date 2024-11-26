@@ -41,6 +41,7 @@ add_executable(${CMAKE_PROJECT_NAME}
         include/Globals.h
         src/Triangle.cpp
         include/Triangle.h
+        include/SceneParser.h
 )
 
 enable_testing()

@@ -9,7 +9,6 @@
 #include "../include/Plane.h"
 #include "../include/Point.h"
 #include "../include/Sphere.h"
-#include "../include/Vector.h"
 #include "../include/World.h"
 
 static constexpr uint16_t HEIGHT = 1080;

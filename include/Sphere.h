@@ -20,6 +20,7 @@ public:
     Sphere() : center_{0,0,0}, radius_{1.0} {}
     Sphere(const Point<double, 3>& center, double radius, std::shared_ptr<Material> mat)
         : center_{center}, radius_{radius}, mat_{std::move(mat)} {}
+    ~Sphere() override = default;
 
     bool Hit(const Ray& r, ShadeContext& context) const override;
     Normal<double, 3> NormalAt(const Point<double, 3>& p) const override;

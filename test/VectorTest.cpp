@@ -5,6 +5,7 @@
 
 #include <gtest/gtest.h>
 
+#include "../include/Point.h"
 #include "../include/Vector.h"
 
 TEST(VectorTest, Negation) {
@@ -35,4 +36,12 @@ TEST(VectorTest, Subtraction) {
     Vector<double, 4> expected {0.0, 0.0, 0.0, 0.0};
 
     EXPECT_EQ(difference, expected);
+}
+
+TEST(VectorTest, CrossProdict) {
+
+}
+
+TEST(VectorTest, UnitVector) {
+
 }
