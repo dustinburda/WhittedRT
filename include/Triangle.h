@@ -64,8 +64,20 @@ private:
     }
 
     std::array<double, 3> BarycentricCoordinates(const Point<double, 3>& hit_point) const {
-        double l2 = 0;
-        double l3 = 0;
+        double x1 = hit_point[0];
+        double x2 = hit_point[1];
+
+        double a1 = points_[0][0];
+        double a2 = points_[0][1];
+
+        double b1 = points_[2][0];
+        double b2 = points_[2][1];
+
+        double c1 = points_[2][0];
+        double c2 = points_[2][1];
+
+        double l2 = ((x1 - a1)/(b1 - a1) - (x2 - a2)/(b2 - a2)) / ((c1 - a1)/(b1 - a1) - (c2 - a2)/(b2 - a2));
+        double l3 = ((x1 - a1)/(c1 - a1) - (x2 - a2)/(c2 - a2)) / ((b1 - a1)/(c1 - a1) - (b2 - a2)/(c2 - a2));
 
         return { 1 - l2 - l3, l2, l3};
     }
