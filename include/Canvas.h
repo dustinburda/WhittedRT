@@ -5,13 +5,14 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
+#include <array>
 #include <cstdint>
 #include <cstring>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 #include <filesystem>
-#include <array>
+#include <fstream>
+#include <iostream>
+#include <shared_mutex>
+#include <sstream>
 #include <vector>
 
 using Color = std::array<double, 3>;
@@ -35,6 +36,7 @@ private:
 	const uint16_t height_;
 	std::vector<Color> buffer_;
     bool flushed_;
+	// mutable std::shared_mutex mutex_;
 };
 
 #endif //CANVAS_H

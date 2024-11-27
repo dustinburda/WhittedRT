@@ -16,6 +16,7 @@ void Canvas::SetColorAt(const Color& color, uint16_t i, uint16_t j) {
     if(i >= width_ || i < 0 || j >= height_ || j < 0)
         throw std::logic_error("Array indices must stay in bounds!");
 
+    // std::unique_lock<std::shared_mutex> l(mutex_);
     buffer_[j * width_ + i] = color;
 }
 
@@ -23,6 +24,7 @@ Color Canvas::GetColorAt(uint16_t i, uint16_t j) const {
     if(i >= width_ || i < 0 || j >= height_ || j < 0)
         throw std::logic_error("Array indices must stay in bounds!");
 
+    // std::shared_lock<std::shared_mutex> l(mutex_);
     return buffer_[j * width_ + i];
 }
 
