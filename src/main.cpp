@@ -20,7 +20,6 @@ static constexpr uint16_t WIDTH = 1920;
  * Scene Parser [to make debugging and constructing scenes faster]
  * Normal Constructor from Vector
  * Color
- * Mesh
  * Bounding Box
  * BVH
  * Tons of Unit Tests...
@@ -47,7 +46,11 @@ int main()
     std::shared_ptr<Shape> s5 = std::make_shared<Plane>(Point<double, 3> {0.0, 0.0, 30.0}, Normal<double, 3>{0.0, 0.0, 1.0}, flat_cyan_color);
     std::shared_ptr<Shape> s6 = std::make_shared<Triangle>(Point<double, 3> {0.0, 0.0, 0.0}, Point<double, 3> {1.0, 0.0, 0.0}, Point<double, 3> {0.5, 0.866, 0.0}, flat_yellow_color);
 
-    World w {s6};
+    World w;
+
+    for(int i = 0; i < 1000; i++) {
+        w.AddShape(s6);
+    }
 
     Canvas canvas {WIDTH, HEIGHT};
     Camera camera {WIDTH, HEIGHT, 1.0};

@@ -31,12 +31,15 @@ add_executable(${CMAKE_PROJECT_NAME}
         src/Material.cpp
         src/World.cpp
         src/Triangle.cpp
+        src/Mesh.cpp
 )
 
 enable_testing()
 
 add_executable(
         test_app
+        src/Sphere.cpp
+        src/Triangle.cpp
         test/VectorTest.cpp
         test/TriangleTest.cpp
         test/SphereTest.cpp

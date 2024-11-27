@@ -16,7 +16,7 @@
 class Plane : public Shape {
 public:
     Plane() : point_{1.0, 0.0, 0.0}, normal_{1.0, 1.0, 1.0} {}
-    Plane(const Point<double, 3>& point, const Normal<double, 3>& normal, std::shared_ptr<Material> mat)
+    Plane(const Point<double, 3>& point, const Normal<double, 3>& normal, std::shared_ptr<Material> mat = nullptr)
         : point_{point}, normal_{normal}, mat_{std::move(mat)} {}
     ~Plane() override = default;
 

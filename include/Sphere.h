@@ -18,7 +18,7 @@
 class Sphere : public Shape {
 public:
     Sphere() : center_{0,0,0}, radius_{1.0} {}
-    Sphere(const Point<double, 3>& center, double radius, std::shared_ptr<Material> mat)
+    Sphere(const Point<double, 3>& center, double radius, std::shared_ptr<Material> mat = nullptr)
         : center_{center}, radius_{radius}, mat_{std::move(mat)} {}
     ~Sphere() override = default;
 
