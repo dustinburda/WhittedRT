@@ -26,7 +26,6 @@ public:
     Normal<double, 3> NormalAt(const Point<double, 3> &p) const override;
     bool Hit(const Ray &r, ShadeContext &context) const override;
 
-
 private:
     [[nodiscard]] bool InTriangle(const Point<double, 3>& hit_point) const;
     std::array<double, 3> BarycentricCoordinates(const Point<double, 3>& hit_point) const;

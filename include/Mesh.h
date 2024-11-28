@@ -9,17 +9,18 @@
 
 #include <filesystem>
 #include <fstream>
+#include <memory>
 #include <string>
 #include <vector>
 
-
+using Face = std::array<int, 3>;
 
 class Mesh {
 public:
-    Mesh() = delete;
+    Mesh() = default;
     Mesh(std::filesystem::path path);
 
-    void GetTriangles(std::vector<Triangle>& triangles);
+    void GetTriangles(std::vector<Triangle>& triangles, std::shared_ptr<Material> mat = nullptr);
 
 private:
     Point3d ParseVertex(std::string line);
@@ -27,7 +28,7 @@ private:
     Normal<double, 3> ParseNormal(std::string line);
 
     std::vector<Point3d> vertices_;
-    std::vector<std::array<int, 3>> faces_;
+    std::vector<Face> faces_;
     std::vector<Normal<double, 3>> normals_;
 };
 

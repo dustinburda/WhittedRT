@@ -23,11 +23,11 @@ Mesh::Mesh(std::filesystem::path path)
     }
 }
 
-void Mesh::GetTriangles(std::vector<Triangle>& triangles)
+void Mesh::GetTriangles(std::vector<Triangle>& triangles, std::shared_ptr<Material> mat)
 {
     for(auto& face : faces_) {
         auto [f1, f2, f3] = face;
-        triangles.emplace_back(vertices_[f1 - 1], vertices_[f2 - 1], vertices_[f3 - 1]);
+        triangles.emplace_back(vertices_[f1 - 1], vertices_[f2 - 1], vertices_[f3 - 1], mat);
     }
 }
 
@@ -53,7 +53,7 @@ std::array<int, 3> Mesh::ParseFace(std::string line) {
 
     std::array<int, 3> face;
     for(int i = 0; i < 4; i++){
-        std::getline(s_line, token);
+        std::getline(s_line, token, ' ');
 
         if(token == "f")
             continue;
@@ -61,7 +61,7 @@ std::array<int, 3> Mesh::ParseFace(std::string line) {
         std::string index;
         std::stringstream s_token{token};
         std::getline(s_token, index);
-        face[i - 1] = std::stoi(index);
+        face[i - 1] = std::stoi(index) - 1;
     }
 
     return face;
@@ -73,7 +73,7 @@ std::array<int, 3> Mesh::ParseFace(std::string line) {
 
     Normal<double, 3> normal;
     for(int i = 0; i < 4; i++){
-        std::getline(s_line, token);
+        std::getline(s_line, token, ' ');
 
         if(token == "vn")
             continue;
