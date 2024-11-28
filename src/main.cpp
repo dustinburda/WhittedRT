@@ -7,12 +7,13 @@
 #include "../include/Canvas.h"
 #include "../include/Mesh.h"
 #include "../include/Sphere.h"
+#include "../include/Threadpool.h"
 #include "../include/World.h"
 
 #include "../scenes/Scene1.h"
 
-static constexpr uint16_t HEIGHT = 1080;
-static constexpr uint16_t WIDTH = 1920;
+static constexpr uint16_t HEIGHT = 500;
+static constexpr uint16_t WIDTH = 1000;
 
 /*
  * Scene Parser [to make debugging and constructing scenes faster]
@@ -32,35 +33,19 @@ Color Trace(World& w, Ray& r, ShadeContext& context) {
     return {0.0, 0.0, 0.0};
 }
 
-struct ThreadPool {
-    ThreadPool()
-        : num_threads_{std::thread::hardware_concurrency() - 4} { pool_.reserve(num_threads_); }
-    ~ThreadPool() {
-        for(auto&& thread : pool_)
-            if(thread.joinable())
-                thread.join();
-    }
-    void Add(std::thread&& t) {
-        pool_.push_back(std::move(t));
-    }
-
-    size_t num_threads_;
-    std::vector<std::thread> pool_;
-};
-
 int main()
 {
 
     World w;
 
-    Mesh m(std::filesystem::current_path().parent_path().string() + "/models/tetrahedron.obj");
+    Mesh m(std::filesystem::current_path().parent_path().string() + "/models/gourd.obj");
     auto flat_green_color = std::make_shared<Material>(Color {0.0, 1.0, 0.0});
     std::vector<Triangle> mesh;
     m.GetTriangles(mesh, flat_green_color);
 
     for(auto& triangle : mesh)
     {
-
+        auto points = triangle.Points();
         std::shared_ptr<Triangle> t = std::make_shared<Triangle>(triangle);
         w.AddShape(t);
     }
