@@ -14,7 +14,7 @@ Mesh::Mesh(std::filesystem::path path)
 
     std::string line;
     while(std::getline(mesh_file, line)) {
-        if(line[0] == 'v')
+        if((line.substr(0, 2) == "v "))
             vertices_.push_back(ParseVertex(line));
         else if(line[0] == 'f')
             faces_.push_back(ParseFace(line));
@@ -27,7 +27,7 @@ void Mesh::GetTriangles(std::vector<Triangle>& triangles, std::shared_ptr<Materi
 {
     for(auto& face : faces_) {
         auto [f1, f2, f3] = face;
-        triangles.emplace_back(vertices_[f1 - 1], vertices_[f2 - 1], vertices_[f3 - 1], mat);
+        triangles.emplace_back(vertices_[f1], vertices_[f2], vertices_[f3], mat);
     }
 }
 
@@ -37,7 +37,7 @@ Point3d Mesh::ParseVertex(std::string line) {
 
     Point3d p;
     for(int i = 0; i < 4; i++){
-        std::getline(s_line, token, ' ');
+        std::getline(s_line >> std::ws, token, ' ');
 
         if(token == "v")
             continue;
@@ -53,7 +53,7 @@ std::array<int, 3> Mesh::ParseFace(std::string line) {
 
     std::array<int, 3> face;
     for(int i = 0; i < 4; i++){
-        std::getline(s_line, token, ' ');
+        std::getline(s_line >> std::ws, token, ' ');
 
         if(token == "f")
             continue;
@@ -73,7 +73,7 @@ std::array<int, 3> Mesh::ParseFace(std::string line) {
 
     Normal<double, 3> normal;
     for(int i = 0; i < 4; i++){
-        std::getline(s_line, token, ' ');
+        std::getline(s_line >> std::ws, token, ' ');
 
         if(token == "vn")
             continue;

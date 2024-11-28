@@ -33,26 +33,8 @@ Color Trace(World& w, Ray& r, ShadeContext& context) {
     return {0.0, 0.0, 0.0};
 }
 
-int main()
-{
 
-    World w;
-
-    Mesh m(std::filesystem::current_path().parent_path().string() + "/models/gourd.obj");
-    auto flat_green_color = std::make_shared<Material>(Color {0.0, 1.0, 0.0});
-    std::vector<Triangle> mesh;
-    m.GetTriangles(mesh, flat_green_color);
-
-    for(auto& triangle : mesh)
-    {
-        auto points = triangle.Points();
-        std::shared_ptr<Triangle> t = std::make_shared<Triangle>(triangle);
-        w.AddShape(t);
-    }
-
-    Canvas canvas {WIDTH, HEIGHT};
-    Camera camera {WIDTH, HEIGHT, 1.0};
-
+void Render(Camera& camera, Canvas& canvas, World& w) {
     std::size_t num_threads = std::thread::hardware_concurrency() - 2;
     ThreadPool pool;
     auto render = [&camera, &canvas](World& w, int x_start, int chunk_x_size, int y_start, int chunk_y_size) {
@@ -75,6 +57,40 @@ int main()
             std::thread t ( render, std::ref(w), x, chunk_x_size, y, chunk_y_size);
             pool.Add(std::move(t));
         }
+}
 
+int main()
+{
+
+    World w;
+    Canvas canvas {WIDTH, HEIGHT};
+    Camera camera {WIDTH, HEIGHT, 1.0};
+
+    Mesh m(std::filesystem::current_path().parent_path().string() + "/models/cessna.obj");
+    auto flat_green_color = std::make_shared<Material>(Color {0.0, 1.0, 0.0});
+    auto flat_red_color = std::make_shared<Material>(Color {1.0, 0.0, 0.0});
+    auto flat_blue_color = std::make_shared<Material>(Color {0.0, 0.0, 1.0});
+    auto flat_purple_color = std::make_shared<Material>(Color {1.0, 0.0, 1.0});
+    std::vector<Triangle> mesh;
+    m.GetTriangles(mesh, flat_green_color);
+
+    int index = 0;
+    double scale_factor = 60.0;
+    Vector<double, 3> translate {0.0, 0.0, 0.0};
+    for(auto& triangle : mesh)
+    {
+        auto m = triangle.GetMaterial();
+        auto points = triangle.Points();
+
+        std::shared_ptr<Triangle> t = std::make_shared<Triangle>(points[0] / scale_factor  + translate, points[1] / scale_factor  + translate, points[2] / scale_factor + translate, m);
+        w.AddShape(t);
+        index++;
+    }
+
+
+
+    Render(camera, canvas, w);
+
+    canvas.Flush("cessna.ppm");
     return 0;
 }

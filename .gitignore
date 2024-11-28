@@ -7,5 +7,3 @@ cmake-build-release
 cmake-build-relwithdebinfo
 todo.txt
 *ppm
-models
-scenes
