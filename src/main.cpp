@@ -17,19 +17,19 @@ static constexpr uint16_t WIDTH = 1000;
 
 /*
  * Scene Parser [to make debugging and constructing scenes faster]
- * Normal Constructor from Vector
- * Color
+ * Matrix
  * Bounding Box
  * BVH
  * Tons of Unit Tests...
- * Matrix
  * Mutexes...
+ * Color
+ * Normal Constructor from Vector
  * */
 
 
 Color Trace(World& w, Ray& r, ShadeContext& context) {
     if(w.Hit(r, context))
-        return context.mat_->color_;
+        return context.mat_->color_; // Shade Function here Shade(context)
     return {0.0, 0.0, 0.0};
 }
 
@@ -40,6 +40,12 @@ void Render(Camera& camera, Canvas& canvas, World& w) {
     auto render = [&camera, &canvas](World& w, int x_start, int chunk_x_size, int y_start, int chunk_y_size) {
         for(int y = y_start; y < y_start + chunk_y_size; y++)
             for(int x = x_start; x < x_start + chunk_x_size; x++) {
+
+                if(x == 5 && y == 31) {
+                    x += 1;
+                    x-= 1;
+                }
+
                 auto ray = camera.GetRayAt(x, y);
                 ShadeContext context;
                 canvas.SetColorAt(Trace(w, ray, context), x, y);
@@ -75,8 +81,8 @@ int main()
     m.GetTriangles(mesh, flat_green_color);
 
     int index = 0;
-    double scale_factor = 60.0;
-    Vector<double, 3> translate {0.0, 0.0, 0.0};
+    double scale_factor = 1.0;
+    Vector<double, 3> translate {0.0, 0.0, 50.0};
     for(auto& triangle : mesh)
     {
         auto m = triangle.GetMaterial();
