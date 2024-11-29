@@ -30,9 +30,8 @@ Color Canvas::GetColorAt(uint16_t i, uint16_t j) const {
 
 void Canvas::Flush(const std::string& filename) {
     auto current_dir = std::filesystem::current_path().parent_path();
-    std::string dir = current_dir.string();
-    current_dir += (filename.empty()) ? "/image.ppm" : "/" + filename;
-    dir = current_dir.string();
+    std::string dir = current_dir.string() + "/images";
+    dir += (filename.empty()) ? "/image.ppm" : "/" + filename;
 
     std::stringstream image_content;
 
@@ -46,7 +45,7 @@ void Canvas::Flush(const std::string& filename) {
                        + std::to_string(static_cast<uint8_t>(color[2] * 255)) + "\n";
     }
 
-    std::ofstream image { current_dir };
+    std::ofstream image { dir };
     if(!image.is_open()) {
         std::cerr << "Image failed to open!";
     }

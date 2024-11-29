@@ -5,7 +5,7 @@
 #ifndef WHITTED_GLOBALS_H
 #define WHITTED_GLOBALS_H
 
-constexpr double epsilon = 10e-5;
+constexpr double epsilon = 10e-3;
 
 #endif //WHITTED_GLOBALS_H
 

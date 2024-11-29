@@ -24,12 +24,19 @@ static constexpr uint16_t WIDTH = 1000;
  * Mutexes...
  * Color
  * Normal Constructor from Vector
+ * AWS EC2
+ * CI/CD Pipeline
+ * Redo Includes
+ * CMAKELists.txt cleanup
  * */
 
+Color Shade(ShadeContext& context) {
+    return context.mat_->color_;
+}
 
 Color Trace(World& w, Ray& r, ShadeContext& context) {
     if(w.Hit(r, context))
-        return context.mat_->color_; // Shade Function here Shade(context)
+         return Shade(context);
     return {0.0, 0.0, 0.0};
 }
 
@@ -40,12 +47,6 @@ void Render(Camera& camera, Canvas& canvas, World& w) {
     auto render = [&camera, &canvas](World& w, int x_start, int chunk_x_size, int y_start, int chunk_y_size) {
         for(int y = y_start; y < y_start + chunk_y_size; y++)
             for(int x = x_start; x < x_start + chunk_x_size; x++) {
-
-                if(x == 5 && y == 31) {
-                    x += 1;
-                    x-= 1;
-                }
-
                 auto ray = camera.GetRayAt(x, y);
                 ShadeContext context;
                 canvas.SetColorAt(Trace(w, ray, context), x, y);
@@ -65,6 +66,7 @@ void Render(Camera& camera, Canvas& canvas, World& w) {
         }
 }
 
+
 int main()
 {
 
@@ -72,31 +74,12 @@ int main()
     Canvas canvas {WIDTH, HEIGHT};
     Camera camera {WIDTH, HEIGHT, 1.0};
 
-    Mesh m(std::filesystem::current_path().parent_path().string() + "/models/cessna.obj");
+    std::string name = "bunny";
     auto flat_green_color = std::make_shared<Material>(Color {0.0, 1.0, 0.0});
-    auto flat_red_color = std::make_shared<Material>(Color {1.0, 0.0, 0.0});
-    auto flat_blue_color = std::make_shared<Material>(Color {0.0, 0.0, 1.0});
-    auto flat_purple_color = std::make_shared<Material>(Color {1.0, 0.0, 1.0});
-    std::vector<Triangle> mesh;
-    m.GetTriangles(mesh, flat_green_color);
-
-    int index = 0;
-    double scale_factor = 1.0;
-    Vector<double, 3> translate {0.0, 0.0, 50.0};
-    for(auto& triangle : mesh)
-    {
-        auto m = triangle.GetMaterial();
-        auto points = triangle.Points();
-
-        std::shared_ptr<Triangle> t = std::make_shared<Triangle>(points[0] / scale_factor  + translate, points[1] / scale_factor  + translate, points[2] / scale_factor + translate, m);
-        w.AddShape(t);
-        index++;
-    }
-
-
+    w.AddMesh(name, flat_green_color);
 
     Render(camera, canvas, w);
 
-    canvas.Flush("cessna.ppm");
+    canvas.Flush(name + ".ppm");
     return 0;
 }

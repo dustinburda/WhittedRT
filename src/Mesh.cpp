@@ -15,11 +15,11 @@ Mesh::Mesh(std::filesystem::path path)
     std::string line;
     while(std::getline(mesh_file, line)) {
         if((line.substr(0, 2) == "v "))
-            vertices_.push_back(ParseVertex(line));
+            ParseVertex(line);
         else if(line[0] == 'f')
-            faces_.push_back(ParseFace(line));
+            ParseFace(line);
         else if(line.substr(0, 2) == "vn")
-            normals_.push_back(ParseNormal(line));
+            ParseNormal(line);
     }
 }
 
@@ -44,27 +44,29 @@ Point3d Mesh::ParseVertex(std::string line) {
         p[i - 1] = std::stod(token);
     }
 
-    return p;
+    vertices_.push_back(p);
 }
 
 std::array<int, 3> Mesh::ParseFace(std::string line) {
     std::string token;
     std::stringstream s_line {line};
 
-    std::array<int, 3> face;
-    for(int i = 0; i < 4; i++){
-        std::getline(s_line >> std::ws, token, ' ');
-
+    std::vector<int> indices;
+    while (std::getline(s_line >> std::ws, token, ' ')) {
         if(token == "f")
             continue;
 
         std::string index;
         std::stringstream s_token{token};
         std::getline(s_token, index);
-        face[i - 1] = std::stoi(index) - 1;
+        indices.push_back(std::stoi(index) - 1);
     }
 
-    return face;
+
+    for(int i = 1; i < indices.size() - 1; i++) {
+        std::array<int, 3> face = {indices[0], indices[i], indices[i + 1]};
+        faces_.push_back(face);
+    }
 }
 
  Normal<double, 3> Mesh::ParseNormal(std::string line) {
@@ -80,5 +82,5 @@ std::array<int, 3> Mesh::ParseFace(std::string line) {
         normal[i - 1] = std::stod(token);
     }
 
-    return normal;
+    normals_.push_back(normal);
 }

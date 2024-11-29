@@ -4,6 +4,12 @@
 
 #include "../include/Triangle.h"
 
+#include <cassert>
+#include <cmath>
+#include <cstdint>
+
+#include "../include/Globals.h"
+
 
 Normal<double, 3> Triangle::NormalAt(const Point<double, 3> &p) const
 {
@@ -33,32 +39,30 @@ bool Triangle::Hit(const Ray &r, ShadeContext &context) const
     context.point_ = hit_point;
     context.normal_ = normal;
 
-
     return true;
 }
 
 
 [[nodiscard]] bool Triangle::InTriangle(const Point<double, 3>& hit_point) const {
-    auto [l1, l2, l3] = BarycentricCoordinates(hit_point);
+    auto coordinates = BarycentricCoordinates(hit_point);
 
-    return (l1 >= 0 && l2 >= 0 && l3 >= 0);
+    double l1 = coordinates[0];
+    double l2 = coordinates[1];
+    double l3 = coordinates[2];
+
+    return (l1 >= 0 && l2 >= 0 && l3 >= 0 && std::abs(l1 + l2 + l3 - 1) < epsilon);
 }
 
 std::array<double, 3> Triangle::BarycentricCoordinates(const Point<double, 3>& hit_point) const {
-    double x1 = hit_point[0];
-    double x2 = hit_point[1];
+    std::array<double, 3> barycentric_coordinates {0.0, 0.0, 0.0};
 
-    double a1 = points_[0][0];
-    double a2 = points_[0][1];
+    double area_triangle = Cross(points_[1] - points_[0], points_[2] - points_[0]).Length() / 2;
 
-    double b1 = points_[1][0];
-    double b2 = points_[1][1];
+    for(int i = 0; i < 3; i++) {
+        double area_sub_triangle = Cross(points_[(i + 1) % 3] - points_[i % 3], hit_point - points_[i % 3]).Length() / 2.0;
+        barycentric_coordinates[(i + 2) % 3] = area_sub_triangle / area_triangle;
+    }
 
-    double c1 = points_[2][0];
-    double c2 = points_[2][1];
-
-    double l3 = ((x1 - a1) * (c2 - a2) - (x2 - a2) * (c1 - a1)) / ((b1 - a1) * (c2 - a2) - (b2 - a2) * (c1 - a1));
-    double l2 = ((x1 - a1) * (b2 - a2)- (x2 - a2) * (b1 - a1) ) / ((c1 - a1) * (b2 - a2) - (c2 - a2) * (b1 - a1) );
-
-    return { 1 - l2 - l3, l2, l3};
+    return barycentric_coordinates;
 }
+
