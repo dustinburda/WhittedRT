@@ -1,28 +1,30 @@
 #include <chrono>
 #include <filesystem>
 #include <thread>
-#include <vector>
 
 #include "../include/Camera.h"
 #include "../include/Canvas.h"
+#include "../include/Matrix.h"
 #include "../include/Mesh.h"
 #include "../include/Sphere.h"
 #include "../include/Threadpool.h"
+#include "../include/Transformations.h"
 #include "../include/World.h"
 
-#include "../scenes/Scene1.h"
 
 static constexpr uint16_t HEIGHT = 500;
 static constexpr uint16_t WIDTH = 1000;
 
 /*
  * Scene Parser [to make debugging and constructing scenes faster]
- * Matrix
+ * Operator Overload << for classes for easy debugging
+ * Camera Viewing System
+ * Depth of Field
  * Bounding Box
  * BVH
  * Tons of Unit Tests...
  * Mutexes...
- * Color
+ * Color --> Before Shading
  * Normal Constructor from Vector
  * AWS EC2
  * CI/CD Pipeline

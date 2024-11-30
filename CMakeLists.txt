@@ -32,6 +32,8 @@ add_executable(${CMAKE_PROJECT_NAME}
         src/World.cpp
         src/Triangle.cpp
         src/Mesh.cpp
+        src/ThreadPool.cpp
+        src/Matrix.cpp
 )
 
 enable_testing()
