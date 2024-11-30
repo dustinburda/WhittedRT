@@ -59,53 +59,130 @@ public:
         return negative;
     }
 
-    Matrix<M, N, T>& operator+=(const Matrix& m);
-    Matrix<M, N, T>& operator-=(const Matrix& m);
-    Matrix<M, N, T>& operator*(double t);
-    Matrix<M, N, T>& operator/(double t);
+    Matrix<M, N, T>& operator+=(const Matrix& m) {
+        for(int i = 0; i < M; i++)
+            for(int j = 0; j < N; j++)
+                data_[i][j] += m[i][j];
 
+        return *this;
+    }
 
+    Matrix<M, N, T>& operator-=(const Matrix& m) {
+        *this += (-m);
+        return *this;
+    }
 
+    Matrix<M, N, T>& operator*(double t) {
+        for(int i = 0; i < M; i++)
+            for(int j = 0; j < N; j++)
+                data_[i][j] *= t;
+    }
+
+    Matrix<M, N, T>& operator/(double t) {
+        *this *= (1.0 / t);
+
+        return *this;
+    }
 
 private:
     std::array<std::array<T, N>, M> data_;
 };
-template<size_t M, size_t N, typename T>
-bool operator==(const Matrix<M, N, T>& m1, const Matrix<M, N, T>& m2);
 
 template<size_t M, size_t N, typename T>
-bool Invertible(const Matrix<M, N, T> m);
+static bool operator==(const Matrix<M, N, T>& m1, const Matrix<M, N, T>& m2) {
+    for(int i = 0; i < M; i++)
+        for(int j = 0; j < N; j++)
+            if(m1[i][j] != m2[i][j])
+                return false;
+
+    return true;
+}
 
 template<size_t M, size_t N, typename T>
-Matrix<M, N, T> Transpose(const Matrix<M, N, T> m);
+static bool operator!=(const Matrix<M, N, T>& m1, const Matrix<M, N, T>& m2) {
+    return !(m1 == m2);
+}
+
+template<size_t N, typename T>
+static Matrix<N, N, T> Identity() {
+    Matrix<N, N, T> identity;
+
+    for(int i = 0; i < N; i++)
+        identity[i][i] = 1;
+
+    return identity;
+}
+
+template<size_t N, typename T>
+static bool Invertible(const Matrix<N, N, T> m) {
+    return Determinant(m) != 0;
+}
 
 template<size_t M, size_t N, typename T>
-Matrix<M, N, T> Determinant(const Matrix<M, N, T> m);
+static Matrix<N, M, T> Transpose(const Matrix<M, N, T> m) {
+    Matrix<N, M, T> transpose;
+
+    for(int i = 0; i < M; i++)
+        for(int j = 0; j < N; j++)
+            transpose[j][i] = m[i][j];
+
+    return transpose;
+}
+
+template<size_t N, typename T>
+static Matrix<N, N, T> Determinant(const Matrix<N, N, T> m);
+
+template<size_t N, typename T>
+static Matrix<N, N, T> Inverse(const Matrix<N, N, T> m);
 
 template<size_t M, size_t N, typename T>
-Matrix<M, N, T> Inverse(const Matrix<M, N, T> m);
+static Matrix<M, N, T> operator+(const Matrix<M, N, T>& m1, const Matrix<M, N, T>& m2) {
+    Matrix<M, N, T> sum;
+
+    for(int i = 0; i < M; i++)
+        for(int j = 0; j < N; j++)
+            sum[i][j] = m1[i][j] + m2[i][j];
+
+    return sum;
+}
 
 template<size_t M, size_t N, typename T>
-Matrix<M, N, T> operator+(const Matrix<M, N, T>& m1, const Matrix<M, N, T>& m2);
+static Matrix<M, N, T> operator-(const Matrix<M, N, T>& m1, const Matrix<M, N, T>& m2) {
+    return m1 + (-m2);
+}
 
 template<size_t M, size_t N, typename T>
-Matrix<M, N, T> operator-(const Matrix<M, N, T>& m1, const Matrix<M, N, T>& m2);
+static Matrix<M, N, double> operator*(const Matrix<M, N, T>& m, double t) {
+    Matrix<M, N, double> mult;
+
+    for(int i = 0; i < M; i++)
+        for(int j = 0; j < N; j++)
+            mult[i][j] *= static_cast<double>(t);
+
+    return mult;
+}
 
 template<size_t M, size_t N, typename T>
-Matrix<M, N, T> operator*(const Matrix<M, N, T>& m, double t);
+static Matrix<M, N, double> operator*(double t, const Matrix<M, N, T>& m) {
+    return m * t;
+}
 
 template<size_t M, size_t N, typename T>
-Matrix<M, N, T> operator*(double t, const Matrix<M, N, T>& m);
+static Matrix<M, N, double> operator/(const Matrix<M, N, T>& m, double t) {
+    return m * (1.0 / t);
+}
 
 template<size_t M, size_t N, typename T>
-Matrix<M, N, T> operator*(const Matrix<M, N, T>& m, const Normal<T, N>& n);
+static Matrix<M, N, T> operator*(const Matrix<M, N, T>& m, const Normal<T, N>& n);
 
 template<size_t M, size_t N, typename T>
-Matrix<M, N, T> operator*(const Matrix<M, N, T>& m, const Point<T, N>& p);
+static Matrix<M, N, T> operator*(const Matrix<M, N, T>& m, const Point<T, N>& p);
 
 template<size_t M, size_t N, typename T>
-Matrix<M, N, T> operator*(const Matrix<M, N, T>& m, const Vector<T, N>& v);
+static Matrix<M, N, T> operator*(const Matrix<M, N, T>& m, const Vector<T, N>& v);
 
+template<size_t M, size_t N, size_t K, typename T>
+static Matrix<M, K, T> operator*(const Matrix<M, N, T>& m1, const Matrix<N, K, T>& m2);
 
 
 
