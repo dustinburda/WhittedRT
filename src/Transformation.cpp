@@ -4,6 +4,17 @@
 
 #include "../include/Transformation.h"
 
+Transformation Transformation::Identity() {
+    Transformation t;
+    t.Transform() = {1.0, 0.0, 0.0, 0.0,
+                       0.0, 1.0, 0.0, 0.0,
+                       0.0, 0.0, 1.0, 0.0,
+                       0.0, 0.0, 0.0, 1.0};
+    t.InverseTransform() = Inverse(t.transform_);
+
+    return t;
+}
+
 
 Transformation Transformation::Translation(double x, double y, double z) {
     Transformation t;

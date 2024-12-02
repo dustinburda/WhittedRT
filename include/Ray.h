@@ -19,7 +19,7 @@ enum class RayType {
 class Ray {
 public:
     Ray() = default;
-    Ray(Point3d origin, Vec3d direction, RayType type)
+    Ray(const Point3d& origin, const Vec3d& direction, RayType type)
         : origin_(origin), direction_(direction.UnitVector()), type_(type) { }
 
     Point3d At(double t) const { return origin_ + t * direction_; }

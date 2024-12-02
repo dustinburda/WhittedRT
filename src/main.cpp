@@ -5,10 +5,8 @@
 #include "../include/Camera.h"
 #include "../include/Canvas.h"
 #include "../include/Matrix.h"
-#include "../include/Mesh.h"
 #include "../include/Sphere.h"
 #include "../include/Threadpool.h"
-#include "../include/Transformation.h"
 #include "../include/World.h"
 
 
