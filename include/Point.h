@@ -59,6 +59,34 @@ public:
         return negative;
     }
 
+    Point<T, N+1> Homogenize() const {
+        Point<T, N+1> n;
+
+        for(int i = 0; i < N; i++)
+            n[i] = data_[i];
+        n[N] = 1;
+
+        return n;
+    }
+
+    Point<T, N-1> DeHomogenize() const {
+        Point<T, N-1> n;
+
+        for(int i = 0; i < N - 1; i++)
+            n[i] = data_[i] / data_[N-1];
+
+        return n;
+    }
+
+    Vector<T, N> ToVector() const {
+        Vector<T, N> v;
+
+        for(int i = 0; i < N - 1; i++)
+            v[i] = data_[i];
+
+        return v;
+    }
+
 private:
     std::array<T, N> data_;
 };

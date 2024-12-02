@@ -12,8 +12,6 @@
 #include <stdexcept>
 #include <string>
 
-#include "Normal.h"
-#include "Point.h"
 #include "Vector.h"
 
 
@@ -38,6 +36,13 @@ public:
     }
 
     std::array<T, N>& operator[](std::size_t index) {
+        if(index >= M || index < 0)
+            throw std::logic_error("You must access an element within bounds!");
+
+        return data_[index];
+    }
+
+    std::array<T, N> operator[](std::size_t index) const {
         if(index >= M || index < 0)
             throw std::logic_error("You must access an element within bounds!");
 
@@ -151,7 +156,6 @@ static Matrix<T, N, N> Determinant(const Matrix<T, N, N> m) {
     return det;
 }
 
-// TODO
 template<typename T, size_t N>
 static Matrix<T, N, N> Inverse(const Matrix<T, N, N> m) {
     Matrix<T, N,2*N> augmented;
@@ -235,40 +239,17 @@ static Matrix<double, M, N> operator/(const Matrix<T, M, N>& m, double t) {
     return m * (1.0 / t);
 }
 
-template<typename T, size_t N>
-static Normal<double, N> operator*(const Matrix<T, N, N>& m, const Normal<T, N>& n) {
-    Matrix<double, N, N> inverse_transpose = Transpose(Inverse(m));
-    Normal<double, N> transformed_normal;
-
-    for(int i = 0; i < N; i++) {
-        double dot = 0;
-        for(int j = 0; j < N; j++)
-            dot += inverse_transpose[i][j] * n[j];
-        transformed_normal[i] = dot;
-    }
-    return transformed_normal;
-}
-
-template<typename T, size_t M, size_t N>
-static Point<T, N> operator*(const Matrix<T, M, N>& m, const Point<T, N>& p) {
-    for(int i = 0; i < N; i++) {
-        double dot = 0;
-        for(int j = 0; j < N; j++)
-            dot += m[i][j] * p[j];
-        p[i] = dot;
-    }
-    return p;
-}
-
 template<size_t M, size_t N, typename T>
 static Vector<T, N> operator*(const Matrix<T, M, N>& m, const Vector<T, N>& v) {
+    Vector<T, N> v_mult;
+
     for(int i = 0; i < N; i++) {
         double dot = 0;
         for(int j = 0; j < N; j++)
             dot += m[i][j] * v[j];
-        v[i] = dot;
+        v_mult[i] = dot;
     }
-    return v;
+    return v_mult;
 }
 
 template<typename T, size_t M, size_t N, size_t K>

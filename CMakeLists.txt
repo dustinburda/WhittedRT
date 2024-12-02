@@ -21,6 +21,7 @@ add_executable(${CMAKE_PROJECT_NAME}
         src/Canvas.cpp
         src/Camera.cpp
         src/Color.cpp
+        src/Instance.cpp
         src/Material.cpp
         src/Matrix.cpp
         src/Mesh.cpp

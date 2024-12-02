@@ -116,6 +116,15 @@ public:
         
         return n;
     }
+
+    Vector<T, N> ToVector() const {
+        Vector<T, N> v;
+
+        for(int i = 0; i < N - 1; i++)
+            v[i] = data_[i];
+
+        return v;
+    }
 private:
     std::array<T, N> data_;
 };
