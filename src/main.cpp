@@ -8,29 +8,12 @@
 #include "../include/Mesh.h"
 #include "../include/Sphere.h"
 #include "../include/Threadpool.h"
-#include "../include/Transformations.h"
+#include "../include/Transformation.h"
 #include "../include/World.h"
 
 
 static constexpr uint16_t HEIGHT = 500;
 static constexpr uint16_t WIDTH = 1000;
-
-/*
- * Scene Parser [to make debugging and constructing scenes faster]
- * Operator Overload << for classes for easy debugging
- * Camera Viewing System
- * Depth of Field
- * Bounding Box
- * BVH
- * Tons of Unit Tests...
- * Mutexes...
- * Color --> Before Shading
- * Normal Constructor from Vector
- * AWS EC2
- * CI/CD Pipeline
- * Redo Includes
- * CMAKELists.txt cleanup
- * */
 
 Color Shade(ShadeContext& context) {
     return context.mat_->color_;

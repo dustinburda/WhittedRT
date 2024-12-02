@@ -19,21 +19,22 @@ FetchContent_MakeAvailable(googletest)
 add_executable(${CMAKE_PROJECT_NAME}
         src/main.cpp
         src/Canvas.cpp
-        src/Vector.cpp
-        src/Normal.cpp
-        src/Point.cpp
-        src/Ray.cpp
         src/Camera.cpp
         src/Color.cpp
-        src/Plane.cpp
-        src/Sphere.cpp
-        src/ShadeContext.cpp
         src/Material.cpp
-        src/World.cpp
-        src/Triangle.cpp
-        src/Mesh.cpp
-        src/ThreadPool.cpp
         src/Matrix.cpp
+        src/Mesh.cpp
+        src/Normal.cpp
+        src/Plane.cpp
+        src/Point.cpp
+        src/Ray.cpp
+        src/SceneParser.cpp
+        src/ShadeContext.cpp
+        src/ThreadPool.cpp
+        src/Transformation.cpp
+        src/Triangle.cpp
+        src/Vector.cpp
+        src/World.cpp
 )
 
 enable_testing()

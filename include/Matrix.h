@@ -17,7 +17,7 @@
 #include "Vector.h"
 
 
-template<size_t M, size_t N, typename T>
+template<typename T, size_t M, size_t N>
 class Matrix {
 public:
     Matrix() {
@@ -30,9 +30,11 @@ public:
             throw std::logic_error("Must initialize a " + std::to_string(M) +  " by " + std::to_string(N) +
                                     " matrix with " + std::to_string(M*N) + " elements!");
 
-        for(int i = 0; i < M; i++)
-            for(int j = 0; j < N; j++)
-                data_[i][j] = data[i][j];
+        for(int index = 0; T num : data) {
+            int i = index / N;
+            int j = index % N;
+            data_[i][j] = num;
+        }
     }
 
     std::array<T, N>& operator[](std::size_t index) {
@@ -42,15 +44,15 @@ public:
         return data_[index];
     }
 
-    Matrix<M, N, T>& operator-() {
+    Matrix<T, M, N>& operator-() {
         for(int i = 0; i < M; i++)
             for(int j = 0; j < N; j++)
                 data_[i][j] *= -1;
 
         return *this;
     }
-    Matrix<M, N, T> operator-() const {
-        Matrix<M, N, T> negative;
+    Matrix<T, M, N> operator-() const {
+        Matrix<T, M, N> negative;
 
         for(int i = 0; i < M; i++)
             for(int j = 0; j < N; j++)
@@ -59,7 +61,7 @@ public:
         return negative;
     }
 
-    Matrix<M, N, T>& operator+=(const Matrix& m) {
+    Matrix<T, M, N>& operator+=(const Matrix& m) {
         for(int i = 0; i < M; i++)
             for(int j = 0; j < N; j++)
                 data_[i][j] += m[i][j];
@@ -67,18 +69,18 @@ public:
         return *this;
     }
 
-    Matrix<M, N, T>& operator-=(const Matrix& m) {
+    Matrix<T, M, N>& operator-=(const Matrix& m) {
         *this += (-m);
         return *this;
     }
 
-    Matrix<M, N, T>& operator*(double t) {
+    Matrix<T, M, N>& operator*(double t) {
         for(int i = 0; i < M; i++)
             for(int j = 0; j < N; j++)
                 data_[i][j] *= t;
     }
 
-    Matrix<M, N, T>& operator/(double t) {
+    Matrix<T, M, N>& operator/(double t) {
         *this *= (1.0 / t);
 
         return *this;
@@ -88,8 +90,8 @@ private:
     std::array<std::array<T, N>, M> data_;
 };
 
-template<size_t M, size_t N, typename T>
-static bool operator==(const Matrix<M, N, T>& m1, const Matrix<M, N, T>& m2) {
+template<typename T, size_t M, size_t N>
+static bool operator==(const Matrix<T, M, N>& m1, const Matrix<T, M, N>& m2) {
     for(int i = 0; i < M; i++)
         for(int j = 0; j < N; j++)
             if(m1[i][j] != m2[i][j])
@@ -98,14 +100,14 @@ static bool operator==(const Matrix<M, N, T>& m1, const Matrix<M, N, T>& m2) {
     return true;
 }
 
-template<size_t M, size_t N, typename T>
-static bool operator!=(const Matrix<M, N, T>& m1, const Matrix<M, N, T>& m2) {
+template<typename T, size_t M, size_t N>
+static bool operator!=(const Matrix<T, M, N>& m1, const Matrix<T, M, N>& m2) {
     return !(m1 == m2);
 }
 
-template<size_t N, typename T>
-static Matrix<N, N, T> Identity() {
-    Matrix<N, N, T> identity;
+template<typename T, size_t N>
+static Matrix<T, N, N> Identity() {
+    Matrix<T, N, N> identity;
 
     for(int i = 0; i < N; i++)
         identity[i][i] = 1;
@@ -113,14 +115,14 @@ static Matrix<N, N, T> Identity() {
     return identity;
 }
 
-template<size_t N, typename T>
-static bool Invertible(const Matrix<N, N, T> m) {
+template<typename T, size_t N>
+static bool Invertible(const Matrix<T, N, N> m) {
     return Determinant(m) != 0;
 }
 
-template<size_t M, size_t N, typename T>
-static Matrix<N, M, T> Transpose(const Matrix<M, N, T> m) {
-    Matrix<N, M, T> transpose;
+template<typename T, size_t M, size_t N>
+static Matrix<T, N, M> Transpose(const Matrix<T, M, N> m) {
+    Matrix<T, N, M> transpose;
 
     for(int i = 0; i < M; i++)
         for(int j = 0; j < N; j++)
@@ -129,15 +131,76 @@ static Matrix<N, M, T> Transpose(const Matrix<M, N, T> m) {
     return transpose;
 }
 
-template<size_t N, typename T>
-static Matrix<N, N, T> Determinant(const Matrix<N, N, T> m);
+template<typename T, size_t N>
+static Matrix<T, N, N> Determinant(const Matrix<T, N, N> m) {
+    Matrix<T, N, N> copy = m;
 
-template<size_t N, typename T>
-static Matrix<N, N, T> Inverse(const Matrix<N, N, T> m);
+    for(int r = 0; r < N; r++) {
+        for(int r_next = r + 1; r_next < N; r_next++) {
+            double f = copy[r_next][r] / copy[r][r];
+            for(int c = r; c < N; c++) {
+                copy[r_next][c] -= f * copy[r][c];
+            }
+        }
+    }
 
-template<size_t M, size_t N, typename T>
-static Matrix<M, N, T> operator+(const Matrix<M, N, T>& m1, const Matrix<M, N, T>& m2) {
-    Matrix<M, N, T> sum;
+    double det = 1;
+    for(int i = 0; i < N; i++)
+        det *= copy[i][i];
+
+    return det;
+}
+
+// TODO
+template<typename T, size_t N>
+static Matrix<T, N, N> Inverse(const Matrix<T, N, N> m) {
+    Matrix<T, N,2*N> augmented;
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < N; j++) {
+            augmented[i][j] = m[i][j];
+        }
+    }
+
+    for(int i = 0; i < N; i++)
+        augmented[i][i+N] = 1;
+    for(int i = 0; i < N -1; i++) {
+        for(int  j = 2*N -1; j >= 0; j--) {
+            augmented[i][j] /= augmented[i][i];
+        }
+        for(int k = i + 1; k < N; k++) {
+            float coeff = augmented[k][i];
+            for(int j = 0; j < 2*N; j++) {
+                augmented[k][j] -= augmented[i][j] * coeff;
+            }
+        }
+    }
+
+    for(int j = 2*N -1; j >= N - 1; j--)
+        augmented[N-1][j] /= augmented[N-1][N-1];
+    // second pass
+    for (int i = N -1; i > 0; i--) {
+        for (int k= i -1; k >= 0; k--) {
+            float coeff = augmented[k][i];
+            for (int j=0; j < 2*N; j++) {
+                augmented[k][j] -= augmented[i][j] * coeff;
+            }
+        }
+    }
+
+    Matrix<T, N, N> inverse;
+
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < N; j++) {
+            inverse[i][j] = augmented[i][j + N];
+        }
+    }
+
+    return inverse;
+}
+
+template<typename T, size_t M, size_t N>
+static Matrix<T, M, N> operator+(const Matrix<T, M, N>& m1, const Matrix<T, M, N>& m2) {
+    Matrix<T, M, N> sum;
 
     for(int i = 0; i < M; i++)
         for(int j = 0; j < N; j++)
@@ -146,14 +209,14 @@ static Matrix<M, N, T> operator+(const Matrix<M, N, T>& m1, const Matrix<M, N, T
     return sum;
 }
 
-template<size_t M, size_t N, typename T>
-static Matrix<M, N, T> operator-(const Matrix<M, N, T>& m1, const Matrix<M, N, T>& m2) {
+template<typename T, size_t M, size_t N>
+static Matrix<T, M, N> operator-(const Matrix<T, M, N>& m1, const Matrix<T, M, N>& m2) {
     return m1 + (-m2);
 }
 
-template<size_t M, size_t N, typename T>
-static Matrix<M, N, double> operator*(const Matrix<M, N, T>& m, double t) {
-    Matrix<M, N, double> mult;
+template<typename T, size_t M, size_t N>
+static Matrix<double, M, N> operator*(const Matrix<T, M, N>& m, double t) {
+    Matrix<double, M, N> mult;
 
     for(int i = 0; i < M; i++)
         for(int j = 0; j < N; j++)
@@ -162,29 +225,74 @@ static Matrix<M, N, double> operator*(const Matrix<M, N, T>& m, double t) {
     return mult;
 }
 
-template<size_t M, size_t N, typename T>
-static Matrix<M, N, double> operator*(double t, const Matrix<M, N, T>& m) {
+template<typename T, size_t M, size_t N>
+static Matrix<double, M, N> operator*(double t, const Matrix<T, M, N>& m) {
     return m * t;
 }
 
-template<size_t M, size_t N, typename T>
-static Matrix<M, N, double> operator/(const Matrix<M, N, T>& m, double t) {
+template<typename T, size_t M, size_t N>
+static Matrix<double, M, N> operator/(const Matrix<T, M, N>& m, double t) {
     return m * (1.0 / t);
 }
 
-template<size_t M, size_t N, typename T>
-static Matrix<M, N, T> operator*(const Matrix<M, N, T>& m, const Normal<T, N>& n);
+template<typename T, size_t N>
+static Normal<double, N> operator*(const Matrix<T, N, N>& m, const Normal<T, N>& n) {
+    Matrix<double, N, N> inverse_transpose = Transpose(Inverse(m));
+    Normal<double, N> transformed_normal;
+
+    for(int i = 0; i < N; i++) {
+        double dot = 0;
+        for(int j = 0; j < N; j++)
+            dot += inverse_transpose[i][j] * n[j];
+        transformed_normal[i] = dot;
+    }
+    return transformed_normal;
+}
+
+template<typename T, size_t M, size_t N>
+static Point<T, N> operator*(const Matrix<T, M, N>& m, const Point<T, N>& p) {
+    for(int i = 0; i < N; i++) {
+        double dot = 0;
+        for(int j = 0; j < N; j++)
+            dot += m[i][j] * p[j];
+        p[i] = dot;
+    }
+    return p;
+}
 
 template<size_t M, size_t N, typename T>
-static Matrix<M, N, T> operator*(const Matrix<M, N, T>& m, const Point<T, N>& p);
+static Vector<T, N> operator*(const Matrix<T, M, N>& m, const Vector<T, N>& v) {
+    for(int i = 0; i < N; i++) {
+        double dot = 0;
+        for(int j = 0; j < N; j++)
+            dot += m[i][j] * v[j];
+        v[i] = dot;
+    }
+    return v;
+}
 
-template<size_t M, size_t N, typename T>
-static Matrix<M, N, T> operator*(const Matrix<M, N, T>& m, const Vector<T, N>& v);
+template<typename T, size_t M, size_t N, size_t K>
+static Matrix<T, M, K> operator*(const Matrix<T, M, N>& m1, const Matrix<T, N, K>& m2) {
+    Matrix<T, M, K> mult;
 
-template<size_t M, size_t N, size_t K, typename T>
-static Matrix<M, K, T> operator*(const Matrix<M, N, T>& m1, const Matrix<N, K, T>& m2);
+    for(int i = 0; i < M; i++) {
+        for(int j = 0; j < K; j++) {
+            double dot = 0;
+            for(int l = 0; l < N; l++) {
+                dot += m1[i][l] * m2[l][j];
+            }
+            mult[i][j] = dot;
+        }
+    }
+
+    return mult;
+}
 
 
+using Mat4d = Matrix<double, 4,4>;
+using Mat4i = Matrix<int, 4, 4>;
+using Mat3d = Matrix<double, 3, 3>;
+using Mat3i = Matrix<int, 3, 3>;
 
 
 
