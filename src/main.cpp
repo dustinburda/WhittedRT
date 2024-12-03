@@ -9,6 +9,10 @@
 #include "../include/Sphere.h"
 #include "../include/Threadpool.h"
 #include "../include/World.h"
+<<<<<<< HEAD
+=======
+#include "../include/Mesh.h"
+>>>>>>> old_branch
 
 
 static constexpr uint16_t HEIGHT = 500;
@@ -59,15 +63,15 @@ int main()
     Camera camera {WIDTH, HEIGHT, 1.0};
 
     std::string name = "cessna";
-    std::filesystem::path p {std::filesystem::current_path().parent_path().string() + "/models/" + name + ".obj"};
-    std::shared_ptr<Material> flat_green_color = std::make_shared<Material>(Color {0.0, 1.0, 0.0});
-    // auto sphere = std::make_shared<Sphere>(Point<double, 3>{0.0, 0.0, 4.0}, 1.0, flat_green_color);
-    // auto sphere_instance = std::make_shared<Instance>( Transformation::Translation(-10.5, 4.5, 10.0) * Transformation::Scale(2.0, 2.0, 1.0) , sphere);
+    auto flat_green_color = std::make_shared<Material>(Color {0.0, 1.0, 0.0});
+    auto sphere = std::make_shared<Sphere>(Point<double, 3>{0.0, 0.0, 4.0}, 1.0);
+    auto sphere_instance = std::make_shared<Instance>( Transformation::Translation(-10.5, 4.5, 10.0) * Transformation::Scale(2.0, 2.0, 1.0) , sphere, flat_green_color);
+    w.AddShape(sphere_instance);
+    // w.AddShape(sphere);  Why signal interrupted -> mat is nullptr when shading?
 
-    auto mesh = std::make_shared<Mesh>(p);
-    auto mesh_instance = std::make_shared<Instance>(mesh, Transformation::Translation(0.0, 0.0, 25.0) * Transformation::Scale(1/2.0, 1/2.0, 1/2.0) * Transformation::RotationY(-pi/4), flat_green_color);
-    // w.AddShape(sphere_instance);
-    w.AddShape(mesh_instance);
+    auto m = std::make_shared<Mesh>(std::filesystem::current_path().parent_path().string() + "/models/" + name + ".obj");
+    auto m_instance = std::make_shared<Instance>( Transformation::Translation(0.0, 0.0, 10.0) * Transformation::Scale(1/3.0, 1/3.0, 1/3.0) * Transformation::RotationY(-pi/4), m, flat_green_color);
+    w.AddShape(m_instance);
 
     Render(camera, canvas, w);
 
