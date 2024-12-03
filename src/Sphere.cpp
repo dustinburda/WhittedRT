@@ -28,7 +28,6 @@ bool Sphere::Hit(const Ray& r, ShadeContext& context) const {
 
 
     context.t_max_ = hit_time;
-    context.mat_ = mat_;
     context.point_ = r.At(hit_time);
     context.normal_ = NormalAt(r.At(hit_time));
 

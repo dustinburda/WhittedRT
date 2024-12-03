@@ -13,9 +13,10 @@
 class Instance : public Shape {
 public:
     Instance() = delete;
-    Instance(std::shared_ptr<Shape> shape) : transform_{Transformation::Identity()}, shape_{std::move(shape)} {}
-    Instance(Transformation t, std::shared_ptr<Shape> shape)
-        :transform_{t}, shape_{std::move(shape)} {}
+    Instance(std::shared_ptr<Shape> shape, std::shared_ptr<Material> mat_ = nullptr)
+        : shape_{std::move(shape)}, transform_{Transformation::Identity()}, mat_{mat_} {}
+    Instance(std::shared_ptr<Shape> shape, Transformation t, std::shared_ptr<Material> mat_ = nullptr)
+        : shape_{std::move(shape)}, transform_{Transformation::Identity()}, mat_{mat_} {}
 
     Normal<double, 3> NormalAt(const Point<double, 3>& p) const override {
         return transform_(shape_->NormalAt(p));
@@ -29,6 +30,7 @@ public:
 
         context.normal_ = NormalAt(context.point_);
         context.point_ = transform_(context.point_);
+        context.mat_ = mat_;
 
         return true;
     }
@@ -37,6 +39,7 @@ public:
 private:
     Transformation transform_;
     std::shared_ptr<Shape> shape_;
+    std::shared_ptr<Material> mat_;
 };
 
 

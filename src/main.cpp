@@ -5,11 +5,10 @@
 #include "../include/Camera.h"
 #include "../include/Canvas.h"
 #include "../include/Instance.h"
-#include "../include/Matrix.h"
+#include "../include/Mesh.h"
 #include "../include/Sphere.h"
 #include "../include/Threadpool.h"
 #include "../include/World.h"
-#include "../scenes/Scene1.h"
 
 
 static constexpr uint16_t HEIGHT = 500;
@@ -59,12 +58,16 @@ int main()
     Canvas canvas {WIDTH, HEIGHT};
     Camera camera {WIDTH, HEIGHT, 1.0};
 
-    std::string name = "sphere";
-    auto flat_green_color = std::make_shared<Material>(Color {0.0, 1.0, 0.0});
-    auto sphere = std::make_shared<Sphere>(Point<double, 3>{0.0, 0.0, 4.0}, 1.0, flat_green_color);
-    auto sphere_instance = std::make_shared<Instance>( Transformation::Translation(-10.5, 4.5, 10.0) * Transformation::Scale(2.0, 2.0, 1.0) , sphere);
-    w.AddShape(sphere_instance);
-    // w.AddShape(sphere);
+    std::string name = "cessna";
+    std::filesystem::path p {std::filesystem::current_path().parent_path().string() + "/models/" + name + ".obj"};
+    std::shared_ptr<Material> flat_green_color = std::make_shared<Material>(Color {0.0, 1.0, 0.0});
+    // auto sphere = std::make_shared<Sphere>(Point<double, 3>{0.0, 0.0, 4.0}, 1.0, flat_green_color);
+    // auto sphere_instance = std::make_shared<Instance>( Transformation::Translation(-10.5, 4.5, 10.0) * Transformation::Scale(2.0, 2.0, 1.0) , sphere);
+
+    auto mesh = std::make_shared<Mesh>(p);
+    auto mesh_instance = std::make_shared<Instance>(mesh, Transformation::Translation(0.0, 0.0, 25.0) * Transformation::Scale(1/2.0, 1/2.0, 1/2.0) * Transformation::RotationY(-pi/4), flat_green_color);
+    // w.AddShape(sphere_instance);
+    w.AddShape(mesh_instance);
 
     Render(camera, canvas, w);
 
