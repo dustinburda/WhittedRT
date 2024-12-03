@@ -109,25 +109,6 @@ public:
          return (*this) / Length();
     }
 
-    Vector<T, N+1> Homogenize() const {
-        Vector<T, N+1> n;
-
-        for(int i = 0; i < N; i++)
-            n[i] = data_[i];
-        n[N] = 0;
-
-        return n;
-    }
-
-    Vector<T, N-1> DeHomogenize() const {
-        Vector<T, N-1> n;
-
-        for(int i = 0; i < N - 1; i++)
-         n[i] = data_[i];
-
-        return n;
-    }
-
 private:
     std::array<T, N> data_;
 };

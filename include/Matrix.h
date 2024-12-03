@@ -254,32 +254,6 @@ static Vector<T, N> operator*(const Matrix<T, M, N>& m, const Vector<T, N>& v) {
     return v_mult;
 }
 
-
-static Vector<double, 3> operator*(const Matrix<double, 4, 4>& t, const Vector<double, 3>& v) {
-    Vector<double, 4> homogenous_v = v.Homogenize();
-    homogenous_v = t * homogenous_v;
-
-    return homogenous_v.DeHomogenize();
-}
-
-static Point<double, 3> operator*(const Matrix<double, 4, 4>& t, const Point<double, 3>& p) {
-    Vector<double, 4> homogenous_v = p.Homogenize().ToVector(); // p1, p2, p3, 1
-    homogenous_v = t * homogenous_v; // mp1, mp2, mp3, 1
-
-    Point<double, 4> homogenous_point {homogenous_v[0], homogenous_v[1], homogenous_v[2], homogenous_v[3]};
-
-    return homogenous_point.DeHomogenize();
-}
-
-static Normal<double, 3> operator*(const Matrix<double, 4, 4>& t, const Normal<double, 3>& n) {
-    Vector<double, 4> homogenous_v = n.Homogenize().ToVector(); // n1, n2, n3, 0
-    homogenous_v = t * homogenous_v; // mn1, mn2, mn3, 0
-
-    Normal<double, 4> homogenous_normal {homogenous_v[0], homogenous_v[1], homogenous_v[2], homogenous_v[3]};
-
-    return homogenous_normal.DeHomogenize();
-}
-
 template<typename T, size_t M, size_t N, size_t K>
 static Matrix<T, M, K> operator*(const Matrix<T, M, N>& m1, const Matrix<T, N, K>& m2) {
     Matrix<T, M, K> mult;

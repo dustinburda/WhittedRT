@@ -98,25 +98,6 @@ public:
         return (*this) / Length();
     }
 
-    Normal<T, N+1> Homogenize() const {
-        Normal<T, N+1> n;
-
-        for(int i = 0; i < N; i++)
-            n[i] = data_[i];
-        n[N] = 0;
-
-        return n;
-    }
-
-    Normal<T, N-1> DeHomogenize() const {
-        Normal<T, N-1> n;
-
-        for(int i = 0; i < N - 1; i++)
-            n[i] = data_[i];
-        
-        return n;
-    }
-
     Vector<T, N> ToVector() const {
         Vector<T, N> v;
 

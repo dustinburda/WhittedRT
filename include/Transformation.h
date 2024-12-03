@@ -11,7 +11,9 @@
 #include "Point.h"
 #include "Vector.h"
 
-class Transformation : public Matrix<double,4,4> {
+
+
+class Transformation {
 public:
     static Transformation Identity();
 
@@ -27,16 +29,22 @@ public:
 
     static Transformation Scale(double x, double y, double z);
 
-    Matrix<double, 4, 4>& Transform() { return transform_; }
-    const Matrix<double, 4, 4>&  Transform() const { return transform_; }
-    Matrix<double, 4, 4>& InverseTransform() { return inverse_transform_; }
-    const Matrix<double, 4, 4>& InverseTransform() const { return inverse_transform_; }
+    // pbrt
+    Point<double, 3> operator()(const Point<double, 3>& p) const;
+    Vector<double, 3> operator()(const Vector<double, 3>& v) const;
+    Normal<double, 3> operator()(const Normal<double, 3>& n) const;
+    Ray operator()(const Ray& r) const;
+
+    // pbrt
+    Point<double, 3> ApplyInverse(const Point<double, 3>& p) const;
+    Vector<double, 3> ApplyInverse(const Vector<double, 3>& v) const;
+    Normal<double, 3> ApplyInverse(const Normal<double, 3>& n) const;
+    Ray ApplyInverse(const Ray& r) const;
+
 private:
     Transformation() = default;
-
 
     Matrix<double, 4, 4> transform_;
     Matrix<double, 4, 4> inverse_transform_;
 };
-
 #endif //TRANSFORMATION_H

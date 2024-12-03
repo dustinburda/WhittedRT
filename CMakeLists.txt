@@ -44,9 +44,15 @@ add_executable(
         test_app
         src/Sphere.cpp
         src/Triangle.cpp
+        src/Point.cpp
+        src/Vector.cpp
+        src/Normal.cpp
+        src/Matrix.cpp
+        src/Transformation.cpp
         test/VectorTest.cpp
         test/TriangleTest.cpp
         test/SphereTest.cpp
+        test/TransformationTest.cpp
 )
 target_link_libraries(
         test_app
