@@ -19,7 +19,7 @@ class Sphere : public Shape {
 public:
     Sphere() : center_{0,0,0}, radius_{1.0} {}
     Sphere(const Point<double, 3>& center, double radius, std::shared_ptr<Material> mat = nullptr)
-        : center_{center}, radius_{radius}, mat_{std::move(mat)} {}
+        : center_{center}, radius_{radius} {}
     ~Sphere() override = default;
 
     bool Hit(const Ray& r, ShadeContext& context) const override;
@@ -28,7 +28,6 @@ public:
 private:
     Point<double, 3> center_;
     double radius_;
-    std::shared_ptr<Material> mat_;
 };
 
 

@@ -35,7 +35,6 @@ bool Triangle::Hit(const Ray &r, ShadeContext &context) const
         return false;
 
     context.t_max_ = hit_time;
-    context.mat_ = mat_;
     context.point_ = hit_point;
     context.normal_ = normal;
 
