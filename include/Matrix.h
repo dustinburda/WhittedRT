@@ -34,6 +34,7 @@ public:
             int i = index / N;
             int j = index % N;
             data_[i][j] = num;
+            index++;
         }
     }
 

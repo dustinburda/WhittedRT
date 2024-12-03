@@ -25,21 +25,3 @@ bool World::Hit(const Ray& r, ShadeContext& context)
 
     return bHit;
 }
-
-
-void World::AddMesh(std::string name, std::shared_ptr<Material> mat) {
-    Mesh m(std::filesystem::current_path().parent_path().string() + "/models/" + name + ".obj");
-    std::vector<Triangle> mesh;
-    m.GetTriangles(mesh, mat);
-
-    double scale_factor = 1/7.0;
-    Vector<double, 3> translate {0.0, -0.5, 2.0};
-    for(auto& triangle : mesh)
-    {
-        auto m = triangle.GetMaterial();
-        auto points = triangle.Points();
-
-        std::shared_ptr<Triangle> t = std::make_shared<Triangle>(points[0] / scale_factor  + translate, points[1] / scale_factor  + translate, points[2] / scale_factor + translate, m);
-        AddShape(t);
-    }
-}

@@ -24,9 +24,13 @@ public:
     bool Hit(const Ray& r, ShadeContext& context) const override{
         Ray transformed_ray = transform_.ApplyInverse(r);
 
-        shape_->Hit(transformed_ray, context);
+        if(!shape_->Hit(transformed_ray, context))
+            return false;
+
         context.normal_ = NormalAt(context.point_);
         context.point_ = transform_(context.point_);
+
+        return true;
     }
 
 

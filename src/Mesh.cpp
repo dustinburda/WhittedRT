@@ -5,7 +5,8 @@
 #include "../include/Mesh.h"
 
 
-Mesh::Mesh(std::filesystem::path path)
+Mesh::Mesh(std::filesystem::path path, std::shared_ptr<Material> mat)
+    : mat_{std::move(mat)}, curr_triangle_index_{-1}
 {
     std::ifstream mesh_file{path};
 
@@ -20,14 +21,6 @@ Mesh::Mesh(std::filesystem::path path)
             ParseFace(line);
         else if(line.substr(0, 2) == "vn")
             ParseNormal(line);
-    }
-}
-
-void Mesh::GetTriangles(std::vector<Triangle>& triangles, std::shared_ptr<Material> mat)
-{
-    for(auto& face : faces_) {
-        auto [f1, f2, f3] = face;
-        triangles.emplace_back(vertices_[f1], vertices_[f2], vertices_[f3], mat);
     }
 }
 

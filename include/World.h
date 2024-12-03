@@ -27,7 +27,6 @@ public:
         : world_(shapes) {}
 
     void AddShape(std::shared_ptr<Shape> shape);
-    void AddMesh(std::string name, std::shared_ptr<Material> mat);
     bool Hit(const Ray& r, ShadeContext& context);
 
 private:
