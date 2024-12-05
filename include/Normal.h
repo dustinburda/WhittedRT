@@ -8,6 +8,10 @@
 #include "Vector.h"
 #include "Point.h"
 
+#include <cstring>
+#include <string>
+#include <sstream>
+
 template<typename T, size_t N>
 class Normal {
 public:
@@ -105,6 +109,22 @@ public:
             v[i] = data_[i];
 
         return v;
+    }
+
+    std::string toString() const {
+        std::stringstream ss;
+
+        ss << "Normal : [";
+
+        for(int i = 0; i < N; i++) {
+            ss << data_[i];
+            if (i != N - 1)
+                ss << ", ";
+        }
+
+        ss << "]";
+
+        return ss.str();
     }
 private:
     std::array<T, N> data_;

@@ -8,6 +8,8 @@
 #include "../include/Point.h"
 #include "../include/Vector.h"
 
+#include <string>
+#include <sstream>
 
 template<typename T, size_t N>
 class Point {
@@ -66,6 +68,21 @@ public:
             v[i] = data_[i];
 
         return v;
+    }
+
+    std::string toString() const {
+        std::stringstream ss;
+
+        ss << "Point: [";
+        for(int i = 0; i < N; i++)
+        {
+            ss << " " <<  data_[i];
+            if (i != N - 1)
+                ss << ", ";
+        }
+        ss << "]";
+
+        return ss.str();
     }
 
 private:
@@ -135,21 +152,6 @@ template<typename T, size_t N>
 static double Distance(const Point<T,N>& p1, const Point<T,N>& p2) {
     auto distance_squared = DistanceSquared(p1, p2);
     return std::sqrt(distance_squared);
-}
-
-template<typename T, size_t N>
-static std::ostream& operator<<(std::ostream& os, const Point<T,N> &p)
-{
-    os << "Point: [";
-    for(int i = 0; i < N; i++)
-    {
-        os << " " <<  p[i];
-        if (i != N - 1)
-            os << ", ";
-    }
-    os << "]";
-
-    return os;
 }
 
 using Point3d = Point<double, 3>;

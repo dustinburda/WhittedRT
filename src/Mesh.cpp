@@ -4,6 +4,9 @@
 
 #include "../include/Mesh.h"
 
+#include <fstream>
+#include <memory>
+#include <string>
 
 
 Mesh::Mesh(std::filesystem::path path)
@@ -82,4 +85,27 @@ std::array<int, 3> Mesh::ParseFace(std::string line) {
     }
 
     normals_.push_back(normal);
+}
+
+Normal<double, 3> Mesh::NormalAt(const Point<double, 3>& p) const {
+    if (curr_triangle_index_ == -1)
+        return {-1.0, -1.0, -1.0};
+
+    auto [f1, f2, f3] = faces_[curr_triangle_index_];
+    Triangle t(vertices_[f1], vertices_[f2], vertices_[f3]);
+    return t.NormalAt(p);
+}
+
+bool Mesh::Hit(const Ray& r, ShadeContext& context) const {
+    bool hit = false;
+
+    for(int index = 0; const auto& triangle : triangles_) {
+        if(triangle.Hit(r, context)) {
+            hit = true;
+            curr_triangle_index_ = index;
+        }
+        index++;
+    }
+
+    return hit;
 }

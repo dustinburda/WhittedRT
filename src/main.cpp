@@ -11,6 +11,8 @@
 #include "../include/World.h"
 #include "../include/Mesh.h"
 
+#include "../scenes/CessnaScene.h"
+
 
 static constexpr uint16_t HEIGHT = 500;
 static constexpr uint16_t WIDTH = 1000;
@@ -59,19 +61,11 @@ int main()
     Canvas canvas {WIDTH, HEIGHT};
     Camera camera {WIDTH, HEIGHT, 1.0};
 
-    std::string name = "cessna";
-    auto flat_green_color = std::make_shared<Material>(Color {0.0, 1.0, 0.0});
-    auto sphere = std::make_shared<Sphere>(Point<double, 3>{0.0, 0.0, 4.0}, 1.0);
-    auto sphere_instance = std::make_shared<Instance>( Transformation::Translation(-10.5, 4.5, 8.0) * Transformation::Scale(2.0, 2.0, 1.0) , sphere, flat_green_color);
-    w.AddShape(sphere_instance);
-    // w.AddShape(sphere);  Why signal interrupted -> mat is nullptr when shading?
-
-    auto m = std::make_shared<Mesh>(std::filesystem::current_path().parent_path().string() + "/models/" + name + ".obj");
-    auto m_instance = std::make_shared<Instance>( Transformation::Translation(0.0, 0.0, 8.0) * Transformation::Scale(1/3.0, 1/3.0, 1/3.0) * Transformation::RotationY(-pi/4), m, flat_green_color);
-    w.AddShape(m_instance);
+    auto file_name = CessnaScene(w);
 
     Render(camera, canvas, w);
 
-    canvas.Flush(name + ".ppm");
+    canvas.Flush(file_name + ".ppm");
+
     return 0;
 }

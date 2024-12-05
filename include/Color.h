@@ -9,8 +9,11 @@
 
 #include <array>
 #include <cstdint>
+#include <cstring>
 #include <string>
 #include <sstream>
+
+// TODO: gamma correction
 
 using COLORREF = std::uint32_t;
 
@@ -65,10 +68,11 @@ public:
     std::string toString() {
         std::stringstream s;
 
-        s << "Color\n";
+        s << "Color: [\n";
         s << "R: " << data_[0] << " ";
         s << "G: " << data_[1] << " ";
         s << "B: " << data_[2];
+        s << "]";
 
         return s.str();
     }

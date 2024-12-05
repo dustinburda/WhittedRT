@@ -23,6 +23,8 @@ public:
     Normal<double, 3> NormalAt(const Point<double, 3>& p) const override;
     bool Hit(const Ray& r, ShadeContext& context) const override;
 
+    std::string toString() const;
+
 private:
     Point<double, 3> point_;
     Normal<double, 3> normal_;

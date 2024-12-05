@@ -13,6 +13,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <sstream>
 
 
 template<typename T, size_t N>
@@ -109,6 +110,23 @@ public:
          return (*this) / Length();
     }
 
+
+    std::string toString() const
+    {
+         std::stringstream ss;
+
+         ss << "Vector: [";
+         for(int i = 0; i < N; i++)
+         {
+             ss << " " <<  data_[i];
+             if (i != N - 1)
+                 ss << ", ";
+         }
+         ss << "]";
+
+         return ss.str();
+     }
+
 private:
     std::array<T, N> data_;
 };
@@ -194,22 +212,6 @@ static bool operator==(const Vector<T,N>& v1, const Vector<T, N>& v2)
 
     return true;
 }
-
-template<typename T, size_t N>
-static std::ostream& operator<<(std::ostream& os, const Vector<T,N> &v)
-{
-    os << "Vector: [";
-    for(int i = 0; i < N; i++)
-    {
-        os << " " <<  v[i];
-        if (i != N - 1)
-            os << ", ";
-    }
-    os << "]";
-
-    return os;
-}
-
 
 // IN RADIANS
 template<typename T, size_t N>

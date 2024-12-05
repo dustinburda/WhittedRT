@@ -22,9 +22,11 @@ public:
     Ray(const Point3d& origin, const Vec3d& direction, RayType type)
         : origin_(origin), direction_(direction.UnitVector()), type_(type) { }
 
-    Point3d At(double t) const { return origin_ + t * direction_; }
-    Point3d Origin() const { return origin_; }
-    Vec3d Direction() const { return direction_; }
+    Point3d At(double t) const;
+    Point3d Origin() const;
+    Vec3d Direction() const;
+
+    std::string toString() const;
 
 
 private:
@@ -33,11 +35,6 @@ private:
     RayType type_;
 };
 
-static std::ostream& operator<<(std::ostream& os, const Ray &r)
-{
-    os << r.Origin() << r.Direction();
-    return os;
-}
 
 
 #endif //WHITTED_RAY_H

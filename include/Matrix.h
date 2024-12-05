@@ -11,6 +11,7 @@
 #include <initializer_list>
 #include <stdexcept>
 #include <string>
+#include <sstream>
 
 #include "Normal.h"
 #include "Point.h"
@@ -92,6 +93,25 @@ public:
         *this *= (1.0 / t);
 
         return *this;
+    }
+
+    std::string toString() const
+    {
+        std::stringstream ss;
+
+        ss << "Matrix: [\n";
+        for(int i = 0; i < M; i++) {
+            ss << "[";
+            for(int j = 0; j < N; j++) {
+                ss << data_[i][j];
+                if (j != N - 1)
+                    ss << ", ";
+            }
+            ss<< "]\n";
+        }
+        ss << "]";
+
+        return ss.str();
     }
 
 private:

@@ -25,6 +25,7 @@ public:
     bool Hit(const Ray& r, ShadeContext& context) const override;
     Normal<double, 3> NormalAt(const Point<double, 3>& p) const override;
 
+    std::string toString() const;
 private:
     Point<double, 3> center_;
     double radius_;

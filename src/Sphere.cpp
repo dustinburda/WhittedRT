@@ -4,6 +4,8 @@
 
 #include "../include/Sphere.h"
 
+#include <string>
+#include <sstream>
 
 bool Sphere::Hit(const Ray& r, ShadeContext& context) const {
     double a = Dot(r.Direction(), r.Direction());
@@ -37,4 +39,17 @@ bool Sphere::Hit(const Ray& r, ShadeContext& context) const {
 Normal<double, 3> Sphere::NormalAt(const Point<double, 3>& p) const {
     Vector<double, 3> diff = p - center_;
     return Normal<double, 3> {diff[0], diff[1], diff[2]};
+}
+
+std::string Sphere::toString() const {
+    std::stringstream ss;
+
+    ss << "Sphere: [";
+
+    ss << center_.toString() << "\n";
+    ss << "Radius: " << radius_ << "\n";
+
+    ss << "]";
+
+    return ss.str();
 }

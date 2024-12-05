@@ -4,6 +4,9 @@
 
 #include "../include/Plane.h"
 
+#include <string>
+#include <sstream>
+
 Normal<double, 3> Plane::NormalAt(const Point<double, 3>& p) const
 {
     return normal_;
@@ -25,4 +28,17 @@ bool Plane::Hit(const Ray& r, ShadeContext& context) const
     context.normal_ = normal_;
 
     return true;
+}
+
+std::string Plane::toString() const {
+    std::stringstream ss;
+
+    ss << "Plane: [\n";
+
+    ss << point_.toString() << "\n";
+    ss << normal_.toString() << "\n";
+
+    ss << "]";
+
+    return ss.str();
 }
