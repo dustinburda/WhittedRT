@@ -5,6 +5,8 @@
 #ifndef WHITTED_GLOBALS_H
 #define WHITTED_GLOBALS_H
 
+#include <limits>
+
 constexpr double epsilon = 10e-3;
 constexpr double pi = 3.14159265358979323846;
 constexpr double infinity = std::numeric_limits<double>::infinity();
