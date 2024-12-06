@@ -4,12 +4,13 @@
 
 #include "../include/Triangle.h"
 
+#include "../include/Globals.h"
+
 #include <cassert>
 #include <cmath>
 #include <cstdint>
-
-#include "../include/Globals.h"
-
+#include <sstream>
+#include <string>
 
 Normal<double, 3> Triangle::NormalAt(const Point<double, 3> &p) const
 {
@@ -63,5 +64,22 @@ std::array<double, 3> Triangle::BarycentricCoordinates(const Point<double, 3>& h
     }
 
     return barycentric_coordinates;
+}
+
+std::string Triangle::toString() const {
+    std::stringstream ss;
+
+    ss << "Triangle: [\n";
+
+    ss << points_[0].toString();
+    ss << "\n";
+    ss << points_[1].toString();
+    ss << "\n";
+    ss << points_[2].toString();
+    ss << "\n";
+
+    ss <<"]";
+
+    return ss.str();
 }
 

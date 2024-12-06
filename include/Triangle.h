@@ -25,7 +25,7 @@ public:
     Normal<double, 3> NormalAt(const Point<double, 3> &p) const override;
     bool Hit(const Ray &r, ShadeContext &context) const override;
 
-    std::array<Point3d, 3> Points() const { return points_; };
+    std::string toString() const;
 private:
 
     [[nodiscard]] bool InTriangle(const Point<double, 3>& hit_point) const;
