@@ -2,10 +2,9 @@
 #include <filesystem>
 #include <thread>
 
-#include "../include/Camera.h"
 #include "../include/Canvas.h"
-#include "../include/Instance.h"
-#include "../include/Mesh.h"
+#include "../include/OrthographicCamera.h"
+#include "../include/ProjectiveCamera.h"
 #include "../include/Sphere.h"
 #include "../include/Threadpool.h"
 #include "../include/World.h"
@@ -28,13 +27,13 @@ Color Trace(World& w, Ray& r, ShadeContext& context) {
 }
 
 
-void Render(Camera& camera, Canvas& canvas, World& w) {
+void Render(CameraInterface* camera, Canvas& canvas, World& w) {
     std::size_t num_threads = std::thread::hardware_concurrency() - 2;
     ThreadPool pool;
     auto render = [&camera, &canvas](World& w, int x_start, int chunk_x_size, int y_start, int chunk_y_size) {
         for(int y = y_start; y < y_start + chunk_y_size; y++)
             for(int x = x_start; x < x_start + chunk_x_size; x++) {
-                auto ray = camera.GetRayAt(x, y);
+                auto ray = camera->GetRayAt(x, y);
                 ShadeContext context;
                 canvas.SetColorAt(Trace(w, ray, context), x, y);
             }
@@ -59,11 +58,11 @@ int main()
 
     World w;
     Canvas canvas {WIDTH, HEIGHT};
-    Camera camera {WIDTH, HEIGHT, 1.0};
+    ProjectiveCamera camera {WIDTH, HEIGHT, 1.0};
 
     auto file_name = CessnaScene(w);
 
-    Render(camera, canvas, w);
+    Render(&camera, canvas, w);
 
     canvas.Flush(file_name + ".ppm");
 

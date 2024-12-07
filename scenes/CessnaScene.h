@@ -5,9 +5,10 @@
 #ifndef CESSNASCENE_H
 #define CESSNASCENE_H
 
-#include "../include/World.h"
-#include "../include/Sphere.h"
+#include "../include/Instance.h"
 #include "../include/Mesh.h"
+#include "../include/Sphere.h"
+#include "../include/World.h"
 
 static std::string CessnaScene(World& w) {
     std::string name = "cessna";
@@ -18,7 +19,7 @@ static std::string CessnaScene(World& w) {
     w.AddShape(sphere_instance);
 
     auto m = std::make_shared<Mesh>(std::filesystem::current_path().parent_path().string() + "/models/" + name + ".obj");
-    auto m_instance = std::make_shared<Instance>( Transformation::Translation(0.0, 0.0, 11.0) * Transformation::Scale(1/3.0, 1/3.0, 1/3.0) * Transformation::RotationY(-pi/4), m, flat_green_color);
+    auto m_instance = std::make_shared<Instance>( Transformation::Translation(0.0, 0.0, 9.0) * Transformation::Scale(1/3.0, 1/3.0, 1/3.0) * Transformation::RotationY(-pi/4), m, flat_green_color);
     w.AddShape(m_instance);
 
     return name;

@@ -11,9 +11,9 @@
 #include "Globals.h"
 #include "Normal.h"
 #include "Point.h"
-#include "Shape.h"
+#include "ShapeInterface.h"
 
-class Plane : public Shape {
+class Plane : public ShapeInterface {
 public:
     Plane() : point_{1.0, 0.0, 0.0}, normal_{1.0, 1.0, 1.0} {}
     Plane(const Point<double, 3>& point, const Normal<double, 3>& normal)

@@ -7,7 +7,7 @@
 
 #include "Ray.h"
 #include "ShadeContext.h"
-#include "Shape.h"
+#include "ShapeInterface.h"
 
 #include <initializer_list>
 #include <memory>
@@ -17,20 +17,20 @@ class World {
 public:
     World() = default;
 
-    World(const std::initializer_list<std::shared_ptr<Shape>>& shapes)
+    World(const std::initializer_list<std::shared_ptr<ShapeInterface>>& shapes)
     {
-        for (std::shared_ptr<Shape> shape_ptr : shapes)
+        for (std::shared_ptr<ShapeInterface> shape_ptr : shapes)
             world_.push_back(std::move(shape_ptr));
     }
 
-    World(std::vector<std::shared_ptr<Shape>>& shapes)
+    World(std::vector<std::shared_ptr<ShapeInterface>>& shapes)
         : world_(shapes) {}
 
-    void AddShape(std::shared_ptr<Shape> shape);
+    void AddShape(std::shared_ptr<ShapeInterface> shape);
     bool Hit(const Ray& r, ShadeContext& context);
 
 private:
-    std::vector<std::shared_ptr<Shape>> world_;
+    std::vector<std::shared_ptr<ShapeInterface>> world_;
 };
 
 

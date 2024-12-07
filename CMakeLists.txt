@@ -19,15 +19,16 @@ FetchContent_MakeAvailable(googletest)
 add_executable(${CMAKE_PROJECT_NAME}
         src/main.cpp
         src/Canvas.cpp
-        src/Camera.cpp
         src/Color.cpp
         src/Instance.cpp
         src/Material.cpp
         src/Matrix.cpp
         src/Mesh.cpp
         src/Normal.cpp
+        src/OrthographicCamera.cpp
         src/Plane.cpp
         src/Point.cpp
+        src/ProjectiveCamera.cpp
         src/Ray.cpp
         src/SceneParser.cpp
         src/ShadeContext.cpp

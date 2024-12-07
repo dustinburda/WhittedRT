@@ -6,14 +6,14 @@
 #define MESH_H
 
 #include "Triangle.h"
-#include "Shape.h"
+#include "ShapeInterface.h"
 
 #include <filesystem>
 #include <vector>
 
 using Face = std::array<int, 3>;
 
-class Mesh : public Shape {
+class Mesh : public ShapeInterface {
 public:
     Mesh() = default;
     Mesh(std::filesystem::path path);

@@ -10,12 +10,12 @@
 
 #include "Material.h"
 #include "Point.h"
-#include "Shape.h"
+#include "ShapeInterface.h"
 #include "ShadeContext.h"
 #include "Vector.h"
 
 
-class Sphere : public Shape {
+class Sphere : public ShapeInterface {
 public:
     Sphere() : center_{0,0,0}, radius_{1.0} {}
     Sphere(const Point<double, 3>& center, double radius)

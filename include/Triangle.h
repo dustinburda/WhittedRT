@@ -12,10 +12,10 @@
 #include "Globals.h"
 #include "Material.h"
 #include "Point.h"
-#include "Shape.h"
+#include "ShapeInterface.h"
 
 
-class Triangle : public Shape {
+class Triangle : public ShapeInterface {
 public:
     Triangle() = default;
     Triangle(Point3d a, Point3d b, Point3d c)

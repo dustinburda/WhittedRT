@@ -7,17 +7,18 @@
 
 #include <cstdint>
 
+#include "CameraInterface.h"
 #include "Point.h"
 #include "Vector.h"
 #include "Ray.h"
 
 
-class Camera {
+class ProjectiveCamera : public CameraInterface {
 public:
-    Camera() = delete;
-    Camera(int width, int height, double focal_distance)
+    ProjectiveCamera() = delete;
+    ProjectiveCamera(int width, int height, double focal_distance)
         : focal_distance_ {static_cast<double>(focal_distance)}, aspect_ratio_{static_cast<double>(width) / static_cast<double>(height) }, v_x_ {2.0 * aspect_ratio_ / width, 0.0, 0.0}, v_y_{0.0, 2.0 * (-1.0) / height, 0.0} {}
-    Ray GetRayAt(int x, int y);
+    Ray GetRayAt(int x, int y) const override;
 
 private:
     double focal_distance_;
