@@ -25,6 +25,7 @@ add_executable(${CMAKE_PROJECT_NAME}
         src/Matrix.cpp
         src/Mesh.cpp
         src/Normal.cpp
+        src/OBJParser.cpp
         src/OrthographicCamera.cpp
         src/Plane.cpp
         src/Point.cpp
