@@ -5,5 +5,4 @@ cmake-build-default
 cmake-build-minsizerel
 cmake-build-release
 cmake-build-relwithdebinfo
-todo.txt
 *ppm

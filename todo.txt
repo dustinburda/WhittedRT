@@ -1,0 +1,56 @@
+=============================================
+(Requires: None) Implement Bounding Box
+(Requires: Bounding Box) Implement BVH
+=============================================
+(Requires: Light) Implement Flat Shading
+(Requires: Light) Implement Gourard Shading
+Implement Shaders
+=============================================
+(Requires: None) AWS EC2
+=============================================
+(Requires: Shape Interface) Implement Cylinder
+(Requires: Shape Interface) Implement Cone
+=============================================
+(Requires: Sampler) Anti-Aliasing
+(Requires: None) Sampler
+=============================================
+(Requires: Light) Diffuse Shading
+(Requires: Light) Specular Highlights
+=============================================
+(Requires: Light) Shadows
+(Requires: Light) Area Lights
+=============================================
+(Requires: None) Mirror Reflection
+(Requires: None) Glossy Reflection
+=============================================
+(Requires: None) Simple Refraction
+(Requires: None) Realistic Refraction
+=============================================
+(Requires: None) Textures
+(Requires: Textures) Environment Maps
+(Requires: Textures) Normal Maps
+=============================================
+(Requires: Transformations) Transformable Camera
+(Requires: Transformable Camera) Camera Viewing System
+(Requires: Sampler) Depth of Field
+=============================================
+(Requires: Sampler) Ambient Occlusion
+(Requires: Sampler) Path Tracing
+=============================================
+(Requires: None) Scene Parser
+=============================================
+(Requires: None) Unit Tests
+=============================================
+(Requires: None) Mutexes
+=============================================
+(Requires: None) Redo #includes
+=============================================
+(Requires: None) CMAKELists.txt Cleanup
+=============================================
+
+Camera should have its own transform
+UNIT TEST
+
+CLangFormat
+
+CI/CD Pipeline
