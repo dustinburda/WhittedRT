@@ -11,7 +11,8 @@ Implement Shaders
 (Requires: Shape Interface) Implement Cylinder
 (Requires: Shape Interface) Implement Cone
 =============================================
-(Requires: Sampler) Anti-Aliasing
+(Requires: Sampler) Anti-Aliasing w/ Super Sampling
+(Requires: Sampler) Anti-Aliasing w/ Adaptive Sampling
 (Requires: None) Sampler
 =============================================
 (Requires: Light) Diffuse Shading
@@ -47,8 +48,16 @@ Implement Shaders
 =============================================
 (Requires: None) CMAKELists.txt Cleanup
 =============================================
+(Requires: None) STL File Format
+(Requires: None) Save in JPEG, TIFF, PNG
+=============================================
+
+gamma correction
 
 Camera should have its own transform
+
+Fix #include order in files
+
 UNIT TEST
 
 CLangFormat
