@@ -19,6 +19,7 @@ Normal<double, 3> Mesh::NormalAt(const Point<double, 3>& p) const {
 
     auto& triangle = triangles_[curr_triangle_index_];
     return triangle.NormalAt(p);
+
 }
 
 bool Mesh::Hit(const Ray& r, ShadeContext& context) const {
