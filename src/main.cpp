@@ -2,8 +2,8 @@
 #include <filesystem>
 #include <thread>
 
+#include "../include/BoundingBox.h"
 #include "../include/Canvas.h"
-#include "../include/OrthographicCamera.h"
 #include "../include/ProjectiveCamera.h"
 #include "../include/Sphere.h"
 #include "../include/Threadpool.h"

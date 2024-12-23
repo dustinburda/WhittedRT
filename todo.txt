@@ -1,5 +1,4 @@
 =============================================
-(Requires: None) Implement Bounding Box
 (Requires: Bounding Box) Implement BVH
 =============================================
 (Requires: Light) Implement Flat Shading
@@ -51,6 +50,12 @@ Implement Shaders
 (Requires: None) STL File Format
 (Requires: None) Save in JPEG, TIFF, PNG
 =============================================
+
+(Requires: None) Implement Bounding Box
+Implement Bounding Box for each Shape
+Implement transformed bounding box
+
+
 
 gamma correction
 
