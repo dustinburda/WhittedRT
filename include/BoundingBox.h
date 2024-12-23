@@ -10,6 +10,17 @@
 #include "ShadeContext.h"
 #include "ShapeInterface.h"
 
+struct Interval {
+    Interval(double t_min, double t_max) : t_min_ {t_min_}, t_max_ {t_max} {}
+
+    static bool Intersects(const std::vector<Interval>& intervals) {
+        // todo:
+    }
+
+    double t_min_;
+    double t_max_;
+};
+
 // Not templated for now
 class BoundingBox : public ShapeInterface {
 public:

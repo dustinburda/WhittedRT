@@ -13,8 +13,14 @@ BoundingBox::BoundingBox(Point3d p1, Point3d p2) {
 }
 
 bool BoundingBox::Hit(const Ray& r, ShadeContext& context) const {
-    // TODO implement
-    return false;
+    Point3d orig = r.Origin();
+    Vec3d dir = r.Direction();
+
+    Interval x_interval = {(min_[0] - orig[0])/dir[0], (max_[0] - orig[0])/dir[0]};
+    Interval y_interval = {(min_[1] - orig[1])/dir[1], (max_[1] - orig[1])/dir[1] };
+    Interval z_interval = {(min_[2] - orig[2])/dir[2], (max_[2] - orig[2])/dir[2] };
+
+    return Interval::Intersects({x_interval, y_interval, z_interval});
 }
 
 Normal<double, 3> BoundingBox::NormalAt(const Point<double, 3>& p) const {

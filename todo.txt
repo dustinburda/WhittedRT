@@ -51,7 +51,6 @@ Implement Shaders
 (Requires: None) Save in JPEG, TIFF, PNG
 =============================================
 
-(Requires: None) Implement Bounding Box
 Implement Bounding Box for each Shape
 Implement transformed bounding box
 
