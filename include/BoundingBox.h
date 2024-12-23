@@ -13,27 +13,10 @@
 #include "ShapeInterface.h"
 
 struct Interval {
-    Interval(double t_min, double t_max) : t_min_ {t_min_}, t_max_ {t_max} {}
+    Interval(double t_min, double t_max) : t_min_ {t_min}, t_max_ {t_max} {}
 
-    static bool Intersects(const std::vector<Interval>& intervals) {
-        if (intervals.size() == 0)
-            return true;
-
-        std::sort(intervals.begin(), intervals.end());
-
-        Interval intersection = intervals[0];
-        for(int i = 1; i < intervals.size(); i++) {
-            const Interval& curr_interval = intervals[i];
-            if(curr_interval.t_min_ > intersection.t_max_)
-                return false;
-
-            intersection.t_min_ = std::max(intersection.t_min_, curr_interval.t_min_);
-            intersection.t_max_ = std::min(intersection.t_max_, curr_interval.t_max_);
-
-        }
-
-        return true;
-    }
+    bool operator<(const Interval& other) const;
+    static bool Intersects(std::vector<Interval> intervals);
 
     double t_min_;
     double t_max_;

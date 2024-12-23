@@ -19,6 +19,7 @@ FetchContent_MakeAvailable(googletest)
 add_executable(${CMAKE_PROJECT_NAME}
         src/main.cpp
         src/BoundingBox.cpp
+        src/BVH.cpp
         src/Canvas.cpp
         src/Color.cpp
         src/Instance.cpp

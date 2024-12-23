@@ -1,6 +1,4 @@
 =============================================
-(Requires: Bounding Box) Implement BVH
-=============================================
 (Requires: Light) Implement Flat Shading
 (Requires: Light) Implement Gourard Shading
 Implement Shaders
@@ -43,8 +41,6 @@ Implement Shaders
 =============================================
 (Requires: None) Mutexes
 =============================================
-(Requires: None) Redo #includes
-=============================================
 (Requires: None) CMAKELists.txt Cleanup
 =============================================
 (Requires: None) STL File Format
@@ -57,7 +53,7 @@ Implement Bounding Box for each Shape
     Plane     [NOT]
     Mesh      [NOT]
 Implement transformed bounding box
-
+(Requires: Bounding Box) Implement BVH
 
 
 gamma correction
@@ -65,8 +61,10 @@ Camera should have its own transform
 
 
 
-Fix #include order in files
+Fix #include order in files/Standard ordering for headers
 Get rid of static function in header files that aren't templated
 UNIT TEST
 CLangFormat
 CI/CD Pipeline
+Resolve warnings
+

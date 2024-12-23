@@ -41,7 +41,7 @@ public:
     Normal<double, 3> ApplyInverse(const Normal<double, 3>& n) const;
     Ray ApplyInverse(const Ray& r) const;
 
-    Transformation operator*(const const Transformation& other) {
+    Transformation operator*(const Transformation& other) {
         Transformation t;
         t.transform_ = transform_ * other.transform_;
         t.inverse_transform_ = other.inverse_transform_ * inverse_transform_;

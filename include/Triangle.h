@@ -7,10 +7,7 @@
 
 
 #include <array>
-#include <memory>
 
-#include "Globals.h"
-#include "Material.h"
 #include "Point.h"
 #include "ShapeInterface.h"
 
