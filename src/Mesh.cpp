@@ -35,3 +35,13 @@ bool Mesh::Hit(const Ray& r, ShadeContext& context) const {
 
     return hit;
 }
+
+BoundingBox Mesh::BBox() const {
+    BoundingBox b = triangles_[0].BBox();
+
+    for ( auto& triangle : triangles_ ) {
+        b = Union(b, triangle.BBox());
+    }
+
+    return b;
+}

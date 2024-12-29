@@ -10,7 +10,6 @@
 #include "Point.h"
 #include "Ray.h"
 #include "ShadeContext.h"
-#include "ShapeInterface.h"
 
 struct Interval {
     Interval(double t_min, double t_max) : t_min_ {t_min}, t_max_ {t_max} {}
@@ -23,13 +22,12 @@ struct Interval {
 };
 
 // Not templated for now
-class BoundingBox : public ShapeInterface {
+class BoundingBox {
 public:
     BoundingBox() : min_{0.0 ,0.0 ,0.0}, max_{1.0, 1.0, 1.0} {}
     BoundingBox(Point3d p1, Point3d p2);
 
-    bool Hit(const Ray& r, ShadeContext& context) const override;
-    Normal<double, 3> NormalAt(const Point<double, 3>& p) const override;
+    bool Hit(const Ray& r, ShadeContext& context) const;
 
     Point3d Min() const { return min_; }
     Point3d Max() const { return max_; }
@@ -40,7 +38,7 @@ private:
     Point3d max_;
 };
 
-BoundingBox Union(BoundingBox& b1, BoundingBox& b2);
+BoundingBox Union(const BoundingBox& b1, const BoundingBox& b2);
 
 
 

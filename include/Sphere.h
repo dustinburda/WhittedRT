@@ -8,6 +8,7 @@
 #include <utility>
 #include <memory>
 
+#include "BoundingBox.h"
 #include "Material.h"
 #include "Point.h"
 #include "ShapeInterface.h"
@@ -24,6 +25,7 @@ public:
 
     bool Hit(const Ray& r, ShadeContext& context) const override;
     Normal<double, 3> NormalAt(const Point<double, 3>& p) const override;
+    BoundingBox BBox() const override;
 
     std::string toString() const;
 private:

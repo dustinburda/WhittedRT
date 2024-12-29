@@ -41,6 +41,13 @@ Normal<double, 3> Sphere::NormalAt(const Point<double, 3>& p) const {
     return Normal<double, 3> {diff[0], diff[1], diff[2]};
 }
 
+BoundingBox Sphere::BBox() const {
+    Point3d min {center_[0] - radius_, center_[1] - radius_, center_[2] - radius_};
+    Point3d max {center_[0] + radius_, center_[1] + radius_, center_[2] + radius_};
+
+    return BoundingBox {min, max};
+}
+
 std::string Sphere::toString() const {
     std::stringstream ss;
 

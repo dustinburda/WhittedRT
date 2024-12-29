@@ -41,6 +41,22 @@ bool Triangle::Hit(const Ray &r, ShadeContext &context) const
     return true;
 }
 
+BoundingBox Triangle::BBox() const {
+    Point3d min { std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max() };
+    Point3d max { std::numeric_limits<double>::min(), std::numeric_limits<double>::min(), std::numeric_limits<double>::min() };
+
+
+
+    for (auto& point : points_) {
+        for (int i = 0; i < 3; i++) {
+            min[i] = std::min(min[i], point[i]);
+            max[i] = std::max(max[i], point[i]);
+        }
+    }
+
+    return BoundingBox {min, max};
+}
+
 
 [[nodiscard]] bool Triangle::InTriangle(const Point<double, 3>& hit_point) const {
     auto coordinates = BarycentricCoordinates(hit_point);

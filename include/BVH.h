@@ -27,13 +27,21 @@ private:
 
 class BVH {
 public:
-    BVH(std::vector<Instance>& shapes) {}
+    BVH(std::vector<Instance>& shapes) {
+        root_ = Build(shapes);
+    }
 
 
 private:
-    void Build(std::vector<Instance>& shapes) {}
+    std::unique_ptr<BVHNode> Build(std::vector<Instance>& shapes) {
+        if (shapes.size() == 1) {
+            return nullptr;
+        }
 
-    BVHNode root;
+        return nullptr;
+    }
+
+    std::unique_ptr<BVHNode> root_;
 };
 
 

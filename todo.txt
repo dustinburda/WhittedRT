@@ -47,12 +47,9 @@ Implement Shaders
 (Requires: None) Save in JPEG, TIFF, PNG
 =============================================
 
-Implement Bounding Box for each Shape
-    Sphere
-    Triangle
-    Plane     [NOT]
-    Mesh      [NOT]
-Implement transformed bounding box
+
+
+Set default values for bounding boxes
 (Requires: Bounding Box) Implement BVH
 
 

@@ -51,11 +51,7 @@ bool BoundingBox::Hit(const Ray& r, ShadeContext& context) const {
     return Interval::Intersects({x_interval, y_interval, z_interval});
 }
 
-Normal<double, 3> BoundingBox::NormalAt(const Point<double, 3>& p) const {
-    return {0.0, 0.0, 0.0};
-}
-
-BoundingBox Union(BoundingBox& b1, BoundingBox& b2) {
+BoundingBox Union(const BoundingBox& b1, const BoundingBox& b2) {
     Point3d min1 = b1.Min();
     Point3d max1 = b1.Max();
 
