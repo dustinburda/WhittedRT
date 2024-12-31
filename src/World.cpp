@@ -9,18 +9,18 @@
 #include "../include/Mesh.h"
 #include "../include/Material.h"
 
-void World::AddShape(std::shared_ptr<ShapeInterface> shape)
+void World::AddShape(Instance instance)
 {
-    world_.push_back(std::move(shape));
+    world_.push_back(instance);
 }
 
 bool World::Hit(const Ray& r, ShadeContext& context)
 {
     bool bHit = false;
 
-    for(const std::shared_ptr<ShapeInterface>& shape_ptr : world_)
+    for(const Instance& instance : world_)
     {
-        bHit |= shape_ptr->Hit(r, context);
+        bHit |= instance.Hit(r, context);
     }
 
     return bHit;

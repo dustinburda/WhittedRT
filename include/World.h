@@ -5,6 +5,7 @@
 #ifndef WHITTED_WORLD_H
 #define WHITTED_WORLD_H
 
+#include "Instance.h"
 #include "Ray.h"
 #include "ShadeContext.h"
 #include "ShapeInterface.h"
@@ -17,20 +18,20 @@ class World {
 public:
     World() = default;
 
-    World(const std::initializer_list<std::shared_ptr<ShapeInterface>>& shapes)
+    World(const std::initializer_list<Instance>& instances)
     {
-        for (std::shared_ptr<ShapeInterface> shape_ptr : shapes)
-            world_.push_back(std::move(shape_ptr));
+        for (const Instance& instance : instances)
+            world_.push_back(instance);
     }
 
-    World(std::vector<std::shared_ptr<ShapeInterface>>& shapes)
-        : world_(shapes) {}
+    World(std::vector<Instance>& instances)
+        : world_(instances) {}
 
-    void AddShape(std::shared_ptr<ShapeInterface> shape);
+    void AddShape(Instance instance);
     bool Hit(const Ray& r, ShadeContext& context);
 
 private:
-    std::vector<std::shared_ptr<ShapeInterface>> world_;
+    std::vector<Instance> world_;
 };
 
 
