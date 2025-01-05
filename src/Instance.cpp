@@ -11,10 +11,18 @@ Instance::Instance(std::shared_ptr<Transformation> t, std::shared_ptr<ShapeInter
     :transform_{t}, shape_{std::move(shape)}, mat_{std::move(mat)} {}
 
 Normal<double, 3> Instance::NormalAt(const Point<double, 3>& p) const {
+    if(transform_ == nullptr)
+        return shape_->NormalAt(p);
+
     return (*transform_)(shape_->NormalAt(p));
 };
 
 bool Instance::Hit(const Ray& r, ShadeContext& context) const {
+    if (transform_ == nullptr)
+    {
+        return shape_->Hit(r, context);
+    }
+
     Ray transformed_ray = transform_->ApplyInverse(r);
 
     if(!shape_->Hit(transformed_ray, context))
