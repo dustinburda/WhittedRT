@@ -1,4 +1,4 @@
-# WhittedRTC
+# WhittedRT
 
 This is a simple Whitted Ray Tracer written in C++.
 
