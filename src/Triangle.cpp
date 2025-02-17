@@ -7,7 +7,6 @@
 #include "../include/Globals.h"
 
 #include <cassert>
-#include <cmath>
 #include <sstream>
 #include <string>
 

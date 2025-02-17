@@ -5,8 +5,8 @@
 #ifndef WHITTED_RAY_H
 #define WHITTED_RAY_H
 
-#include "../include/Vector.h"
-#include "../include/Point.h"
+#include "Vector.h"
+#include "Point.h"
 
 enum class RayType {
     PrimaryRay,

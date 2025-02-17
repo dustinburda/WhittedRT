@@ -5,11 +5,11 @@
 #ifndef BVH_H
 #define BVH_H
 
-#include <memory>
-#include <optional>
-
 #include "BoundingBox.h"
 #include "Instance.h"
+
+#include <memory>
+#include <optional>
 
 struct BVHNode {
 public:
@@ -47,3 +47,5 @@ private:
 
 
 #endif //BVH_H
+
+

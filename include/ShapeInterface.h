@@ -5,8 +5,6 @@
 #ifndef WHITTED_SHAPE_H
 #define WHITTED_SHAPE_H
 
-
-
 #include "BoundingBox.h"
 #include "Ray.h"
 #include "ShadeContext.h"

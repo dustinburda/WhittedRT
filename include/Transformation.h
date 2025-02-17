@@ -11,8 +11,6 @@
 #include "Point.h"
 #include "Vector.h"
 
-
-
 class Transformation {
 public:
     static Transformation Identity();

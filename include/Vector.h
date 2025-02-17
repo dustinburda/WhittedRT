@@ -60,7 +60,7 @@ public:
     Vector<T, N> operator-() const {
         Vector<T, N> negative;
 
-        for(int i = 0; i < N; i++)
+        for(std::size_t i = 0; i < N; i++)
             negative[i] = -data_[i];
 
         return negative;
@@ -95,7 +95,7 @@ public:
 
     double LengthSquared() const {
          double magnitude = 0;
-         for(int i = 0; i < N; i++){
+         for(std::size_t i = 0; i < N; i++){
              magnitude += data_[i] * data_[i];
          }
 
@@ -116,7 +116,7 @@ public:
          std::stringstream ss;
 
          ss << "Vector: [";
-         for(int i = 0; i < N; i++)
+         for(std::size_t i = 0; i < N; i++)
          {
              ss << " " <<  data_[i];
              if (i != N - 1)
@@ -134,7 +134,7 @@ private:
 template<typename T, size_t N>
 static Vector<T, N> operator+(const Vector<T,N>& v1, const Vector<T, N>& v2) {
     Vector<T, N> v_plus;
-    for(int i = 0; i < N; i++) {
+    for(std::size_t i = 0; i < N; i++) {
         v_plus[i] = v1[i] + v2[i];
     }
 
@@ -149,7 +149,7 @@ static Vector<T, N>operator-(const Vector<T,N>& v1, const Vector<T, N>& v2){
 template<typename T, size_t N>
 static Vector<double, N> operator*(const Vector<T,N>& v1, const double t) {
     Vector<double, N> v;
-    for(int i = 0; i < N; i++) {
+    for(std::size_t i = 0; i < N; i++) {
         v[i] = static_cast<double>(v1[i]) * t;
     }
 

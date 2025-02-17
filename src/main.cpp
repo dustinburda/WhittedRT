@@ -1,16 +1,13 @@
-#include <chrono>
-#include <filesystem>
-#include <thread>
-
 #include "../include/BoundingBox.h"
-#include "../include/Canvas.h"
 #include "../include/ProjectiveCamera.h"
 #include "../include/Sphere.h"
 #include "../include/Threadpool.h"
 #include "../include/World.h"
 #include "../include/Mesh.h"
-
 #include "../scenes/CessnaScene.h"
+
+#include <filesystem>
+#include <thread>
 
 
 static constexpr uint16_t HEIGHT = 500;

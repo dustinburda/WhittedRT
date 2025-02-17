@@ -23,6 +23,9 @@ bool Instance::Hit(const Ray& r, ShadeContext& context) const {
         return shape_->Hit(r, context);
     }
 
+    if (!BBox().Hit(r, context))
+        return false;
+
     Ray transformed_ray = transform_->ApplyInverse(r);
 
     if(!shape_->Hit(transformed_ray, context))

@@ -5,6 +5,10 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+#include "Normal.h"
+#include "Point.h"
+#include "Vector.h"
+
 #include <array>
 #include <cstdint>
 #include <cstring>
@@ -13,16 +17,12 @@
 #include <string>
 #include <sstream>
 
-#include "Normal.h"
-#include "Point.h"
-#include "Vector.h"
-
 
 template<typename T, size_t M, size_t N>
 class Matrix {
 public:
     Matrix() {
-        for(int i = 0; i < M; i++)
+        for(std::size_t i = 0; i < M; i++)
             std::memset(data_[i].data(), 0, sizeof (T) * N);
     }
 
@@ -182,33 +182,33 @@ static Matrix<T, N, N> Determinant(const Matrix<T, N, N> m) {
 template<typename T, size_t N>
 static Matrix<T, N, N> Inverse(const Matrix<T, N, N> m) {
     Matrix<T, N,2*N> augmented;
-    for(int i = 0; i < N; i++) {
-        for(int j = 0; j < N; j++) {
+    for(std::size_t i = 0; i < N; i++) {
+        for(std::size_t j = 0; j < N; j++) {
             augmented[i][j] = m[i][j];
         }
     }
 
-    for(int i = 0; i < N; i++)
+    for(std::size_t i = 0; i < N; i++)
         augmented[i][i+N] = 1;
-    for(int i = 0; i < N -1; i++) {
+    for(std::size_t i = 0; i < N -1; i++) {
         for(int  j = 2*N -1; j >= 0; j--) {
             augmented[i][j] /= augmented[i][i];
         }
-        for(int k = i + 1; k < N; k++) {
+        for(std::size_t k = i + 1; k < N; k++) {
             float coeff = augmented[k][i];
-            for(int j = 0; j < 2*N; j++) {
+            for(std::size_t j = 0; j < 2*N; j++) {
                 augmented[k][j] -= augmented[i][j] * coeff;
             }
         }
     }
 
-    for(int j = 2*N -1; j >= N - 1; j--)
+    for(std::size_t j = 2*N -1; j >= N - 1; j--)
         augmented[N-1][j] /= augmented[N-1][N-1];
     // second pass
-    for (int i = N -1; i > 0; i--) {
-        for (int k= i -1; k >= 0; k--) {
+    for (std::size_t i = N -1; i > 0; i--) {
+        for (std::size_t k= i -1; k >= 0; k--) {
             float coeff = augmented[k][i];
-            for (int j=0; j < 2*N; j++) {
+            for (std::size_t j=0; j < 2*N; j++) {
                 augmented[k][j] -= augmented[i][j] * coeff;
             }
         }
@@ -216,8 +216,8 @@ static Matrix<T, N, N> Inverse(const Matrix<T, N, N> m) {
 
     Matrix<T, N, N> inverse;
 
-    for(int i = 0; i < N; i++) {
-        for(int j = 0; j < N; j++) {
+    for(std::size_t i = 0; i < N; i++) {
+        for(std::size_t j = 0; j < N; j++) {
             inverse[i][j] = augmented[i][j + N];
         }
     }
@@ -229,8 +229,8 @@ template<typename T, size_t M, size_t N>
 static Matrix<T, M, N> operator+(const Matrix<T, M, N>& m1, const Matrix<T, M, N>& m2) {
     Matrix<T, M, N> sum;
 
-    for(int i = 0; i < M; i++)
-        for(int j = 0; j < N; j++)
+    for(std::size_t i = 0; i < M; i++)
+        for(std::size_t j = 0; j < N; j++)
             sum[i][j] = m1[i][j] + m2[i][j];
 
     return sum;
@@ -245,9 +245,9 @@ template<typename T, size_t M, size_t N>
 static Matrix<double, M, N> operator*(const Matrix<T, M, N>& m, double t) {
     Matrix<double, M, N> mult;
 
-    for(int i = 0; i < M; i++)
-        for(int j = 0; j < N; j++)
-            mult[i][j] *= static_cast<double>(t);
+    for(std::size_t i = 0; i < M; i++)
+        for(std::size_t j = 0; j < N; j++)
+            mult[i][j] = m[i][j] * static_cast<double>(t);
 
     return mult;
 }
@@ -266,9 +266,9 @@ template<size_t M, size_t N, typename T>
 static Vector<T, N> operator*(const Matrix<T, M, N>& m, const Vector<T, N>& v) {
     Vector<T, N> v_mult;
 
-    for(int i = 0; i < N; i++) {
+    for(std::size_t i = 0; i < N; i++) {
         double dot = 0;
-        for(int j = 0; j < N; j++)
+        for(std::size_t j = 0; j < N; j++)
             dot += m[i][j] * v[j];
         v_mult[i] = dot;
     }
@@ -279,10 +279,10 @@ template<typename T, size_t M, size_t N, size_t K>
 static Matrix<T, M, K> operator*(const Matrix<T, M, N>& m1, const Matrix<T, N, K>& m2) {
     Matrix<T, M, K> mult;
 
-    for(int i = 0; i < M; i++) {
-        for(int j = 0; j < K; j++) {
+    for(std::size_t i = 0; i < M; i++) {
+        for(std::size_t j = 0; j < K; j++) {
             double dot = 0;
-            for(int l = 0; l < N; l++) {
+            for(std::size_t l = 0; l < N; l++) {
                 dot += m1[i][l] * m2[l][j];
             }
             mult[i][j] = dot;

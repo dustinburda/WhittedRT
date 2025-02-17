@@ -5,11 +5,11 @@
 #ifndef BOUNDINGBOX_H
 #define BOUNDINGBOX_H
 
-#include <algorithm>
-
 #include "Point.h"
 #include "Ray.h"
 #include "ShadeContext.h"
+
+#include <algorithm>
 
 struct Interval {
     Interval(double t_min, double t_max) : t_min_ {t_min}, t_max_ {t_max} {}

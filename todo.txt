@@ -62,10 +62,9 @@ Camera should have its own transform
 
 
 
-Fix #include order in files/Standard ordering for headers
+
 Get rid of static function in header files that aren't templated
 UNIT TEST
 CLangFormat
 CI/CD Pipeline
-Resolve warnings
 

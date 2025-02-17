@@ -5,9 +5,9 @@
 #ifndef SCENEPARSER_H
 #define SCENEPARSER_H
 
-#include <string>
-
 #include "World.h"
+
+#include <string>
 
 class SceneParser {
 public:

@@ -18,7 +18,7 @@ public:
     Mesh() = default;
     Mesh(std::shared_ptr<MeshData> mesh_data);
 
-    Normal<double, 3> NormalAt(const Point<double, 3>& p) const;
+    Normal<double, 3> NormalAt(const Point<double, 3>& p) const override;
     bool Hit(const Ray& r, ShadeContext& context) const override;
     BoundingBox BBox() const override;
 

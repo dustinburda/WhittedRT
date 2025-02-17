@@ -5,9 +5,6 @@
 #ifndef WHITTED_SPHERE_H
 #define WHITTED_SPHERE_H
 
-#include <utility>
-#include <memory>
-
 #include "BoundingBox.h"
 #include "Material.h"
 #include "Point.h"
@@ -15,6 +12,8 @@
 #include "ShadeContext.h"
 #include "Vector.h"
 
+#include <utility>
+#include <memory>
 
 class Sphere : public ShapeInterface {
 public:

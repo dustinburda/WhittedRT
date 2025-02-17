@@ -4,7 +4,6 @@
 
 #include "../include/OBJParser.h"
 
-
 #include <fstream>
 #include <string>
 #include <sstream>

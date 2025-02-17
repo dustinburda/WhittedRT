@@ -5,12 +5,10 @@
 #ifndef WHITTED_TRIANGLE_H
 #define WHITTED_TRIANGLE_H
 
-
-#include <array>
-
 #include "Point.h"
 #include "ShapeInterface.h"
 
+#include <array>
 
 class Triangle : public ShapeInterface {
 public:

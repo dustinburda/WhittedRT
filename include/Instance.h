@@ -21,7 +21,7 @@ public:
     bool Hit(const Ray& r, ShadeContext& context) const override;
     BoundingBox BBox() const override;
 
-
+    
 private:
     std::shared_ptr<Transformation> transform_;
     std::shared_ptr<ShapeInterface> shape_;

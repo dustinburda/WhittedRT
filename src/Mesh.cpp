@@ -7,7 +7,7 @@
 Mesh::Mesh(std::shared_ptr<MeshData> mesh_data)
     : curr_triangle_index_{-1}
 {
-    for(int index = 0; auto& face : mesh_data->faces_) {
+    for(auto& face : mesh_data->faces_) {
         auto [f1, f2, f3] = face;
         triangles_.emplace_back(mesh_data->vertices_[f1], mesh_data->vertices_[f2], mesh_data->vertices_[f3]);
     }

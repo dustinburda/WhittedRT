@@ -5,13 +5,13 @@
 #ifndef WHITTED_PLANE_H
 #define WHITTED_PLANE_H
 
-#include <cmath>
-#include <memory>
-
 #include "Globals.h"
 #include "Normal.h"
 #include "Point.h"
 #include "ShapeInterface.h"
+
+#include <cmath>
+#include <memory>
 
 class Plane : public ShapeInterface {
 public:

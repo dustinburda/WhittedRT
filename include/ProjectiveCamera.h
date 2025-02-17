@@ -5,13 +5,12 @@
 #ifndef WHITTED_CAMERA_H
 #define WHITTED_CAMERA_H
 
-#include <cstdint>
-
 #include "CameraInterface.h"
 #include "Point.h"
 #include "Vector.h"
 #include "Ray.h"
 
+#include <cstdint>
 
 class ProjectiveCamera : public CameraInterface {
 public:
