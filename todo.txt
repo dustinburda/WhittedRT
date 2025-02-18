@@ -48,10 +48,14 @@ Implement Shaders
 =============================================
 
 
+Fix size_t stuff in loops
 
 Test bounding box hit (render the box)
 Test bounding box on each shape (should render the shape normally)
+
+
 Add nullptr transformation case for bounding boxes
+
 Set default values for bounding boxes
 
 (Requires: Bounding Box) Implement BVH
@@ -61,9 +65,6 @@ gamma correction
 Camera should have its own transform
 
 
-
-
-Get rid of static function in header files that aren't templated
 UNIT TEST
 CLangFormat
 CI/CD Pipeline

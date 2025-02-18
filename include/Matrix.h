@@ -202,11 +202,11 @@ static Matrix<T, N, N> Inverse(const Matrix<T, N, N> m) {
         }
     }
 
-    for(std::size_t j = 2*N -1; j >= N - 1; j--)
+    for(int j = 2*N -1; j >= N - 1; j--)
         augmented[N-1][j] /= augmented[N-1][N-1];
     // second pass
-    for (std::size_t i = N -1; i > 0; i--) {
-        for (std::size_t k= i -1; k >= 0; k--) {
+    for (int i = N -1; i > 0; i--) {
+        for (int k= i -1; k >= 0; k--) {
             float coeff = augmented[k][i];
             for (std::size_t j=0; j < 2*N; j++) {
                 augmented[k][j] -= augmented[i][j] * coeff;

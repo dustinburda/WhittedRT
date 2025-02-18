@@ -5,7 +5,7 @@
 #include "../include/Instance.h"
 
 Instance::Instance(std::shared_ptr<ShapeInterface> shape, std::shared_ptr<Material> mat)
-    : transform_{std::make_shared<Transformation>(Transformation::Identity())}, shape_{std::move(shape)}, mat_{std::move(mat)} {}
+    : transform_{nullptr}, shape_{std::move(shape)}, mat_{std::move(mat)} {}
 
 Instance::Instance(std::shared_ptr<Transformation> t, std::shared_ptr<ShapeInterface> shape, std::shared_ptr<Material> mat)
     :transform_{t}, shape_{std::move(shape)}, mat_{std::move(mat)} {}
@@ -18,13 +18,23 @@ Normal<double, 3> Instance::NormalAt(const Point<double, 3>& p) const {
 };
 
 bool Instance::Hit(const Ray& r, ShadeContext& context) const {
-    if (transform_ == nullptr)
-    {
-        return shape_->Hit(r, context);
-    }
-
     if (!BBox().Hit(r, context))
         return false;
+
+    if (transform_ == nullptr)
+    {
+//        if(shape_->Hit(r, context)){
+//            context.mat_ = mat_;
+//            return true;
+//        }
+
+       if(shape_->BBox().Hit(r, context)){
+            context.mat_ = mat_;
+            return true;
+       }
+
+       return false;
+    }
 
     Ray transformed_ray = transform_->ApplyInverse(r);
 

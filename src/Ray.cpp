@@ -14,10 +14,10 @@ Vec3d Ray::Direction() const { return direction_; }
 std::string Ray::toString() const {
     std::stringstream ss;
 
-    ss << "Ray: [\n";
+    ss << "Ray: \n[\n";
 
-    ss << origin_.toString() << "\n";
-    ss << direction_.toString() << "\n";
+    ss << "\t" << origin_.toString() << "\n";
+    ss << "\t" << direction_.toString() << "\n";
 
     ss << "]";
 

@@ -51,10 +51,10 @@ BoundingBox Sphere::BBox() const {
 std::string Sphere::toString() const {
     std::stringstream ss;
 
-    ss << "Sphere: [";
+    ss << "Sphere: \n[\n";
 
-    ss << center_.toString() << "\n";
-    ss << "Radius: " << radius_ << "\n";
+    ss << "\t"  << center_.toString() << "\n";
+    ss << "\t" << "Radius: " << radius_ << "\n";
 
     ss << "]";
 

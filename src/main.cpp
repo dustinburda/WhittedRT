@@ -4,6 +4,7 @@
 #include "../include/Threadpool.h"
 #include "../include/World.h"
 #include "../include/Mesh.h"
+#include "../scenes/BoundingBoxTestScene.h"
 #include "../scenes/CessnaScene.h"
 
 #include <filesystem>
@@ -57,7 +58,8 @@ int main()
     Canvas canvas {WIDTH, HEIGHT};
     ProjectiveCamera camera {WIDTH, HEIGHT, 1.0};
 
-    auto file_name = CessnaScene(w);
+//=    auto file_name = CessnaScene(w);
+    auto file_name = BoundingBoxTestScene(w);
 
     Render(&camera, canvas, w);
 

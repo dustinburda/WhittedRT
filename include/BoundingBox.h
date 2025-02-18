@@ -12,7 +12,8 @@
 #include <algorithm>
 
 struct Interval {
-    Interval(double t_min, double t_max) : t_min_ {t_min}, t_max_ {t_max} {}
+    Interval() = default;
+    explicit Interval(double t_min, double t_max) : t_min_ {std::min(t_min, t_max)}, t_max_ {std::max(t_min, t_max)} {}
 
     bool operator<(const Interval& other) const;
     static bool Intersects(std::vector<Interval> intervals);
@@ -31,6 +32,8 @@ public:
 
     Point3d Min() const { return min_; }
     Point3d Max() const { return max_; }
+
+    std::string toString() const;
 
 
 private:

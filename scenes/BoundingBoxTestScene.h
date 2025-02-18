@@ -10,15 +10,24 @@
 #include "../include/Instance.h"
 #include "../include/Sphere.h"
 
-std::string BoundingBoxTestScene()
+static std::string BoundingBoxTestScene(World& w)
 {
-//    std::string name = "BoundingBoxTestScene";
-//
-//    auto sphere_ptr = std::make_shared<Sphere>(Point<double, 3>{0.0, 0.0, 0.0}, 3.0);
-//    auto sphere_instance = std::make_shared<Instance>(sphere_ptr, );
-//
-//
-//    return name;
+    std::string name = "BoundingBoxTestScene";
+
+    auto sphere_ptr = std::make_shared<Sphere>(Point<double, 3>{0.0, 0.0, 5.0}, 1.0);
+    auto mat_ptr = std::make_shared<Material>(Color{1.0, 0.0, 0.0});
+    auto sphere_instance = Instance {sphere_ptr, mat_ptr};
+
+    w.AddShape(sphere_instance);
+
+//    std::cout << "==================================================\n";
+//    std::cout << sphere_ptr->toString();
+//    std::cout << "\n";
+//    std::cout << sphere_ptr->BBox().toString();
+//    std::cout << "\n";
+//    std::cout << "==================================================\n";
+
+    return name;
 }
 
 #endif //WHITTED_BOUNDINGBOXTESTSCENE_H

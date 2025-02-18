@@ -44,11 +44,19 @@ bool BoundingBox::Hit(const Ray& r, ShadeContext& context) const {
     Point3d orig = r.Origin();
     Vec3d dir = r.Direction();
 
-    Interval x_interval = {(min_[0] - orig[0])/dir[0], (max_[0] - orig[0])/dir[0]};
-    Interval y_interval = {(min_[1] - orig[1])/dir[1], (max_[1] - orig[1])/dir[1] };
-    Interval z_interval = {(min_[2] - orig[2])/dir[2], (max_[2] - orig[2])/dir[2] };
+    Interval x_interval {(min_[0] - orig[0])/dir[0], (max_[0] - orig[0])/dir[0] };
+    Interval y_interval {(min_[1] - orig[1])/dir[1], (max_[1] - orig[1])/dir[1] };
+    Interval z_interval {(min_[2] - orig[2])/dir[2], (max_[2] - orig[2])/dir[2] };
 
     return Interval::Intersects({x_interval, y_interval, z_interval});
+}
+
+std::string BoundingBox::toString() const {
+    std::stringstream ss;
+
+    ss << min_.toString() << "\n" << max_.toString();
+
+    return ss.str();
 }
 
 BoundingBox Union(const BoundingBox& b1, const BoundingBox& b2) {
