@@ -45,11 +45,13 @@ private:
 
 class BVH {
 public:
-    BVH(std::vector<Instance>& shapes) {
+    explicit BVH(std::vector<Instance>& shapes) {
         root_ = Build(shapes);
     }
 
-
+    bool Hit(const Ray& r, ShadeContext& s) {
+        return root_->Hit(r, s);
+    }
 private:
     std::unique_ptr<BVHNode> Build(std::vector<Instance> shapes) {
         if (shapes.size() == 1) {
