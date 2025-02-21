@@ -13,7 +13,25 @@
 
 struct BVHNode {
 public:
-    BVHNode();
+    explicit BVHNode(Instance instance)
+        : left_{nullptr}, right_{nullptr}, bounding_box_{instance.BBox()}, instance_ {instance}, is_leaf_{true} {}
+
+    BVHNode(std::unique_ptr<BVHNode> left, std::unique_ptr<BVHNode> right)
+        : left_ {std::move(left)}, right_ {std::move(right)}, bounding_box_{Union(left->bounding_box_, right->bounding_box_)}, instance_{std::nullopt}, is_leaf_{false} {}
+
+    bool Hit(const Ray& r, ShadeContext& context) {
+        if (!bounding_box_.Hit(r, context))
+            return false;
+
+        if (is_leaf_) {
+            return instance_->Hit(r, context);
+        }
+
+        bool left = left_->Hit(r, context);
+        bool right = left_->Hit(r, context);
+
+        return left || right;
+    }
 
 private:
     std::unique_ptr<BVHNode> left_;

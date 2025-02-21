@@ -44,8 +44,6 @@ BoundingBox Triangle::BBox() const {
     Point3d min { std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max() };
     Point3d max { std::numeric_limits<double>::min(), std::numeric_limits<double>::min(), std::numeric_limits<double>::min() };
 
-
-
     for (auto& point : points_) {
         for (int i = 0; i < 3; i++) {
             min[i] = std::min(min[i], point[i]);
