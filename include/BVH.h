@@ -51,12 +51,26 @@ public:
 
 
 private:
-    std::unique_ptr<BVHNode> Build(std::vector<Instance>& shapes) {
+    std::unique_ptr<BVHNode> Build(std::vector<Instance> shapes) {
         if (shapes.size() == 1) {
-            return nullptr;
+            return std::make_unique<BVHNode>(shapes[0]);
         }
 
-        return nullptr;
+        // TODO: replace basic comparator with Surface Area Heuristic
+        [[maybe_unused]] auto comparator = [](Instance i1, Instance i2) {
+            // TODO: implement
+            return true;
+        };
+
+        std::sort(shapes.begin(), shapes.end(), comparator);
+
+        std::vector<Instance> s1 {shapes.begin(), shapes.begin() + shapes.size() / 2};
+        std::vector<Instance> s2 {shapes.begin() + shapes.size() / 2, shapes.end()};
+
+        auto left = Build(s1);
+        auto right = Build(s2);
+
+        return std::make_unique<BVHNode>(std::move(left), std::move(right));
     }
 
     std::unique_ptr<BVHNode> root_;
