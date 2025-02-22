@@ -5,7 +5,7 @@
 #ifndef CESSNASCENE_H
 #define CESSNASCENE_H
 
-#include "../include/Globals.h"
+#include "../include/Util.h"
 #include "../include/Instance.h"
 #include "../include/Mesh.h"
 #include "../include/OBJParser.h"

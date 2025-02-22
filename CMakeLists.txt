@@ -36,6 +36,7 @@ add_executable(${CMAKE_PROJECT_NAME}
         src/SceneParser.cpp
         src/ShadeContext.cpp
         src/Sphere.cpp
+        src/Texture.cpp
         src/ThreadPool.cpp
         src/Transformation.cpp
         src/Triangle.cpp

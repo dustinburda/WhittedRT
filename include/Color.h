@@ -5,7 +5,7 @@
 #ifndef WHITTED_COLOR_H
 #define WHITTED_COLOR_H
 
-#include "Globals.h"
+#include "Util.h"
 
 #include <array>
 #include <cstdint>

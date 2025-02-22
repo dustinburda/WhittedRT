@@ -2,10 +2,11 @@
 // Created by Advil on 11/23/2024.
 //
 
-#ifndef WHITTED_GLOBALS_H
-#define WHITTED_GLOBALS_H
+#ifndef WHITTED_UTIL_H
+#define WHITTED_UTIL_H
 
 #include <limits>
+#include <random>
 
 constexpr double epsilon = 10e-3;
 constexpr double pi = 3.14159265358979323846;
@@ -25,5 +26,14 @@ struct rad {
 // User-defined literal: Radians
 static rad operator  ""_rad(long double radians) { return rad{radians}; };
 
-#endif //WHITTED_GLOBALS_H
+static int RandomInt(int min = 0, int max = std::numeric_limits<int>::max()) {
+    std::random_device rd;
+    std::mt19937 gen{rd()};
+
+    std::uniform_int_distribution distribution{min, max};
+
+    return distribution(gen);
+}
+
+#endif //WHITTED_UTIL_H
 

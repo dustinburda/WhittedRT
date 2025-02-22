@@ -5,7 +5,7 @@
 #ifndef WHITTED_PLANE_H
 #define WHITTED_PLANE_H
 
-#include "Globals.h"
+#include "Util.h"
 #include "Normal.h"
 #include "Point.h"
 #include "ShapeInterface.h"

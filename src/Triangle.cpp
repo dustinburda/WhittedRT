@@ -4,7 +4,7 @@
 
 #include "../include/Triangle.h"
 
-#include "../include/Globals.h"
+#include "../include/Util.h"
 
 #include <cassert>
 #include <sstream>
