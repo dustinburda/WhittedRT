@@ -58,9 +58,9 @@ int main()
     Canvas canvas {WIDTH, HEIGHT};
     ProjectiveCamera camera {WIDTH, HEIGHT, 1.0};
 
-//    auto file_name = CessnaScene(w);
+    auto file_name = CessnaScene(w);
 //    auto file_name = BoundingBoxTestScene(w);
-    auto file_name = BVHScene(w);
+//    auto file_name = BVHScene(w);
 
     Render(&camera, canvas, w);
 

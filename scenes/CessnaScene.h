@@ -27,6 +27,8 @@ static std::string CessnaScene(World& w) {
     auto m_instance = Instance { std::make_shared<Transformation>(Transformation::Translation(0.0, 0.0, 9.0) * Transformation::Scale(1/3.0, 1/3.0, 1/3.0) * Transformation::RotationY(-pi/4)), m, flat_green_color, InstanceType::Mesh };
     w.AddShape(m_instance);
 
+    w.Build();
+
     return name;
 }
 
