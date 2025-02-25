@@ -45,3 +45,7 @@ BoundingBox Mesh::BBox() const {
 
     return b;
 }
+
+const std::vector<Triangle>& Mesh::Triangles() const {
+    return triangles_;
+}

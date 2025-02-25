@@ -30,6 +30,7 @@ public:
 
     void AddShape(Instance instance);
     bool Hit(const Ray& r, ShadeContext& context);
+    void Build();
 
 private:
     std::vector<Instance> instances_;

@@ -10,7 +10,7 @@ BVHNode::BVHNode(Instance instance)
     : left_{nullptr}, right_{nullptr}, bounding_box_{instance.BBox()}, instance_ {instance}, is_leaf_{true} {}
 
 BVHNode::BVHNode(std::unique_ptr<BVHNode> left, std::unique_ptr<BVHNode> right)
-    : left_ {std::move(left)}, right_ {std::move(right)}, bounding_box_{Union(left->bounding_box_, right->bounding_box_)}, instance_{std::nullopt}, is_leaf_{false} {}
+    : left_ {std::move(left)}, right_ {std::move(right)}, bounding_box_{Union(left_->bounding_box_, right_->bounding_box_)}, instance_{std::nullopt}, is_leaf_{false} {}
 
 bool BVHNode::Hit(const Ray& r, ShadeContext& context) {
     if (!bounding_box_.Hit(r, context))
@@ -45,7 +45,7 @@ std::unique_ptr<BVHNode> BVH::Build(std::vector<Instance> shapes) const {
         return std::make_unique<BVHNode>(shapes[0]);
     }
 
-    int split_axis = RandomInt(1, 3);
+    int split_axis = RandomInt(0, 2);
 
     // TODO: replace basic comparator with Surface Area Heuristic
     auto comparator = [&split_axis](Instance i1, Instance i2) {
@@ -57,8 +57,8 @@ std::unique_ptr<BVHNode> BVH::Build(std::vector<Instance> shapes) const {
     std::vector<Instance> s1 {shapes.begin(), shapes.begin() + shapes.size() / 2};
     std::vector<Instance> s2 {shapes.begin() + shapes.size() / 2, shapes.end()};
 
-    auto left = Build(s1);
-    auto right = Build(s2);
+    auto left = std::move(Build(s1));
+    auto right = std::move(Build(s2));
 
     return std::make_unique<BVHNode>(std::move(left), std::move(right));
 }

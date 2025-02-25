@@ -22,6 +22,8 @@ public:
     bool Hit(const Ray& r, ShadeContext& context) const override;
     BoundingBox BBox() const override;
 
+    const std::vector<Triangle>& Triangles() const;
+
 private:
     std::vector<Triangle> triangles_;
     mutable std::int64_t curr_triangle_index_;

@@ -4,11 +4,13 @@
 
 #include "../include/Instance.h"
 
-Instance::Instance(std::shared_ptr<ShapeInterface> shape, std::shared_ptr<Material> mat)
-    : transform_{nullptr}, shape_{std::move(shape)}, mat_{std::move(mat)} {}
+#include "../include/Mesh.h"
 
-Instance::Instance(std::shared_ptr<Transformation> t, std::shared_ptr<ShapeInterface> shape, std::shared_ptr<Material> mat)
-    :transform_{t}, shape_{std::move(shape)}, mat_{std::move(mat)} {}
+Instance::Instance(std::shared_ptr<ShapeInterface> shape, std::shared_ptr<Material> mat, InstanceType type)
+    : transform_{nullptr}, shape_{std::move(shape)}, mat_{std::move(mat)}, instance_type_{type} {}
+
+Instance::Instance(std::shared_ptr<Transformation> t, std::shared_ptr<ShapeInterface> shape, std::shared_ptr<Material> mat, InstanceType type)
+    :transform_{t}, shape_{std::move(shape)}, mat_{std::move(mat)}, instance_type_{type} {}
 
 Normal<double, 3> Instance::NormalAt(const Point<double, 3>& p) const {
     if(transform_ == nullptr)
@@ -70,4 +72,24 @@ BoundingBox Instance::BBox() const {
     }
 
     return BoundingBox {transformed_bbox_min, transformed_bbox_max};
+}
+InstanceType Instance::Type() const {
+    return instance_type_;
+}
+
+
+
+void Instance::GetTriangles(std::vector<Instance>& instances) const {
+    if (instance_type_ != InstanceType::Mesh)
+        throw std::logic_error("Can only get triangles from a mesh");
+
+    auto mesh_ptr = dynamic_cast<Mesh*>(shape_.get());
+
+    auto triangles = mesh_ptr->Triangles();
+    for (auto& triangle : triangles) {
+        auto triangle_ptr = std::make_shared<Triangle>(triangle);
+        auto triangle_instance = Instance{transform_, triangle_ptr, mat_, InstanceType::Triangle};
+
+        instances.push_back(triangle_instance);
+    }
 }

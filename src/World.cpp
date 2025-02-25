@@ -7,14 +7,23 @@
 #include "../include/Material.h"
 #include "../include/Mesh.h"
 #include "../include/Material.h"
+#include "../include/Sphere.h"
 
 void World::AddShape(Instance instance)
 {
-    instances_.push_back(instance);
+    if(instance.Type() == InstanceType::Mesh) {
+        instance.GetTriangles(instances_);
+    }
+    else {
+        instances_.push_back(instance);
+    }
+}
+
+void World::Build() {
+    bvh_.Rebuild(instances_);
 }
 
 bool World::Hit(const Ray& r, ShadeContext& context)
 {
-    bvh_.Rebuild(instances_);
     return bvh_.Hit(r, context);
 }

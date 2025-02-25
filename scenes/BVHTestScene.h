@@ -21,24 +21,26 @@ static std::string BVHScene(World& w) {
     auto flat_cyan_color = std::make_shared<Material>(Color {0.0, 1.0, 1.0});
 
     auto sphere1 = std::make_shared<Sphere>(Point<double, 3>{0.0, 0.0, 4.0}, 1.0);
-    auto sphere_instance1 = Instance { std::make_shared<Transformation>(Transformation::Translation(0.5, 0.5, 2.0) * Transformation::Scale(2.0, 2.0, 1.0)) , sphere1, flat_green_color };
+    auto sphere_instance1 = Instance { std::make_shared<Transformation>(Transformation::Translation(0.5, 0.5, 2.0) * Transformation::Scale(2.0, 2.0, 1.0)) , sphere1, flat_green_color, InstanceType::Sphere };
     w.AddShape(sphere_instance1);
 
     auto sphere2 = std::make_shared<Sphere>(Point<double, 3>{0.0, 0.0, 4.0}, 1.0);
-    auto sphere_instance2 = Instance { std::make_shared<Transformation>(Transformation::Translation(-6.5, 3.5, 2.0) * Transformation::Scale(2.0, 2.0, 1.0)) , sphere2, flat_red_color };
+    auto sphere_instance2 = Instance { std::make_shared<Transformation>(Transformation::Translation(-6.5, 3.5, 2.0) * Transformation::Scale(2.0, 2.0, 1.0)) , sphere2, flat_red_color, InstanceType::Sphere};
     w.AddShape(sphere_instance2);
 
     auto sphere3 = std::make_shared<Sphere>(Point<double, 3>{0.0, 0.0, 4.0}, 1.0);
-    auto sphere_instance3 = Instance { std::make_shared<Transformation>(Transformation::Translation(6.5, -2.5, 2.0) * Transformation::Scale(2.0, 2.0, 1.0)) , sphere3, flat_blue_color };
+    auto sphere_instance3 = Instance { std::make_shared<Transformation>(Transformation::Translation(6.5, -2.5, 2.0) * Transformation::Scale(2.0, 2.0, 1.0)) , sphere3, flat_blue_color, InstanceType::Sphere };
     w.AddShape(sphere_instance3);
 
     auto sphere4 = std::make_shared<Sphere>(Point<double, 3>{0.0, 0.0, 4.0}, 1.0);
-    auto sphere_instance4 = Instance { std::make_shared<Transformation>(Transformation::Translation(6.5, 3.5, 2.0) * Transformation::Scale(2.0, 2.0, 1.0)) , sphere4, flat_purple_color };
+    auto sphere_instance4 = Instance { std::make_shared<Transformation>(Transformation::Translation(6.5, 3.5, 2.0) * Transformation::Scale(2.0, 2.0, 1.0)) , sphere4, flat_purple_color, InstanceType::Sphere };
     w.AddShape(sphere_instance4);
 
     auto sphere5 = std::make_shared<Sphere>(Point<double, 3>{0.0, 0.0, 4.0}, 1.0);
-    auto sphere_instance5 = Instance { std::make_shared<Transformation>(Transformation::Translation(-6.5, -3.5, 2.0) * Transformation::Scale(2.0, 2.0, 1.0)) , sphere5, flat_cyan_color };
+    auto sphere_instance5 = Instance { std::make_shared<Transformation>(Transformation::Translation(-6.5, -3.5, 2.0) * Transformation::Scale(2.0, 2.0, 1.0)) , sphere5, flat_cyan_color, InstanceType::Sphere };
     w.AddShape(sphere_instance5);
+
+    w.Build();
 
     return name;
 }
