@@ -9,6 +9,7 @@
 
 #include "../include/Instance.h"
 #include "../include/Sphere.h"
+#include "../include/Triangle.h"
 
 static std::string BoundingBoxTestScene(World& w)
 {

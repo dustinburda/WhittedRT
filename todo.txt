@@ -26,7 +26,7 @@ Implement Shaders
 =============================================
 (Requires: None) Textures
 (Requires: Textures) Environment Maps
-(Requires: Textures) Normal Maps
+(Requires: Textures) Normal Maps / Bump Maps
 =============================================
 (Requires: Transformations) Transformable Camera
 (Requires: Transformable Camera) Camera Viewing System
@@ -50,6 +50,7 @@ Implement Shaders
 
 Fix size_t stuff in loops
 
+Test bounding boxes with transformations
 
 gamma correction
 Camera should have its own transform

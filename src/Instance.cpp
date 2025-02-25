@@ -23,15 +23,10 @@ bool Instance::Hit(const Ray& r, ShadeContext& context) const {
 
     if (transform_ == nullptr)
     {
-//        if(shape_->Hit(r, context)){
-//            context.mat_ = mat_;
-//            return true;
-//        }
-
-       if(shape_->BBox().Hit(r, context)){
+        if(shape_->Hit(r, context)){
             context.mat_ = mat_;
             return true;
-       }
+        }
 
        return false;
     }
@@ -74,5 +69,5 @@ BoundingBox Instance::BBox() const {
         }
     }
 
-    return BoundingBox {bbox_min, bbox_max};
+    return BoundingBox {transformed_bbox_min, transformed_bbox_max};
 }

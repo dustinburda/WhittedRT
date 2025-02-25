@@ -26,6 +26,7 @@ bool BVHNode::Hit(const Ray& r, ShadeContext& context) {
     return left || right;
 }
 
+BVH::BVH() : root_{nullptr} {}
 
 BVH::BVH(std::vector<Instance>& shapes) {
     root_ = Build(shapes);
@@ -35,7 +36,11 @@ bool BVH::Hit(const Ray& r, ShadeContext& s) {
     return root_->Hit(r, s);
 }
 
-std::unique_ptr<BVHNode> BVH::Build(std::vector<Instance> shapes) {
+void BVH::Rebuild(std::vector<Instance> shapes) {
+    root_ = Build(shapes);
+}
+
+std::unique_ptr<BVHNode> BVH::Build(std::vector<Instance> shapes) const {
     if (shapes.size() == 1) {
         return std::make_unique<BVHNode>(shapes[0]);
     }

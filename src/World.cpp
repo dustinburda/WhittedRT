@@ -10,17 +10,11 @@
 
 void World::AddShape(Instance instance)
 {
-    world_.push_back(instance);
+    instances_.push_back(instance);
 }
 
 bool World::Hit(const Ray& r, ShadeContext& context)
 {
-    bool bHit = false;
-
-    for(const Instance& instance : world_)
-    {
-        bHit |= instance.Hit(r, context);
-    }
-
-    return bHit;
+    bvh_.Rebuild(instances_);
+    return bvh_.Hit(r, context);
 }

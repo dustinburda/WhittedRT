@@ -5,6 +5,7 @@
 #ifndef WHITTED_WORLD_H
 #define WHITTED_WORLD_H
 
+#include "BVH.h"
 #include "Instance.h"
 #include "Ray.h"
 #include "ShadeContext.h"
@@ -21,17 +22,18 @@ public:
     World(const std::initializer_list<Instance>& instances)
     {
         for (const Instance& instance : instances)
-            world_.push_back(instance);
+            instances_.push_back(instance);
     }
 
     World(std::vector<Instance>& instances)
-        : world_(instances) {}
+        : instances_(instances), bvh_{} {}
 
     void AddShape(Instance instance);
     bool Hit(const Ray& r, ShadeContext& context);
 
 private:
-    std::vector<Instance> world_;
+    std::vector<Instance> instances_;
+    BVH bvh_;
 };
 
 

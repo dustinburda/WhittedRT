@@ -1,13 +1,13 @@
 #include "../include/BoundingBox.h"
+#include "../include/BVH.h"
 #include "../include/ProjectiveCamera.h"
 #include "../include/Sphere.h"
 #include "../include/Threadpool.h"
 #include "../include/World.h"
-#include "../include/Mesh.h"
 #include "../scenes/BoundingBoxTestScene.h"
+#include "../scenes/BVHTestScene.h"
 #include "../scenes/CessnaScene.h"
 
-#include <filesystem>
 #include <thread>
 
 
@@ -58,8 +58,9 @@ int main()
     Canvas canvas {WIDTH, HEIGHT};
     ProjectiveCamera camera {WIDTH, HEIGHT, 1.0};
 
-//=    auto file_name = CessnaScene(w);
-    auto file_name = BoundingBoxTestScene(w);
+//    auto file_name = CessnaScene(w);
+//    auto file_name = BoundingBoxTestScene(w);
+    auto file_name = BVHScene(w);
 
     Render(&camera, canvas, w);
 
