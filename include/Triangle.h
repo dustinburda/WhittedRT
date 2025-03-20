@@ -9,12 +9,21 @@
 #include "ShapeInterface.h"
 
 #include <array>
+#include <optional>
+
+struct Vertex {
+    Vertex(Point3d position) : position_{position}, texture_coordinate_{std::nullopt} {}
+    Vertex(Point3d position, std::optional<Point2d> texture_coordinate) : position_{position}, texture_coordinate_{texture_coordinate} {}
+
+    Point3d position_;
+    std::optional<Point2d> texture_coordinate_;
+};
 
 class Triangle : public ShapeInterface {
 public:
     Triangle() = default;
-    Triangle(Point3d a, Point3d b, Point3d c)
-        : points_{a,b,c} {}
+    Triangle(Vertex a, Vertex b, Vertex c)
+        : vertices_{a,b,c} {}
     ~Triangle() override = default;
 
     Normal<double, 3> NormalAt(const Point<double, 3> &p) const override;
@@ -27,7 +36,7 @@ private:
     [[nodiscard]] bool InTriangle(const Point<double, 3>& hit_point) const;
     std::array<double, 3> BarycentricCoordinates(const Point<double, 3>& hit_point) const;
 
-    std::array<Point3d, 3> points_;
+    std::array<Vertex, 3> vertices_;
 };
 
 

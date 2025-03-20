@@ -4,11 +4,6 @@
 
 #include "../include/World.h"
 
-#include "../include/Material.h"
-#include "../include/Mesh.h"
-#include "../include/Material.h"
-#include "../include/Sphere.h"
-
 void World::AddShape(Instance instance)
 {
     if(instance.Type() == InstanceType::Mesh) {

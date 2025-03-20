@@ -52,20 +52,28 @@ void OBJParser::ParseFace(std::string line, std::shared_ptr<MeshData> mesh_data)
     std::string token;
     std::stringstream s_line {line};
 
-    std::vector<int> indices;
+    std::vector<VertexIndex> indices;
     while (std::getline(s_line >> std::ws, token, ' ')) {
         if(token == "f")
             continue;
 
-        std::string index;
+        std::string vertex_index;
+        std::string texture_index;
+
         std::stringstream s_token{token};
-        std::getline(s_token, index);
-        indices.push_back(std::stoi(index) - 1);
+        std::getline(s_token, vertex_index, '/');
+        std::getline(s_token, texture_index, '/');
+
+        // TODO: check what happens here if texture_index doesn't exist
+
+        VertexIndex vi {std::stoi(vertex_index) - 1, std::stoi(texture_index) - 1};
+
+        indices.push_back(vi);
     }
 
 
     for(int i = 1; i < indices.size() - 1; i++) {
-        std::array<int, 3> face = {indices[0], indices[i], indices[i + 1]};
+        std::array<VertexIndex, 3> face = {indices[0], indices[i], indices[i + 1]};
         mesh_data->faces_.push_back(face);
     }
 }

@@ -8,8 +8,13 @@ Mesh::Mesh(std::shared_ptr<MeshData> mesh_data)
     : curr_triangle_index_{-1}
 {
     for(auto& face : mesh_data->faces_) {
-        auto [f1, f2, f3] = face;
-        triangles_.emplace_back(mesh_data->vertices_[f1], mesh_data->vertices_[f2], mesh_data->vertices_[f3]);
+        auto [vi1, vi2, vi3] = face;
+
+        bool contains_texture_coordinates = mesh_data->texture_coordinates_.size() > 0;
+
+        triangles_.emplace_back(Vertex{mesh_data->GetVertex(vi1.vertex_index_), mesh_data->GetTextureCoordinate(vi1.texture_index_) },
+                                Vertex{mesh_data->GetVertex(vi2.vertex_index_), mesh_data->GetTextureCoordinate(vi2.texture_index_) },
+                                Vertex{mesh_data->GetVertex(vi3.vertex_index_), mesh_data->GetTextureCoordinate(vi3.texture_index_) });
     }
 }
 

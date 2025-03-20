@@ -12,7 +12,8 @@
 
 Normal<double, 3> Triangle::NormalAt(const Point<double, 3> &p) const
 {
-    auto cross_product = Cross(points_[1] - points_[0], points_[2] - points_[0]);
+    auto cross_product = Cross(vertices_[1].position_ - vertices_[0].position_,
+                               vertices_[2].position_ - vertices_[0].position_);
     auto normalized_cross_product = cross_product.UnitVector();
 
     return Normal<double, 3> {normalized_cross_product[0], normalized_cross_product[1], normalized_cross_product[2]};
@@ -20,11 +21,11 @@ Normal<double, 3> Triangle::NormalAt(const Point<double, 3> &p) const
 
 bool Triangle::Hit(const Ray &r, ShadeContext &context) const
 {
-    auto normal = NormalAt(points_[0]);
+    auto normal = NormalAt(vertices_[0].position_);
     if(std::abs(Dot(r.Direction(), normal)) <= epsilon)
         return false;
 
-    double hit_time = Dot(normal, points_[0] - r.Origin()) / Dot(normal, r.Direction());
+    double hit_time = Dot(normal, vertices_[0].position_ - r.Origin()) / Dot(normal, r.Direction());
     if (hit_time > context.t_max_ || hit_time < context.t_min_)
         return false;
 
@@ -44,10 +45,10 @@ BoundingBox Triangle::BBox() const {
     Point3d min { std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max() };
     Point3d max { std::numeric_limits<double>::min(), std::numeric_limits<double>::min(), std::numeric_limits<double>::min() };
 
-    for (auto& point : points_) {
+    for (auto& vertex : vertices_) {
         for (int i = 0; i < 3; i++) {
-            min[i] = std::min(min[i], point[i]);
-            max[i] = std::max(max[i], point[i]);
+            min[i] = std::min(min[i], vertex.position_[i]);
+            max[i] = std::max(max[i], vertex.position_[i]);
         }
     }
 
@@ -68,10 +69,12 @@ BoundingBox Triangle::BBox() const {
 std::array<double, 3> Triangle::BarycentricCoordinates(const Point<double, 3>& hit_point) const {
     std::array<double, 3> barycentric_coordinates {0.0, 0.0, 0.0};
 
-    double area_triangle = Cross(points_[1] - points_[0], points_[2] - points_[0]).Length() / 2;
+    double area_triangle = Cross(vertices_[1].position_ - vertices_[0].position_,
+                                 vertices_[2].position_ - vertices_[0].position_).Length() / 2;
 
     for(int i = 0; i < 3; i++) {
-        double area_sub_triangle = Cross(points_[(i + 1) % 3] - points_[i % 3], hit_point - points_[i % 3]).Length() / 2.0;
+        double area_sub_triangle = Cross(vertices_[(i + 1) % 3].position_ - vertices_[i % 3].position_,
+                                         hit_point - vertices_[i % 3].position_).Length() / 2.0;
         barycentric_coordinates[(i + 2) % 3] = area_sub_triangle / area_triangle;
     }
 
@@ -83,11 +86,11 @@ std::string Triangle::toString() const {
 
     ss << "Triangle: [\n";
 
-    ss << points_[0].toString();
+    ss << vertices_[0].position_.toString();
     ss << "\n";
-    ss << points_[1].toString();
+    ss << vertices_[1].position_.toString();
     ss << "\n";
-    ss << points_[2].toString();
+    ss << vertices_[2].position_.toString();
     ss << "\n";
 
     ss <<"]";
