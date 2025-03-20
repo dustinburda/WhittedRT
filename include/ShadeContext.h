@@ -8,9 +8,12 @@
 #include "Canvas.h"
 #include "Normal.h"
 #include "Material.h"
+#include "Point.h"
 
 #include <memory>
 #include <limits>
+
+using TextureCoordinates = std::pair<Point2d, Point2d>;
 
 struct ShadeContext {
     // TODO: expand
@@ -19,6 +22,8 @@ struct ShadeContext {
     std::shared_ptr<Material> mat_;
     double t_min_ = 0;
     double t_max_ = std::numeric_limits<double>::max();
+
+    TextureCoordinates uv_;
 };
 
 

@@ -12,6 +12,7 @@
 void World::AddShape(Instance instance)
 {
     if(instance.Type() == InstanceType::Mesh) {
+        // adds individual triangles from Mesh class
         instance.GetTriangles(instances_);
     }
     else {

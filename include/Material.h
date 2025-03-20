@@ -5,6 +5,7 @@
 #ifndef WHITTED_MATERIAL_H
 #define WHITTED_MATERIAL_H
 
+#include "Point.h"
 #include "Canvas.h"
 
 struct Material {

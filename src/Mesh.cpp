@@ -14,6 +14,7 @@ Mesh::Mesh(std::shared_ptr<MeshData> mesh_data)
 }
 
 Normal<double, 3> Mesh::NormalAt(const Point<double, 3>& p) const {
+    // TODO: Remove, we don't directly render a mesh anymore
     if (curr_triangle_index_ == -1)
         return {-1.0, -1.0, -1.0};
 
@@ -23,6 +24,7 @@ Normal<double, 3> Mesh::NormalAt(const Point<double, 3>& p) const {
 }
 
 bool Mesh::Hit(const Ray& r, ShadeContext& context) const {
+    // TODO: Remove, we don't directly render a mesh anymore
     bool hit = false;
 
     for(int index = 0; const auto& triangle : triangles_) {

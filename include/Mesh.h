@@ -26,6 +26,9 @@ public:
 
 private:
     std::vector<Triangle> triangles_;
+
+
+    // TODO: remove, mesh no longer directly rendered
     mutable std::int64_t curr_triangle_index_;
 };
 

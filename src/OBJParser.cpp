@@ -25,12 +25,14 @@ std::shared_ptr<MeshData> OBJParser::ParseOBJ(std::filesystem::path path)
             ParseFace(line, mesh_data);
         else if(line.substr(0, 2) == "vn")
             ParseNormal(line, mesh_data);
+        else if (line.substr(0, 2) == "vt")
+            ParseTexture(line, mesh_data);
     }
 
     return mesh_data;
 }
 
-Point3d OBJParser::ParseVertex(std::string line, std::shared_ptr<MeshData> mesh_data) {
+void OBJParser::ParseVertex(std::string line, std::shared_ptr<MeshData> mesh_data) {
     std::string token;
     std::stringstream s_line {line};
 
@@ -46,7 +48,7 @@ Point3d OBJParser::ParseVertex(std::string line, std::shared_ptr<MeshData> mesh_
     mesh_data->vertices_.push_back(p);
 }
 
-std::array<int, 3> OBJParser::ParseFace(std::string line, std::shared_ptr<MeshData> mesh_data) {
+void OBJParser::ParseFace(std::string line, std::shared_ptr<MeshData> mesh_data) {
     std::string token;
     std::stringstream s_line {line};
 
@@ -68,7 +70,7 @@ std::array<int, 3> OBJParser::ParseFace(std::string line, std::shared_ptr<MeshDa
     }
 }
 
- Normal<double, 3> OBJParser::ParseNormal(std::string line, std::shared_ptr<MeshData> mesh_data) {
+void OBJParser::ParseNormal(std::string line, std::shared_ptr<MeshData> mesh_data) {
     std::string token;
     std::stringstream s_line {line};
 
@@ -82,4 +84,21 @@ std::array<int, 3> OBJParser::ParseFace(std::string line, std::shared_ptr<MeshDa
     }
 
     mesh_data->normals_.push_back(normal);
+}
+
+void OBJParser::ParseTexture(std::string line, std::shared_ptr<MeshData> mesh_data) {
+    std::string token;
+    std::stringstream s_line {line};
+
+    Point2d uv;
+    for(int i = 0; i < 3; i++) {
+        std::getline(s_line >> std::ws, token, ' ');
+        if(token == "vt")
+            continue;
+
+
+        uv[i-1] = std::stod(token);
+    }
+
+    mesh_data->texture_coordinates_.push_back(uv);
 }

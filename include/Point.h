@@ -155,6 +155,7 @@ static double Distance(const Point<T,N>& p1, const Point<T,N>& p2) {
 }
 
 using Point3d = Point<double, 3>;
+using Point2d = Point<double, 2>;
 
 
 

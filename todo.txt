@@ -24,7 +24,6 @@ Implement Shaders
 (Requires: None) Simple Refraction
 (Requires: None) Realistic Refraction
 =============================================
-(Requires: None) Textures
 (Requires: Textures) Environment Maps
 (Requires: Textures) Normal Maps / Bump Maps
 =============================================
@@ -49,8 +48,6 @@ Implement Shaders
 
 
 Fix size_t stuff in loops
-
-Test bounding boxes with transformations
 
 gamma correction
 Camera should have its own transform
