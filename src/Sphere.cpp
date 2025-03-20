@@ -4,6 +4,9 @@
 
 #include "../include/Sphere.h"
 
+#include "../include/Util.h"
+
+#include <cmath>
 #include <string>
 #include <sstream>
 
@@ -32,6 +35,10 @@ bool Sphere::Hit(const Ray& r, ShadeContext& context) const {
     context.t_max_ = hit_time;
     context.point_ = r.At(hit_time);
     context.normal_ = NormalAt(r.At(hit_time));
+
+    auto phi = std::atan(context.point_[2] / -context.point_[1]) / 2 * pi;
+    auto theta = std::acos(-context.point_[1]) / pi;
+    context.uv_ = {phi, theta};
 
     return true;
 }

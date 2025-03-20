@@ -46,6 +46,11 @@ Implement Shaders
 (Requires: None) Save in JPEG, TIFF, PNG
 =============================================
 
+Texture TODO:
+https://paulbourke.net/dataformats/obj/minobj.html
+
+
+
 
 Fix size_t stuff in loops
 
