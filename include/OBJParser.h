@@ -11,15 +11,17 @@
 
 #include <filesystem>
 #include <memory>
+#include <optional>
 #include <vector>
 
 
 
 struct VertexIndex {
     VertexIndex(int vi, int ti) : vertex_index_{vi}, texture_index_{ti} {}
+    VertexIndex(int vi) : vertex_index_{vi}, texture_index_{std::nullopt} {}
 
     int vertex_index_;
-    int texture_index_;
+    std::optional<int> texture_index_;
 };
 
 using Face = std::array<VertexIndex, 3>;
@@ -30,16 +32,8 @@ struct MeshData {
     std::vector<Normal<double, 3>> normals_;
     std::vector<Point2d> texture_coordinates_;
 
-    std::optional<Point2d> GetTextureCoordinate(int index) {
-        if (texture_coordinates_.size() == 0)
-            return std::nullopt;
-
-        return texture_coordinates_[index];
-    }
-
-    Point3d GetVertex(int index) {
-        return vertices_[index];
-    }
+    std::optional<Point2d> GetTextureCoordinate(VertexIndex vi);
+    Point3d GetVertex(VertexIndex vi);
 };
 
 class OBJParser {

@@ -10,11 +10,12 @@ Mesh::Mesh(std::shared_ptr<MeshData> mesh_data)
     for(auto& face : mesh_data->faces_) {
         auto [vi1, vi2, vi3] = face;
 
-        bool contains_texture_coordinates = mesh_data->texture_coordinates_.size() > 0;
+        bool is_textured_triangle = mesh_data->GetTextureCoordinate(vi1) != std::nullopt;
 
-        triangles_.emplace_back(Vertex{mesh_data->GetVertex(vi1.vertex_index_), mesh_data->GetTextureCoordinate(vi1.texture_index_) },
-                                Vertex{mesh_data->GetVertex(vi2.vertex_index_), mesh_data->GetTextureCoordinate(vi2.texture_index_) },
-                                Vertex{mesh_data->GetVertex(vi3.vertex_index_), mesh_data->GetTextureCoordinate(vi3.texture_index_) });
+        triangles_.emplace_back(Vertex{mesh_data->GetVertex(vi1), mesh_data->GetTextureCoordinate(vi1) },
+                                Vertex{mesh_data->GetVertex(vi2), mesh_data->GetTextureCoordinate(vi2) },
+                                Vertex{mesh_data->GetVertex(vi3), mesh_data->GetTextureCoordinate(vi3) });
+        triangles_.back().SetIsTextured(is_textured_triangle);
     }
 }
 

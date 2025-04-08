@@ -8,6 +8,19 @@
 #include <string>
 #include <sstream>
 
+
+std::optional<Point2d> MeshData::GetTextureCoordinate(VertexIndex vi) {
+    if (vi.texture_index_ == std::nullopt)
+        return std::nullopt;
+
+    return texture_coordinates_[vi.texture_index_.value()];
+}
+
+Point3d MeshData::GetVertex(VertexIndex vi) {
+    return vertices_[vi.vertex_index_];
+}
+
+
 std::shared_ptr<MeshData> OBJParser::ParseOBJ(std::filesystem::path path)
 {
     std::ifstream mesh_file{path};
@@ -64,14 +77,13 @@ void OBJParser::ParseFace(std::string line, std::shared_ptr<MeshData> mesh_data)
         std::getline(s_token, vertex_index, '/');
         std::getline(s_token, texture_index, '/');
 
-        // TODO: check what happens here if texture_index doesn't exist
-
-        VertexIndex vi {std::stoi(vertex_index) - 1, std::stoi(texture_index) - 1};
+        VertexIndex vi = (!texture_index.empty()) ? VertexIndex{std::stoi(vertex_index) - 1, std::stoi(texture_index) - 1}
+                                                  : VertexIndex{std::stoi(vertex_index) - 1};
 
         indices.push_back(vi);
     }
 
-
+    // Face can be a quad, break it into multiple triangles
     for(int i = 1; i < indices.size() - 1; i++) {
         std::array<VertexIndex, 3> face = {indices[0], indices[i], indices[i + 1]};
         mesh_data->faces_.push_back(face);

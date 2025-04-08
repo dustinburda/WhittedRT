@@ -23,12 +23,13 @@ class Triangle : public ShapeInterface {
 public:
     Triangle() = default;
     Triangle(Vertex a, Vertex b, Vertex c)
-        : vertices_{a,b,c} {}
+        : vertices_{a,b,c}, is_textured_{false} {}
     ~Triangle() override = default;
 
     Normal<double, 3> NormalAt(const Point<double, 3> &p) const override;
     bool Hit(const Ray &r, ShadeContext &context) const override;
     BoundingBox BBox() const override;
+    void SetIsTextured(bool is_textured);
 
     std::string toString() const;
 private:
@@ -37,6 +38,7 @@ private:
     std::array<double, 3> BarycentricCoordinates(const Point<double, 3>& hit_point) const;
 
     std::array<Vertex, 3> vertices_;
+    bool is_textured_;
 };
 
 

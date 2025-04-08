@@ -38,12 +38,16 @@ bool Triangle::Hit(const Ray &r, ShadeContext &context) const
     context.point_ = hit_point;
     context.normal_ = normal;
 
-    auto barycentric_coordinates = BarycentricCoordinates(hit_point);
-    auto uv_vector_ = barycentric_coordinates[0] * vertices_[0].texture_coordinate_.value().ToVector() +
-                      barycentric_coordinates[1] * vertices_[1].texture_coordinate_.value().ToVector() +
-                      barycentric_coordinates[2] * vertices_[2].texture_coordinate_.value().ToVector();
+    if (is_textured_){
+        auto barycentric_coordinates = BarycentricCoordinates(hit_point);
+        auto uv_vector_ = barycentric_coordinates[0] * vertices_[0].texture_coordinate_.value().ToVector() +
+                          barycentric_coordinates[1] * vertices_[1].texture_coordinate_.value().ToVector() +
+                          barycentric_coordinates[2] * vertices_[2].texture_coordinate_.value().ToVector();
 
-    context.uv_ = Point2d{uv_vector_[0], uv_vector_[1]};
+        context.uv_ = Point2d{uv_vector_[0], uv_vector_[1]};
+    } else {
+        context.uv_ = Point2d {-1, -1};
+    }
 
     return true;
 }
@@ -62,6 +66,9 @@ BoundingBox Triangle::BBox() const {
     return BoundingBox {min, max};
 }
 
+void Triangle::SetIsTextured(bool is_textured) {
+    is_textured_ = is_textured;
+}
 
 [[nodiscard]] bool Triangle::InTriangle(const Point<double, 3>& hit_point) const {
     auto coordinates = BarycentricCoordinates(hit_point);
