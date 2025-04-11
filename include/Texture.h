@@ -26,9 +26,12 @@ public:
         int x;
         int y;
         unsigned char* bitmap_data = stbi_load(filename.data(), &x, &y, nullptr, 3);
+        // defensive programming
 
         num_cols_ = x;
         num_rows_ = y;
+
+        // write data to bitmap
 
         stbi_image_free(bitmap_data);
     }
@@ -44,6 +47,22 @@ private:
     std::size_t num_cols_;
 };
 
+class CheckerTexture : public Texture {
+public:
+    ~CheckerTexture() override;
 
+    Color GetTexel(Point2d texture_coordinates) override {
+        return Color{};
+    }
+};
+
+class NoiseTexture : public Texture {
+public:
+    ~NoiseTexture() override;
+
+    Color GetTexel(Point2d texture_coordinates) override {
+        return Color{};
+    }
+};
 
 #endif //WHITTED_TEXTURE_H
