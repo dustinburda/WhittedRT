@@ -11,3 +11,28 @@ Notable features include:
 * Bounding Volume Hierarchies
 * Scene Parsing
 * Zero Dependencies, Pure Modern C++
+
+
+## Table of Contents
+
+- [GitHub Repo](#github-repo)
+- [Technologies Used](#technologies-used)
+- [Project Status](#project-status)
+
+
+
+## GitHub Repo
+
+- https://github.com/dustinburda/WhittedRT
+
+
+## Technologies Used
+
+- C++ 17
+- GTest
+- AWS EC2
+
+## Project Status
+
+- Project is: _in progress_.
+
