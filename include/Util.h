@@ -35,5 +35,12 @@ static int RandomInt(int min = 0, int max = std::numeric_limits<int>::max()) {
     return distribution(gen);
 }
 
+static double RandomDouble(double min = 0, double max = std::numeric_limits<double>::max()) {
+    std::random_device rd;
+    std::mt19937 gen{rd()};
+    std::uniform_real_distribution<double> distribution{min, max};
+    return distribution(gen);
+}
+
 #endif //WHITTED_UTIL_H
 
