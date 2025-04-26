@@ -22,7 +22,9 @@ add_executable(${CMAKE_PROJECT_NAME}
         src/BVH.cpp
         src/Canvas.cpp
         src/Color.cpp
+        src/HammersleySampler.cpp
         src/Instance.cpp
+        src/JitteredSampler.cpp
         src/Material.cpp
         src/Matrix.cpp
         src/Mesh.cpp
@@ -32,7 +34,9 @@ add_executable(${CMAKE_PROJECT_NAME}
         src/Plane.cpp
         src/Point.cpp
         src/ProjectiveCamera.cpp
+        src/RandomSampler.cpp
         src/Ray.cpp
+        src/RegularSampler.cpp
         src/SceneParser.cpp
         src/ShadeContext.cpp
         src/Sphere.cpp

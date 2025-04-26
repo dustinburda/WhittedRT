@@ -7,6 +7,7 @@ Notable features include:
 * Image and Procedural Textures
 * Transformations and Instancing
 * Multithreading
+* Anti-Aliasing
 * Bounding Volume Hierarchies
 * Scene Parsing
 * Zero Dependencies, Pure Modern C++
