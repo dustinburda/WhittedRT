@@ -49,7 +49,7 @@ Implement Shaders
 Texture TODO:
 https://paulbourke.net/dataformats/obj/minobj.html
 
-
+test image textures
 
 
 Fix size_t stuff in loops
