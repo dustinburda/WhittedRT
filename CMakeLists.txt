@@ -46,6 +46,7 @@ add_executable(${CMAKE_PROJECT_NAME}
         src/Triangle.cpp
         src/Vector.cpp
         src/World.cpp
+        src/XMLParser.cpp
 )
 
 enable_testing()

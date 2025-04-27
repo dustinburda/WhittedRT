@@ -34,8 +34,6 @@ Implement Shaders
 (Requires: Sampler) Ambient Occlusion
 (Requires: Sampler) Path Tracing
 =============================================
-(Requires: None) Scene Parser
-=============================================
 (Requires: None) Unit Tests
 =============================================
 (Requires: None) Mutexes
@@ -45,6 +43,10 @@ Implement Shaders
 (Requires: None) STL File Format
 (Requires: None) Save in JPEG, TIFF, PNG
 =============================================
+
+image texture
+procedural texture
+noise texture
 
 Texture TODO:
 https://paulbourke.net/dataformats/obj/minobj.html

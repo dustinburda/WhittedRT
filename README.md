@@ -12,19 +12,15 @@ Notable features include:
 * Scene Parsing
 * Zero Dependencies, Pure Modern C++
 
-
 ## Table of Contents
 
 - [GitHub Repo](#github-repo)
 - [Technologies Used](#technologies-used)
 - [Project Status](#project-status)
 
-
-
 ## GitHub Repo
 
 - https://github.com/dustinburda/WhittedRT
-
 
 ## Technologies Used
 
@@ -35,4 +31,3 @@ Notable features include:
 ## Project Status
 
 - Project is: _in progress_.
-

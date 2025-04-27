@@ -6,6 +6,7 @@
 #define SCENEPARSER_H
 
 #include "World.h"
+#include "XMLParser.h"
 
 #include <string>
 
@@ -17,6 +18,7 @@ public:
 
 private:
     std::string src_;
+    XMLParser* parser_;
 };
 
 
