@@ -24,8 +24,11 @@ struct XMLNode {
 
 
 /*
- * This is a naive and feature deficient XML Parser with no error checking
- * :P
+ * This is a naive and feature deficient XML Parser
+ *
+ * No Error Checking
+ * Balanced tags only
+ * No text content
  * */
 
 class XMLParser {
@@ -36,17 +39,18 @@ public:
     XMLNodePtr Parse();
 private:
     std::optional<char> Peek();
+    std::optional<std::string> PeekAhead(int n);
     std::optional<char> Consume();
 
     static bool IsWhitespace(char c);
     void ConsumeWhitespace();
 
     std::string ConsumeAlphabetic();
-
     int ConsumeNumeric();
-
     std::string ConsumeAlphaNumeric();
+    std::string ConsumeUntilToken(char c);
 
+    std::unordered_map<std::string, std::string> ParseAttributes();
 
     XMLNodePtr ParseNode();
     std::vector<XMLNodePtr> ParseChildren();

@@ -10,11 +10,10 @@ XMLParser::XMLParser(std::string src) : src_{std::move(src)}, pos_{0} {}
 
 XMLParser::XMLParser(std::filesystem::path path) : pos_{0} {
     std::ifstream file {path};
+    auto file_size = std::filesystem::file_size(path);
 
-    std::stringstream ss;
-    ss << file.rdbuf();
-
-    src_ = ss.str();
+    src_.resize(file_size);
+    file.read(src_.data(), file_size);
 }
 
 XMLNodePtr XMLParser::Parse() {
@@ -29,6 +28,15 @@ std::optional<char> XMLParser::Peek() {
     return src_[pos_];
 }
 
+std::optional<std::string> XMLParser::PeekAhead(int n) {
+    int amount_left = std::max(std::min(n, static_cast<int>(src_.size() - pos_)), 0);
+
+    if (amount_left == 0)
+        return std::nullopt;
+
+    return src_.substr(pos_, amount_left);
+}
+
 std::optional<char> XMLParser::Consume() {
     if (pos_ >= src_.size())
         return std::nullopt;
@@ -36,7 +44,7 @@ std::optional<char> XMLParser::Consume() {
     auto next_char = src_[pos_];
     pos_++;
 
-    return src_[pos_];
+    return next_char;
 }
 
 bool XMLParser::IsWhitespace(char c) {
@@ -69,7 +77,30 @@ std::string XMLParser::ConsumeAlphaNumeric() {
     return s;
 }
 
+std::string XMLParser::ConsumeUntilToken(char c) {
+    std::string s;
+    while (Peek().has_value() && Peek().value() != c) {
+        s.push_back(Consume().value());
+    }
 
+    return s;
+}
+
+std::unordered_map<std::string, std::string> XMLParser::ParseAttributes() {
+    std::unordered_map<std::string, std::string> attributes;
+
+    while (Peek() != '>') {
+        ConsumeWhitespace();
+        auto attribute = ConsumeUntilToken('=');
+        Consume(); // =
+        Consume(); // '
+        auto value = ConsumeUntilToken('\"');
+        Consume(); //'
+        attributes[attribute] = value;
+    }
+
+    return attributes;
+}
 
 XMLNodePtr XMLParser::ParseNode() {
     ConsumeWhitespace();
@@ -79,14 +110,33 @@ XMLNodePtr XMLParser::ParseNode() {
     Consume(); // <
     ConsumeWhitespace();
 
-//    node->tag_
-//    node->children_ = ParseChildren();
-    return nullptr;
+    node->tag_ = ConsumeAlphaNumeric();
+    ConsumeWhitespace();
+
+    node->attributes_ = ParseAttributes();
+    ConsumeWhitespace();
+
+    ConsumeUntilToken('>');
+    Consume(); // >
+
+    node->children_ = ParseChildren();
+
+    ConsumeWhitespace();
+    Consume(); // <
+    Consume(); // /
+    ConsumeUntilToken('>'); // tagname
+    Consume(); // >
+
+
+    return node;
 }
 
 std::vector<XMLNodePtr> XMLParser::ParseChildren() {
-//    std::vector<XMLNodePtr> children;
-//
-//    while(Peek())
-    return {};
+    std::vector<XMLNodePtr> children;
+
+    while(PeekAhead(2).has_value() && PeekAhead(2).value() != "</") {
+        children.push_back(ParseNode());
+    }
+
+    return children;
 }

@@ -16,54 +16,18 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_executable(${CMAKE_PROJECT_NAME}
-        src/main.cpp
-        src/BoundingBox.cpp
-        src/BVH.cpp
-        src/Canvas.cpp
-        src/Color.cpp
-        src/HammersleySampler.cpp
-        src/Instance.cpp
-        src/JitteredSampler.cpp
-        src/Material.cpp
-        src/Matrix.cpp
-        src/Mesh.cpp
-        src/Normal.cpp
-        src/OBJParser.cpp
-        src/OrthographicCamera.cpp
-        src/Plane.cpp
-        src/Point.cpp
-        src/ProjectiveCamera.cpp
-        src/RandomSampler.cpp
-        src/Ray.cpp
-        src/RegularSampler.cpp
-        src/SceneParser.cpp
-        src/ShadeContext.cpp
-        src/Sphere.cpp
-        src/Texture.cpp
-        src/ThreadPool.cpp
-        src/Transformation.cpp
-        src/Triangle.cpp
-        src/Vector.cpp
-        src/World.cpp
-        src/XMLParser.cpp
-)
+file(GLOB SOURCE_FILES "src/*.cpp")
+
+get_filename_component(main_cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp ABSOLUTE)
+list(REMOVE_ITEM SOURCE_FILES ${main_cpp})
+
+add_executable(${CMAKE_PROJECT_NAME} ${SOURCE_FILES})
 
 enable_testing()
 
+file(GLOB TEST_FILES "test/*.cpp")
 add_executable(
-        test_app
-        src/Sphere.cpp
-        src/Triangle.cpp
-        src/Point.cpp
-        src/Vector.cpp
-        src/Normal.cpp
-        src/Matrix.cpp
-        src/Transformation.cpp
-        test/VectorTest.cpp
-        test/TriangleTest.cpp
-        test/SphereTest.cpp
-        test/TransformationTest.cpp
+        test_app ${SOURCE_FILES} ${TEST_FILES}
 )
 target_link_libraries(
         test_app
