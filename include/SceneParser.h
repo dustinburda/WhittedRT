@@ -7,18 +7,19 @@
 
 #include "World.h"
 #include "XMLParser.h"
+#include "World.h"
 
 #include <string>
+#include <filesystem>
 
 class SceneParser {
 public:
-    explicit SceneParser(std::string src) : src_{std::move(src)} {}
-
-
+    std::unique_ptr<World> ParseScene(std::filesystem::path path);
 
 private:
-    std::string src_;
-    XMLParser* parser_;
+    SceneParser();
+
+    XMLParser& xml_parser_;
 };
 
 

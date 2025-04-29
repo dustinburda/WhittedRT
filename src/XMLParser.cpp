@@ -5,18 +5,17 @@
 #include "../include/XMLParser.h"
 
 
+XMLParser& XMLParser::GetInstance() {
+    static XMLParser parser;
 
-XMLParser::XMLParser(std::string src) : src_{std::move(src)}, pos_{0} {}
-
-XMLParser::XMLParser(std::filesystem::path path) : pos_{0} {
-    std::ifstream file {path};
-    auto file_size = std::filesystem::file_size(path);
-
-    src_.resize(file_size);
-    file.read(src_.data(), file_size);
+    return parser;
 }
 
-XMLNodePtr XMLParser::Parse() {
+XMLParser::XMLParser() : src_{""}, pos_{0} {}
+
+XMLNodePtr XMLParser::Parse(std::string src) {
+    src_ = src;
+    pos_ = 0;
     auto root_node = ParseNode();
     return root_node;
 }

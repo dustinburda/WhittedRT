@@ -5,7 +5,6 @@
 #ifndef WHITTED_XMLPARSER_H
 #define WHITTED_XMLPARSER_H
 
-#include <filesystem>
 #include <fstream>
 #include <memory>
 #include <optional>
@@ -33,11 +32,12 @@ struct XMLNode {
 
 class XMLParser {
 public:
-    explicit XMLParser(std::string src);
-    explicit XMLParser(std::filesystem::path path);
+    static XMLParser& GetInstance();
 
-    XMLNodePtr Parse();
+    XMLNodePtr Parse(std::string src);
 private:
+    explicit XMLParser();
+
     std::optional<char> Peek();
     std::optional<std::string> PeekAhead(int n);
     std::optional<char> Consume();
@@ -55,6 +55,7 @@ private:
     XMLNodePtr ParseNode();
     std::vector<XMLNodePtr> ParseChildren();
 
+private:
     std::string src_;
     std::size_t pos_;
 };

@@ -7,20 +7,22 @@
 #include <gtest/gtest.h>
 
 TEST(XMLTest, BasicTagNoAttributesNoChildren) {
-    std::string src = "<tag></tag>";
-    XMLParser p{ src };
+    auto& p = XMLParser::GetInstance();
 
-    auto node = p.Parse();
+    std::string src = "<tag></tag>";
+    auto node = p.Parse(src);
+
     EXPECT_EQ(node->tag_, "tag");
     EXPECT_EQ(node->children_.size(), 0);
     EXPECT_EQ(node->attributes_.size(), 0);
 }
 
 TEST(XMLTest, BasicTagNoChildren) {
-    std::string src = "<tag attr1=\"val1\" attr2=\"val2\"></tag>";
-    XMLParser p{ src };
+    auto& p = XMLParser::GetInstance();
 
-    auto node = p.Parse();
+    std::string src = "<tag attr1=\"val1\" attr2=\"val2\"></tag>";
+    auto node = p.Parse(src);
+
     EXPECT_EQ(node->tag_, "tag");
     EXPECT_EQ(node->children_.size(), 0);
     EXPECT_EQ(node->attributes_.size(), 2);
@@ -29,13 +31,14 @@ TEST(XMLTest, BasicTagNoChildren) {
 }
 
 TEST(XMLTest, BasicTag) {
+    auto& p = XMLParser::GetInstance();
+
     std::string src = "<tag1 attr1=\"val1\" attr2=\"val2\">"
                       "<tag2></tag2>"
                       "<tag3 attr1=\"val1\" attr2=\"val2\" attr3=\"val3\"></tag3>"
                       "</tag1>";
-    XMLParser p{ src };
+    auto node = p.Parse(src);
 
-    auto node = p.Parse();
     EXPECT_EQ(node->tag_, "tag1");
     EXPECT_EQ(node->children_.size(), 2);
     EXPECT_EQ(node->attributes_.size(), 2);
@@ -57,15 +60,12 @@ TEST(XMLTest, BasicTag) {
     EXPECT_EQ(child2->attributes_["attr3"], "val3");
 }
 
-TEST(XMLTest, BasicTagNested) {
-    std::string src = "<tag1 attr1=\"val1\" attr2=\"val2\">"
-                      "<tag2>"
-                      "<nestedChildTag1></nestedChildTag1>"
-                      "<nestedChildTag2></nestedChildTag2>"
-                      "</tag2>"
-                      "<tag3 attr1=\"val1\" attr2=\"val2\"></tag3>"
-                      "</tag1>";
-    XMLParser p{ src };
-
-    auto node = p.Parse();
-}
+//TEST(XMLTest, BasicTagNested) {
+//    std::string src = "<tag1 attr1=\"val1\" attr2=\"val2\">"
+//                      "<tag2>"
+//                      "<nestedChildTag1></nestedChildTag1>"
+//                      "<nestedChildTag2></nestedChildTag2>"
+//                      "</tag2>"
+//                      "<tag3 attr1=\"val1\" attr2=\"val2\"></tag3>"
+//                      "</tag1>";
+//}

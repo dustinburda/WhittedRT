@@ -1,0 +1,44 @@
+<scene title="bvhscene" format="ppm">
+    <material name="flat_green_color" color="0.0, 1.0, 0.0">
+    </material>
+
+    <material name="flat_red_color" color="1.0, 0.0, 0.0">
+    </material>
+
+    <material name="flat_blue_color" color="0.0, 0.0, 1.0">
+    </material>
+
+    <material name="flat_purple_color" color="1.0, 0.0, 1.0">
+    </material>
+
+    <material name="flat_cyan_color" color="0.0, 1.0, 1.0">
+    </material>
+
+    <instance name="s1">
+        <shape type="sphere">
+            <radius></radius>
+            <transform></transform>
+        </shape>
+    </instance>
+
+    <instance name="s2">
+        <shape type="sphere">
+            <radius></radius>
+            <transform></transform>
+        </shape>
+    </instance>
+
+    <instance name="s3">
+        <shape type="sphere">
+            <radius></radius>
+            <transform></transform>
+        </shape>
+    </instance>
+
+    <instance name="s4">
+        <shape type="sphere">
+            <radius></radius>
+            <transform></transform>
+        </shape>
+    </instance>
+</scene>
