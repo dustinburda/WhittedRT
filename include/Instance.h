@@ -14,7 +14,8 @@
 enum class InstanceType {
     Sphere,
     Mesh,
-    Triangle
+    Triangle,
+    Plane
 };
 
 class Instance : public ShapeInterface {

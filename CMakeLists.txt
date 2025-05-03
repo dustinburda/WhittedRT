@@ -21,7 +21,7 @@ file(GLOB SOURCE_FILES "src/*.cpp")
 get_filename_component(main_cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp ABSOLUTE)
 list(REMOVE_ITEM SOURCE_FILES ${main_cpp})
 
-add_executable(${CMAKE_PROJECT_NAME} ${SOURCE_FILES})
+add_executable(${CMAKE_PROJECT_NAME} ${SOURCE_FILES} src/main.cpp)
 
 enable_testing()
 

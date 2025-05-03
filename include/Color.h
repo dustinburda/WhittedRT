@@ -15,8 +15,6 @@
 
 // TODO: gamma correction
 
-using COLORREF = std::uint32_t;
-
 class Color {
 public:
     Color() { std::memset(data_.data(), 0, sizeof(double) * 4); };
@@ -33,6 +31,13 @@ public:
     double& R() { return data_[0]; }
     double& G() { return data_[1]; }
     double& B() { return data_[2]; }
+
+    double operator[](std::size_t i) {
+        if (i >= 3 || i < 0)
+            throw std::logic_error("Color only has three components!");
+
+        return data_[i];
+    }
 
     Color& operator+=(Color& other) {
         data_[0] += other.data_[0];
@@ -53,16 +58,6 @@ public:
     Color& operator/=(double t) {
         (*this) *= (1/t);
         return (*this);
-    }
-
-    COLORREF toRGBA() {
-        COLORREF color;
-
-        color |= static_cast<std::uint8_t>(data_[0]) << 16;
-        color |= static_cast<std::uint8_t>(data_[1]) << 8;
-        color |= static_cast<std::uint8_t>(data_[2]);
-
-        return color;
     }
 
     std::string toString() {

@@ -9,11 +9,18 @@
 #include "XMLParser.h"
 #include "World.h"
 
-#include <string>
 #include <filesystem>
+#include <string>
+#include <unordered_map>
 
 class SceneParser {
 public:
+    static SceneParser& GetInstance() {
+        static SceneParser p;
+
+        return p;
+    }
+
     std::unique_ptr<World> ParseScene(std::filesystem::path path);
 
 private:

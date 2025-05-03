@@ -38,16 +38,13 @@ Implement Shaders
 =============================================
 (Requires: None) Mutexes
 =============================================
-(Requires: None) CMAKELists.txt Cleanup
-=============================================
 (Requires: None) STL File Format
 (Requires: None) Save in JPEG, TIFF, PNG
 =============================================
-
-image texture
-procedural texture
-noise texture
-
+(Requires: None) Image Textures
+(Requires: None) Procedural Textures
+(Requires: None) Noise Textures
+=============================================
 Texture TODO:
 https://paulbourke.net/dataformats/obj/minobj.html
 

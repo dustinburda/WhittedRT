@@ -132,9 +132,11 @@ XMLNodePtr XMLParser::ParseNode() {
 
 std::vector<XMLNodePtr> XMLParser::ParseChildren() {
     std::vector<XMLNodePtr> children;
-
+    ConsumeWhitespace();
     while(PeekAhead(2).has_value() && PeekAhead(2).value() != "</") {
+        ConsumeWhitespace();
         children.push_back(ParseNode());
+        ConsumeWhitespace();
     }
 
     return children;

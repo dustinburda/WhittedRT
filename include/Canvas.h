@@ -15,7 +15,8 @@
 #include <sstream>
 #include <vector>
 
-using Color = std::array<double, 3>;
+// TODO TEST THIS
+#include "Color.h"
 
 class Canvas {
 public:

@@ -7,6 +7,7 @@
 #include "../scenes/BoundingBoxTestScene.h"
 #include "../scenes/BVHTestScene.h"
 #include "../scenes/CessnaScene.h"
+#include "../include/SceneParser.h"
 
 #include <thread>
 
@@ -53,6 +54,13 @@ void Render(CameraInterface* camera, Canvas& canvas, World& w) {
 
 int main()
 {
+    SceneParser& parser = SceneParser::GetInstance();
+
+    parser.ParseScene("../scenes/scene.xml");
+
+
+
+    /*
 
     World w;
     Canvas canvas {WIDTH, HEIGHT};
@@ -67,4 +75,5 @@ int main()
     canvas.Flush(file_name + ".ppm");
 
     return 0;
+     */
 }

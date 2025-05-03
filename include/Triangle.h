@@ -12,6 +12,7 @@
 #include <optional>
 
 struct Vertex {
+    Vertex() = default;
     Vertex(Point3d position) : position_{position}, texture_coordinate_{std::nullopt} {}
     Vertex(Point3d position, std::optional<Point2d> texture_coordinate) : position_{position}, texture_coordinate_{texture_coordinate} {}
 

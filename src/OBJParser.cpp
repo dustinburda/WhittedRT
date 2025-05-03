@@ -20,6 +20,10 @@ Point3d MeshData::GetVertex(VertexIndex vi) {
     return vertices_[vi.vertex_index_];
 }
 
+OBJParser& OBJParser::GetInstance() {
+    static OBJParser parser;
+    return parser;
+}
 
 std::shared_ptr<MeshData> OBJParser::ParseOBJ(std::filesystem::path path)
 {

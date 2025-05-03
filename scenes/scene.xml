@@ -14,31 +14,19 @@
     <material name="flat_cyan_color" color="0.0, 1.0, 1.0">
     </material>
 
-    <instance name="s1">
-        <shape type="sphere">
-            <radius></radius>
-            <transform></transform>
-        </shape>
-    </instance>
+    <transformation name="t1">
+        <rotation axis="x" val="45"></rotation>
+        <translation val="1.0, 2.0, -4.0"></translation>
+        <reflection axis="z"></reflection>
+    </transformation>
 
-    <instance name="s2">
-        <shape type="sphere">
-            <radius></radius>
-            <transform></transform>
-        </shape>
-    </instance>
+    <transformation name="t2">
+        <rotation axis="y" val="-43"></rotation>
+        <reflection axis="y"></reflection>
+        <translation x="0.5" y="-3.0" z="1.0"></translation>
+    </transformation>
 
-    <instance name="s3">
-        <shape type="sphere">
-            <radius></radius>
-            <transform></transform>
-        </shape>
-    </instance>
+    <shape type="sphere" transformation="t2" material="flat_green_color"></shape>
 
-    <instance name="s4">
-        <shape type="sphere">
-            <radius></radius>
-            <transform></transform>
-        </shape>
-    </instance>
+    <shape type="mesh" filename="cessna.obj" transformation="t1" material="flat_blue_color"></shape>
 </scene>
