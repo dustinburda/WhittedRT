@@ -16,7 +16,7 @@
 #include <string>
 
 static std::unordered_map<std::string, std::shared_ptr<Transformation>> name_transformation;
-static std::unordered_map<std::string, std::shared_ptr<Instance>> name_shape;
+static std::unordered_map<std::string, std::shared_ptr<Instance>> name_instance;
 static std::unordered_map<std::string, std::shared_ptr<Material>> name_material;
 
 
@@ -149,12 +149,16 @@ std::unique_ptr<World> SceneParser::ParseScene(std::filesystem::path path) {
         if (child->tag_ == "transformation")
             name_transformation[child->attributes_["name"]] = ParseTransformation(child);
         else if (child->tag_ == "shape")
-            name_shape[child->attributes_["name"]] = ParseShape(child);
+            name_instance[child->attributes_["name"]] = ParseShape(child);
         else if (child->tag_ == "material")
             name_material[child->attributes_["name"]] = ParseMaterial(child);
     }
 
-    return std::make_unique<World>();
+    auto world = std::make_unique<World>();
+    for (auto [_, shape_ptr] : name_instance)
+        world->AddShape(*shape_ptr);
+
+    return world;
 }
 
 SceneParser::SceneParser() : xml_parser_{XMLParser::GetInstance()} {}

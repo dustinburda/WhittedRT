@@ -54,26 +54,15 @@ void Render(CameraInterface* camera, Canvas& canvas, World& w) {
 
 int main()
 {
-    SceneParser& parser = SceneParser::GetInstance();
-
-    parser.ParseScene("../scenes/scene.xml");
 
 
-
-    /*
-
-    World w;
     Canvas canvas {WIDTH, HEIGHT};
+
+    SceneParser& parser = SceneParser::GetInstance();
+    std::string file_name = "scene";
+    auto world = parser.ParseScene("../scenes/" + file_name + ".xml");
     ProjectiveCamera camera {WIDTH, HEIGHT, 1.0};
-
-//    auto file_name = CessnaScene(w);
-//    auto file_name = BoundingBoxTestScene(w);
-    auto file_name = BVHScene(w);
-
-    Render(&camera, canvas, w);
+    Render(&camera, canvas, *world);
 
     canvas.Flush(file_name + ".ppm");
-
-    return 0;
-     */
 }
