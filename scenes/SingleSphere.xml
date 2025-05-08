@@ -1,0 +1,10 @@
+<scene>
+    <material name="flat_red_color" color="1.0, 0.0, 0.0"></material>
+
+    <transformation name="t1">
+        <scale x="0.5" y="0.5" z="0.5"></scale>
+        <translation z="2.0"></translation>
+    </transformation>
+
+    <shape type="sphere" material="flat_red_color" transformation="t1"></shape>
+</scene>

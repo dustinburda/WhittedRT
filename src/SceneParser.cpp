@@ -60,6 +60,13 @@ static std::shared_ptr<Transformation> ParseTranslation(std::unique_ptr<XMLNode>
     return std::make_shared<Transformation>(Transformation::Translation(x_translation, y_translation, z_translation));
 }
 
+static std::shared_ptr<Transformation> ParseScale(std::unique_ptr<XMLNode>& node) {
+    double x_scale = (node->attributes_.count("x") > 0) ? std::stod(node->attributes_["x"]) : 0.0;
+    double y_scale = (node->attributes_.count("y") > 0) ? std::stod(node->attributes_["y"]) : 0.0;
+    double z_scale = (node->attributes_.count("z") > 0) ? std::stod(node->attributes_["z"]) : 0.0;
+
+    return std::make_shared<Transformation>(Transformation::Scale(x_scale, y_scale, z_scale));
+}
 
 static std::shared_ptr<Transformation> ParseTransformation(std::unique_ptr<XMLNode>& node) {
     auto transformation = std::make_shared<Transformation>(Transformation::Identity());
@@ -74,6 +81,8 @@ static std::shared_ptr<Transformation> ParseTransformation(std::unique_ptr<XMLNo
             transformations.push(ParseReflection(child));
         } else if (child->tag_ == "translation") {
             transformations.push(ParseTranslation(child));
+        } else if (child->tag_ == "scale") {
+            transformations.push(ParseScale(child));
         }
     }
 
@@ -88,6 +97,8 @@ static std::shared_ptr<Transformation> ParseTransformation(std::unique_ptr<XMLNo
 
 static std::shared_ptr<Instance> ParseShape(std::unique_ptr<XMLNode>& node) {
     std::string type = node->attributes_["type"];
+
+    // Handle case where transformation is not provided
     std::string transformation_name = node->attributes_["transformation"];
     std::string material_name = node->attributes_["material"];
 
@@ -106,7 +117,7 @@ static std::shared_ptr<Instance> ParseShape(std::unique_ptr<XMLNode>& node) {
         instance_type = InstanceType::Mesh;
 
         std::string filename = node->attributes_["filename"];
-        auto mesh_data = OBJParser::GetInstance().ParseOBJ(filename);
+        auto mesh_data = OBJParser::GetInstance().ParseOBJ( "../models/" + filename);
 
         shape_ptr = std::make_shared<Mesh>(mesh_data);
     } else if (type == "triangle") {

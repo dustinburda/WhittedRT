@@ -27,7 +27,6 @@ Implement Shaders
 (Requires: Textures) Environment Maps
 (Requires: Textures) Normal Maps / Bump Maps
 =============================================
-(Requires: Transformations) Transformable Camera
 (Requires: Transformable Camera) Camera Viewing System
 (Requires: Sampler) Depth of Field
 =============================================
@@ -49,6 +48,7 @@ Texture TODO:
 https://paulbourke.net/dataformats/obj/minobj.html
 
 test image textures
+finish hammersley sampler
 
 
 Fix size_t stuff in loops

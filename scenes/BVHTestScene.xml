@@ -1,0 +1,45 @@
+<scene title="bvhtestscene" format="ppm">
+    <material name="flat_green_color" color="0.0, 1.0, 0.0"></material>
+    <material name="flat_red_color" color="1.0, 0.0, 0.0"></material>
+    <material name="flat_blue_color" color="0.0, 0.0, 1.0"></material>
+    <material name="flat_purple_color" color="1.0, 0.0, 1.0"></material>
+    <material name="flat_cyan_color" color="0.0, 1.0, 1.0"></material>
+
+    <transformation name="t1">
+        <translation z="4.0"></translation>
+        <scale x="2.0" y="2.0" z="1.0"></scale>
+        <translation x="0.5" y="0.5" z="2.0"></translation>
+    </transformation>
+
+    <transformation name="t2">
+        <translation z="4.0"></translation>
+        <scale x="2.0" y="2.0" z="1.0"></scale>
+        <translation x="-6.5" y="3.5" z="2.0"></translation>
+    </transformation>
+
+    <transformation name="t3">
+        <translation z="4.0"></translation>
+        <scale x="2.0" y="2.0" z="1.0"></scale>
+        <translation x="6.5" y="-2.5" z="2.0"></translation>
+    </transformation>
+
+    <transformation name="t4">
+        <translation z="4.0"></translation>
+        <scale x="2.0" y="2.0" z="1.0"></scale>
+        <translation x="6.5" y="3.5" z="2.0"></translation>
+    </transformation>
+
+    <transformation name="t5">
+        <translation z="4.0"></translation>
+        <scale x="2.0" y="2.0" z="1.0"></scale>
+        <translation x="-6.5" y="-3.5" z="2.0"></translation>
+    </transformation>
+
+
+    <shape name="sphere1" type="sphere" transformation="t1" material="flat_green_color"></shape>
+    <shape name="sphere2" type="sphere" transformation="t2" material="flat_red_color"></shape>
+    <shape name="sphere3" type="sphere" transformation="t3" material="flat_blue_color"></shape>
+    <shape name="sphere4" type="sphere" transformation="t4" material="flat_purple_color"></shape>
+    <shape name="sphere5" type="sphere" transformation="t5" material="flat_cyan_color"></shape>
+
+</scene>

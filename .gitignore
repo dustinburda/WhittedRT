@@ -1,9 +1,6 @@
 .idea
 build
-cmake-build-debug
-cmake-build-default
-cmake-build-minsizerel
-cmake-build-release
-cmake-build-relwithdebinfo
+cmake-build*
+images
 *ppm
 .DS_Store

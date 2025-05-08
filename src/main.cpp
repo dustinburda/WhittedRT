@@ -54,13 +54,11 @@ void Render(CameraInterface* camera, Canvas& canvas, World& w) {
 
 int main()
 {
-
+    std::string file_name = "CessnaScene";
 
     Canvas canvas {WIDTH, HEIGHT};
-
-    SceneParser& parser = SceneParser::GetInstance();
-    std::string file_name = "scene";
-    auto world = parser.ParseScene("../scenes/" + file_name + ".xml");
+    auto world = SceneParser::GetInstance().ParseScene("../scenes/" + file_name + ".xml");
+    world->Build(); // Construct BVH
     ProjectiveCamera camera {WIDTH, HEIGHT, 1.0};
     Render(&camera, canvas, *world);
 

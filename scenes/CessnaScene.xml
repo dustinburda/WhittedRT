@@ -1,0 +1,18 @@
+<scene title="cessnascene" format="ppm">
+    <material name="flat_green_color" color="0.0, 1.0, 0.0"></material>
+
+    <transformation name="t1">
+        <translation z="4.0"></translation>
+        <scale x="2.0" y="2.0" z="1.0"></scale>
+        <translation x="-10.5" y="4.5" z="8.0"></translation>
+    </transformation>
+
+    <transformation name="t2">
+        <rotation y="-45"></rotation>
+        <scale x="0.33" y="0.33" z="0.33"></scale>
+        <translation z="9.0"></translation>
+    </transformation>
+
+    <shape name="sphere1" type="sphere" transformation="t1" material="flat_green_color"></shape>
+    <shape name="cessna_mesh" type="mesh" transformation="t2" material="flat_green_color" filename="cessna.obj"></shape>
+</scene>
