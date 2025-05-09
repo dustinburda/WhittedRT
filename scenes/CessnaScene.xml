@@ -8,8 +8,8 @@
     </transformation>
 
     <transformation name="t2">
-        <rotation y="-45"></rotation>
-        <scale x="0.33" y="0.33" z="0.33"></scale>
+        <rotation axis="y" val="-45"></rotation>
+        <scale x="0.333333" y="0.333333" z="0.333333"></scale>
         <translation z="9.0"></translation>
     </transformation>
 

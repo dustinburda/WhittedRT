@@ -95,6 +95,32 @@ static std::shared_ptr<Transformation> ParseTransformation(std::unique_ptr<XMLNo
     return transformation;
 }
 
+static Point3d ParsePoint (std::string point) {
+    std::stringstream ss {point};
+    std::string token;
+
+    double x, y, z;
+
+    std::getline(ss, token, ',');
+    x = std::stod(token);
+
+    std::getline(ss, token, ',');
+    y = std::stod(token);
+
+    std::getline(ss, token, ',');
+    z = std::stod(token);
+
+    return Point3d {x, y, z};
+}
+
+static std::shared_ptr<Triangle> ParseTriangle(std::unique_ptr<XMLNode>& node) {
+    auto vertex1 { ParsePoint(node->attributes_["point1"]) };
+    auto vertex2 { ParsePoint(node->attributes_["point2"]) };
+    auto vertex3 { ParsePoint(node->attributes_["point3"]) };
+
+    return std::make_shared<Triangle>(vertex1, vertex2, vertex3);
+}
+
 static std::shared_ptr<Instance> ParseShape(std::unique_ptr<XMLNode>& node) {
     std::string type = node->attributes_["type"];
 
@@ -122,7 +148,7 @@ static std::shared_ptr<Instance> ParseShape(std::unique_ptr<XMLNode>& node) {
         shape_ptr = std::make_shared<Mesh>(mesh_data);
     } else if (type == "triangle") {
         instance_type = InstanceType::Triangle;
-        shape_ptr = std::make_shared<Triangle>();
+        shape_ptr = ParseTriangle(node);
     }
 
     return std::make_shared<Instance>(transformation_ptr, shape_ptr, material_ptr, instance_type);

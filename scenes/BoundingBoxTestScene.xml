@@ -1,0 +1,13 @@
+<scene title="boundingboxtestscene" format="ppm">
+    <material name="flat_red_color" color="1.0, 0.0, 0.0"></material>
+    <material name="flat_green_color" color="0.0, 1.0, 0.0"></material>
+
+
+    <transformation name="t1">
+        <translation z="5.0"></translation>
+    </transformation>
+
+    <shape type="sphere" transformation="t1" material="flat_red_color"></shape>
+    <shape type="triangle" point1="2.0, 4.0, 6.0" point2="-3.0, -1.0, 5.0" point3="3.0, 0.0, 7.0" material="flat_green_color"></shape>
+
+</scene>

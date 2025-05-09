@@ -5,8 +5,6 @@
 #include "../include/Threadpool.h"
 #include "../include/World.h"
 #include "../scenes/BoundingBoxTestScene.h"
-#include "../scenes/BVHTestScene.h"
-#include "../scenes/CessnaScene.h"
 #include "../include/SceneParser.h"
 
 #include <thread>

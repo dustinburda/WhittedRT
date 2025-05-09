@@ -30,13 +30,6 @@ static std::string BoundingBoxTestScene(World& w)
 
     w.AddShape(triangle_instance);
 
-//    std::cout << "==================================================\n";
-//    std::cout << sphere_ptr->toString();
-//    std::cout << "\n";
-//    std::cout << sphere_ptr->BBox().toString();
-//    std::cout << "\n";
-//    std::cout << "==================================================\n";
-
     return name;
 }
 
