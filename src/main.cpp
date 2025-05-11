@@ -52,7 +52,7 @@ void Render(CameraInterface* camera, Canvas& canvas, World& w) {
 
 int main()
 {
-    std::string file_name = "CessnaScene";
+    std::string file_name = "BoundingBoxTestScene";
 
     Canvas canvas {WIDTH, HEIGHT};
     auto world = SceneParser::GetInstance().ParseScene("../scenes/" + file_name + ".xml");

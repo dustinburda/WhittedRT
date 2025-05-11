@@ -4,10 +4,10 @@
 
 
     <transformation name="t1">
-        <translation z="5.0"></translation>
+        <translation z="7.0"></translation>
     </transformation>
 
-    <shape type="sphere" transformation="t1" material="flat_red_color"></shape>
-    <shape type="triangle" point1="2.0, 4.0, 6.0" point2="-3.0, -1.0, 5.0" point3="3.0, 0.0, 7.0" material="flat_green_color"></shape>
+    <shape type="sphere" name="sphere1" transformation="t1" material="flat_red_color"></shape>
+    <shape type="triangle" name="triangle1" point1="2.0, 4.0, 6.0" point2="-3.0, -1.0, 5.0" point3="3.0, 0.0, 7.0" material="flat_green_color"></shape>
 
 </scene>
