@@ -5,7 +5,7 @@
 #ifndef SCENEPARSER_H
 #define SCENEPARSER_H
 
-#include "World.h"
+#include "Sampler.h"
 #include "XMLParser.h"
 #include "World.h"
 
@@ -21,7 +21,7 @@ public:
         return p;
     }
 
-    std::unique_ptr<World> ParseScene(std::filesystem::path path);
+    void ParseScene(std::filesystem::path path, std::unique_ptr<World>& world, std::shared_ptr<Sampler>& sampler);
 
 private:
     SceneParser();

@@ -2,15 +2,27 @@
 // Created by Dustin on 11/25/24.
 //
 
+#include "../include/HammersleySampler.h"
+#include "../include/JitteredSampler.h"
 #include "../include/Instance.h"
 #include "../include/Mesh.h"
 #include "../include/Plane.h"
+#include "../include/RandomSampler.h"
+#include "../include/RegularSampler.h"
+#include "../include/Sampler.h"
 #include "../include/SceneParser.h"
 #include "../include/ShapeInterface.h"
 #include "../include/Sphere.h"
 #include "../include/Transformation.h"
 #include "../include/Triangle.h"
 #include "../include/Util.h"
+
+
+
+
+
+
+
 
 #include <sstream>
 #include <string>
@@ -171,8 +183,28 @@ static std::shared_ptr<Material> ParseMaterial(std::unique_ptr<XMLNode>& node) {
     return std::make_shared<Material>(Color {r, g, b});
 }
 
+static std::shared_ptr<Sampler> ParseSampler(std::unique_ptr<XMLNode>& node) {
+    // TODO: handle case where there is no sampler node
 
-std::unique_ptr<World> SceneParser::ParseScene(std::filesystem::path path) {
+    auto num_samples = std::stoi(node->attributes_["samples"]);
+    auto sampler_type = node->attributes_["type"];
+
+    std::shared_ptr<Sampler> sampler = nullptr;
+
+    if (sampler_type == "hammersley") {
+        sampler = std::make_shared<HammersleySampler>(num_samples);
+    } else if (sampler_type == "jittered") {
+        sampler = std::make_shared<JitteredSampler>(num_samples);
+    } else if (sampler_type == "regular") {
+        sampler = std::make_shared<RegularSampler>(num_samples);
+    } else if (sampler_type == "random") {
+        sampler = std::make_shared<RandomSampler>(num_samples);
+    }
+
+    return sampler;
+}
+
+void SceneParser::ParseScene(std::filesystem::path path, std::unique_ptr<World>& world, std::shared_ptr<Sampler>& sampler) {
     std::ifstream file {path};
     auto file_size = std::filesystem::file_size(path);
 
@@ -189,13 +221,13 @@ std::unique_ptr<World> SceneParser::ParseScene(std::filesystem::path path) {
             name_instance[child->attributes_["name"]] = ParseShape(child);
         else if (child->tag_ == "material")
             name_material[child->attributes_["name"]] = ParseMaterial(child);
+        else if (child->tag_ == "anti-aliasing")
+            sampler = ParseSampler(child);
     }
 
-    auto world = std::make_unique<World>();
+    world = std::make_unique<World>();
     for (auto [_, shape_ptr] : name_instance)
         world->AddShape(*shape_ptr);
-
-    return world;
 }
 
 SceneParser::SceneParser() : xml_parser_{XMLParser::GetInstance()} {}

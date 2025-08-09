@@ -89,11 +89,11 @@ private:
     std::array<T, N> data_;
 };
 
-template<typename T, size_t N>
+template<typename T, std::size_t N>
 static Point<T, N> operator+(const Point<T,N>& p, const Vector<T,N>& v) {
     Point<T,N> translate;
 
-    for(int i = 0; i < N; i++){
+    for(std::size_t i = 0; i < N; i++){
         translate[i] = p[i] + v[i];
     }
 

@@ -4,11 +4,10 @@
 #include "../include/Sphere.h"
 #include "../include/Threadpool.h"
 #include "../include/World.h"
-#include "../scenes/BoundingBoxTestScene.h"
 #include "../include/SceneParser.h"
 
+#include <cstdlib>
 #include <thread>
-
 
 static constexpr uint16_t HEIGHT = 500;
 static constexpr uint16_t WIDTH = 1000;
@@ -30,9 +29,16 @@ void Render(CameraInterface* camera, Canvas& canvas, World& w) {
     auto render = [&camera, &canvas](World& w, int x_start, int chunk_x_size, int y_start, int chunk_y_size) {
         for(int y = y_start; y < y_start + chunk_y_size; y++)
             for(int x = x_start; x < x_start + chunk_x_size; x++) {
-                auto ray = camera->GetRayAt(x, y);
+                auto rays = camera->GetRayAt(x, y);
                 ShadeContext context;
-                canvas.SetColorAt(Trace(w, ray, context), x, y);
+
+                Color pixel_color;
+                for (auto& ray : rays) {
+                    pixel_color += Trace(w, ray, context);
+                }
+                pixel_color /= rays.size();
+
+                canvas.SetColorAt(pixel_color, x, y);
             }
     };
 
@@ -50,15 +56,31 @@ void Render(CameraInterface* camera, Canvas& canvas, World& w) {
 }
 
 
-int main()
+int main(int argc, char** argv)
 {
-    std::string file_name = "BoundingBoxTestScene";
+    if (argc != 2) {
+        throw std::logic_error("Can only pass a single parameter!");
+    }
+
+    std::string scene_description_file_name = argv[1];
+    auto scene_description_file_path = "../scenes/" + scene_description_file_name + ".xml";
+    std::ifstream scene_description_file {scene_description_file_path};
+
+    if (!scene_description_file.is_open()) {
+        throw std::logic_error("Scene description file: \"" + scene_description_file_name + ".xml" +  "\" does not exist.");
+    }
 
     Canvas canvas {WIDTH, HEIGHT};
-    auto world = SceneParser::GetInstance().ParseScene("../scenes/" + file_name + ".xml");
-    world->Build(); // Construct BVH
+
     ProjectiveCamera camera {WIDTH, HEIGHT, 1.0};
+    std::unique_ptr<World> world = nullptr;
+    std::shared_ptr<Sampler> sampler = nullptr;
+
+    SceneParser::GetInstance().ParseScene(scene_description_file_path, world, sampler);
+
+    camera.SetSampler(sampler);
+    world->Build(); // Construct BVH
     Render(&camera, canvas, *world);
 
-    canvas.Flush(file_name + ".ppm");
+    canvas.Flush(scene_description_file_name + ".ppm");
 }

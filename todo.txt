@@ -57,6 +57,15 @@ gamma correction
 Camera should have its own transform
 
 
+Samplers:
+None
+Jittered
+Hammersley
+Random
+Regular
+
+
+
 UNIT TEST
 CLangFormat
 CI/CD Pipeline

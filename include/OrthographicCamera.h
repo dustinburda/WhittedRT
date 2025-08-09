@@ -12,7 +12,7 @@ public:
     OrthographicCamera() = delete;
     OrthographicCamera(int width, int height)
         : aspect_ratio_{static_cast<double>(width) / static_cast<double>(height) }, v_x_ {2.0 * aspect_ratio_ / width, 0.0, 0.0}, v_y_{0.0, 2.0 * (-1.0) / height, 0.0} {}
-    Ray GetRayAt(int x, int y) const override;
+    std::vector<Ray> GetRayAt(int x, int y) const override;
 
 private:
     double aspect_ratio_;
