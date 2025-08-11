@@ -1,6 +1,6 @@
 <scene>
-    <material name="flat_red_color" color="0.0, 1.0, 0.0"></material>
-    <antialiasing type="regular" samples="10"></antialiasing>
+    <material name="flat_red_color" color="1.0, 0.0, 1.0"></material>
+    <antialiasing type="random" samples="2"></antialiasing>
 
     <transformation name="t1">
         <scale x="1.0" y="1.0" z="1.0"></scale>

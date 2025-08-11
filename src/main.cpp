@@ -9,8 +9,8 @@
 #include <cstdlib>
 #include <thread>
 
-static constexpr uint16_t HEIGHT = 500;
-static constexpr uint16_t WIDTH = 1000;
+static constexpr uint16_t HEIGHT = 100;
+static constexpr uint16_t WIDTH = 200;
 
 Color Shade(ShadeContext& context) {
     return context.mat_->color_;

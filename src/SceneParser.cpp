@@ -221,7 +221,7 @@ void SceneParser::ParseScene(std::filesystem::path path, std::unique_ptr<World>&
             name_instance[child->attributes_["name"]] = ParseShape(child);
         else if (child->tag_ == "material")
             name_material[child->attributes_["name"]] = ParseMaterial(child);
-        else if (child->tag_ == "anti-aliasing")
+        else if (child->tag_ == "antialiasing")
             sampler = ParseSampler(child);
     }
 

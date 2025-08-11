@@ -12,7 +12,8 @@ class CameraInterface {
 public:
     virtual std::vector<Ray> GetRayAt(int x, int y) const = 0;
     void SetSampler(std::shared_ptr<Sampler> s) { s_ = s; }
-private:
+
+protected:
     std::shared_ptr<Sampler> s_;
 };
 
