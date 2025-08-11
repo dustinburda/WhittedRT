@@ -9,8 +9,8 @@
 #include <cstdlib>
 #include <thread>
 
-static constexpr uint16_t HEIGHT = 100;
-static constexpr uint16_t WIDTH = 200;
+static constexpr uint16_t HEIGHT = 1000;
+static constexpr uint16_t WIDTH =  2000;
 
 Color Shade(ShadeContext& context) {
     return context.mat_->color_;
@@ -19,6 +19,7 @@ Color Shade(ShadeContext& context) {
 Color Trace(World& w, Ray& r, ShadeContext& context) {
     if(w.Hit(r, context))
          return Shade(context);
+
     return {0.0, 0.0, 0.0};
 }
 
@@ -30,10 +31,10 @@ void Render(CameraInterface* camera, Canvas& canvas, World& w) {
         for(int y = y_start; y < y_start + chunk_y_size; y++)
             for(int x = x_start; x < x_start + chunk_x_size; x++) {
                 auto rays = camera->GetRayAt(x, y);
-                ShadeContext context;
 
                 Color pixel_color;
                 for (auto& ray : rays) {
+                    ShadeContext context;
                     pixel_color += Trace(w, ray, context);
                 }
                 pixel_color /= rays.size();
@@ -42,8 +43,8 @@ void Render(CameraInterface* camera, Canvas& canvas, World& w) {
             }
     };
 
-    std::size_t chunk_x_size = WIDTH / num_threads;
-    std::size_t chunk_y_size = HEIGHT / num_threads;
+    std::size_t chunk_x_size = WIDTH / std::min<std::size_t>(WIDTH, num_threads);
+    std::size_t chunk_y_size = HEIGHT /  std::min<std::size_t>(HEIGHT, num_threads);
 
     for (std::size_t y = 0; y < HEIGHT; y += chunk_y_size)
         for(std::size_t x = 0; x < WIDTH; x += chunk_x_size) {
@@ -61,6 +62,8 @@ int main(int argc, char** argv)
     if (argc != 2) {
         throw std::logic_error("Can only pass a single parameter!");
     }
+
+    auto start = std::chrono::steady_clock::now();
 
     std::string scene_description_file_name = argv[1];
     auto scene_description_file_path = "../scenes/" + scene_description_file_name + ".xml";
@@ -83,4 +86,10 @@ int main(int argc, char** argv)
     Render(&camera, canvas, *world);
 
     canvas.Flush(scene_description_file_name + ".ppm");
+
+
+    auto end = std::chrono::steady_clock::now();
+
+    std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << std::endl;
+
 }
