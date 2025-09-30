@@ -13,6 +13,8 @@ Implement Shaders
 (Requires: Light) Diffuse Shading
 (Requires: Light) Specular Highlights
 =============================================
+(Required: Shading) Rework shading - BRDF
+=============================================
 (Requires: Light) Shadows
 (Requires: Light) Area Lights
 =============================================
@@ -31,6 +33,8 @@ Implement Shaders
 =============================================
 (Requires: Sampler) Ambient Occlusion
 (Requires: Sampler) Path Tracing
+=============================================
+(Requires: BVH) Various Split Methods
 =============================================
 (Requires: None) Unit Tests
 =============================================
