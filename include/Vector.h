@@ -201,18 +201,6 @@ static Vector<T, N> Cross(const Vector<T,N>& v1, const Vector<T, N>& v2) {
     return cross_product;
 }
 
-template<typename T, size_t N>
-static bool operator==(const Vector<T,N>& v1, const Vector<T, N>& v2)
-{
-    for(int i = 0; i < N; i++)
-    {
-        if(v1[i] != v2[i])
-            return false;
-    }
-
-    return true;
-}
-
 // IN RADIANS
 template<typename T, size_t N>
 static double Angle(const Vector<T, N>& v1, const Vector<T, N>& v2)

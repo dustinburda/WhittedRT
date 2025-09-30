@@ -1,5 +1,6 @@
 #include "../include/BoundingBox.h"
 #include "../include/BVH.h"
+#include "../include/Light.h"
 #include "../include/ProjectiveCamera.h"
 #include "../include/Sphere.h"
 #include "../include/Threadpool.h"
@@ -78,8 +79,9 @@ int main(int argc, char** argv)
     ProjectiveCamera camera {WIDTH, HEIGHT, 1.0};
     std::unique_ptr<World> world = nullptr;
     std::shared_ptr<Sampler> sampler = nullptr;
+    std::vector<std::shared_ptr<Light>> lights;
 
-    SceneParser::GetInstance().ParseScene(scene_description_file_path, world, sampler);
+    SceneParser::GetInstance().ParseScene(scene_description_file_path, world, sampler, lights);
 
     camera.SetSampler(sampler);
     world->Build(); // Construct BVH

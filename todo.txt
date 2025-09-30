@@ -8,9 +8,7 @@ Implement Shaders
 (Requires: Shape Interface) Implement Cylinder
 (Requires: Shape Interface) Implement Cone
 =============================================
-(Requires: Sampler) Anti-Aliasing w/ Super Sampling
 (Requires: Sampler) Anti-Aliasing w/ Adaptive Sampling
-(Requires: None) Sampler
 =============================================
 (Requires: Light) Diffuse Shading
 (Requires: Light) Specular Highlights
@@ -27,6 +25,7 @@ Implement Shaders
 (Requires: Textures) Environment Maps
 (Requires: Textures) Normal Maps / Bump Maps
 =============================================
+(Requires: None) Transformable Camera
 (Requires: Transformable Camera) Camera Viewing System
 (Requires: Sampler) Depth of Field
 =============================================
@@ -52,18 +51,11 @@ finish hammersley sampler
 
 
 Fix size_t stuff in loops
-
 gamma correction
-Camera should have its own transform
+rgb to linear to grayscale
 
 
-Samplers:
-None
-Jittered
-Hammersley
-Random
-Regular
-
+Make boxes renderable
 
 
 UNIT TEST

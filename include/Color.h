@@ -72,6 +72,9 @@ public:
         return s.str();
     }
 
+    static double sRGBToLinear(double sRGB);
+    double GrayScale() const;
+
 private:
     std::array<double, 4> data_;
 };

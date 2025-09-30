@@ -27,18 +27,19 @@ struct rad {
 static rad operator  ""_rad(long double radians) { return rad{radians}; };
 
 static int RandomInt(int min = 0, int max = std::numeric_limits<int>::max()) {
-    std::random_device rd;
-    std::mt19937 gen{rd()};
+    static std::random_device rd;
+    static std::mt19937 gen{rd()};
 
-    std::uniform_int_distribution distribution{min, max};
+    static std::uniform_int_distribution distribution{min, max};
 
     return distribution(gen);
 }
 
 static double RandomDouble(double min = 0, double max = std::numeric_limits<double>::max()) {
-    std::random_device rd;
-    std::mt19937 gen{rd()};
-    std::uniform_real_distribution<double> distribution{min, max};
+    static std::random_device rd;
+    static std::mt19937 gen{rd()};
+    static std::uniform_real_distribution<double> distribution{min, max};
+
     return distribution(gen);
 }
 

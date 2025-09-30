@@ -49,3 +49,14 @@ Color operator*(double t, const Color& c1) {
 Color operator/(const Color& c1, double t) {
     return c1 * (1/t);
 }
+
+double Color::sRGBToLinear(double sRGB) {
+    if (sRGB < 0.04045)
+        return sRGB / 12.92;
+    else
+        return std::pow( (sRGB + 0.055) / (1.055), 2.4);
+}
+
+double Color::GrayScale() const {
+    return 0.2126 * sRGBToLinear(data_[0]) + 0.7152 * sRGBToLinear(data_[1]) + 0.0722 * sRGBToLinear(data_[2]);
+}

@@ -18,7 +18,7 @@
 #include <sstream>
 
 
-template<typename T, size_t M, size_t N>
+template<typename T, std::size_t M, std::size_t N>
 class Matrix {
 public:
     Matrix() {

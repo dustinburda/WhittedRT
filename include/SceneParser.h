@@ -21,7 +21,7 @@ public:
         return p;
     }
 
-    void ParseScene(std::filesystem::path path, std::unique_ptr<World>& world, std::shared_ptr<Sampler>& sampler);
+    void ParseScene(std::filesystem::path path, std::unique_ptr<World>& world, std::shared_ptr<Sampler>& sampler, std::vector<std::shared_ptr<Light>>& lights);
 
 private:
     SceneParser();
