@@ -5,8 +5,10 @@
 #ifndef WHITTED_CONE_H
 #define WHITTED_CONE_H
 
+#include "ShapeInterface.h"
 
-class Cone {
+
+class Cone : public ShapeInterface {
 
 };
 

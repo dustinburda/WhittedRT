@@ -5,8 +5,10 @@
 #ifndef WHITTED_CYLINDER_H
 #define WHITTED_CYLINDER_H
 
+#include "ShapeInterface.h"
 
-class Cylinder {
+
+class Cylinder : public ShapeInterface {
 
 };
 

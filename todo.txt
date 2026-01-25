@@ -7,6 +7,7 @@ Implement Shaders
 =============================================
 (Requires: Shape Interface) Implement Cylinder
 (Requires: Shape Interface) Implement Cone
+(Requires: Shape Interface) Implement Box
 =============================================
 (Requires: Sampler) Anti-Aliasing w/ Adaptive Sampling
 =============================================

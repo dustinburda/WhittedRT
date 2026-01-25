@@ -10,6 +10,7 @@ This is a Whitted Ray Tracer written in C++.
 * Anti-Aliasing
 * Bounding Volume Hierarchies
 * Scene Parsing
+* Linear Algebra Library
 * Zero Dependencies, Pure Modern C++
 
 ## Table of Contents
