@@ -19,8 +19,8 @@ Color BlackMaterial::Shade(ShadeContext& context, std::vector<std::shared_ptr<Li
 SimplePhongMaterial::SimplePhongMaterial()
     : MaterialInterface{MaterialType::SimplePhong} {}
 
-SimplePhongMaterial::SimplePhongMaterial(Color ka, Color kd, Color ks)
-        : MaterialInterface{MaterialType::SimplePhong}, ka_{ka}, kd_{kd}, ks_{ks} {}
+SimplePhongMaterial::SimplePhongMaterial(Color ka, Color kd, Color ks, double p)
+        : MaterialInterface{MaterialType::SimplePhong}, ka_{ka}, kd_{kd}, ks_{ks}, p_{p} {}
 
 
 Color SimplePhongMaterial::Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights, [[ maybe_unused ]] double ambient_intensity) {
@@ -30,10 +30,23 @@ Color SimplePhongMaterial::Shade(ShadeContext& context, std::vector<std::shared_
 
     for (auto& light : lights)
     {
-        auto n_dot_l = std::max(0.0, Dot(context.normal_, light->GetDirection(context)));
+        auto l = light->GetDirection(context);
+        auto n = context.normal_;
+
+        auto n_dot_l = std::max(0.0, Dot(n, l));
         auto light_color = light->GetIntensity() * light->GetColor();
-        shade += kd_ * light_color * n_dot_l;
+
+        auto v = (-context.point_).ToVector().UnitVector(); // Camera is at origin
+
+
+        auto h = (v + l).UnitVector();
+        auto n_dot_h = std::max(0.0, Dot(n, h));
+        shade += kd_ * light_color * n_dot_l + ks_ * light_color * std::pow(n_dot_h, p_);
+
+//        auto r = Reflect(-l, n.ToVector());
+//        auto r_dot_v = std::max(0.0, Dot(r, v));
+//        shade += kd_ * light_color * n_dot_l + ks_ * light_color * std::pow(r_dot_v, p_);
     }
 
-    return shade;
+    return Clamp(shade);
 }

@@ -60,9 +60,13 @@ static std::shared_ptr<Transformation> ParseReflection(std::unique_ptr<XMLNode>&
 }
 
 static std::shared_ptr<Transformation> ParseTranslation(std::unique_ptr<XMLNode>& node) {
-    double x_translation = (node->attributes_.count("x") > 0) ? std::stod(node->attributes_["x"]) : 0.0;
-    double y_translation = (node->attributes_.count("y") > 0) ? std::stod(node->attributes_["y"]) : 0.0;
-    double z_translation = (node->attributes_.count("z") > 0) ? std::stod(node->attributes_["z"]) : 0.0;
+    double x = (node->attributes_.count("x") > 0.0) ? std::stod(node->attributes_["x"]) : 0.0;
+    double y = (node->attributes_.count("y") > 0.0) ? std::stod(node->attributes_["y"]) : 0.0;
+    double z = (node->attributes_.count("z") > 0.0) ? std::stod(node->attributes_["z"]) : 0.0;
+
+    double x_translation = x;
+    double y_translation = y;
+    double z_translation = z;
 
     return std::make_shared<Transformation>(Transformation::Translation(x_translation, y_translation, z_translation));
 }
@@ -188,7 +192,8 @@ static std::shared_ptr<MaterialInterface> ParseMaterial(std::unique_ptr<XMLNode>
     if (type == "simple_phong") {
         mat = std::make_shared<SimplePhongMaterial>(ParseColor(node, "ka"),
                                                     ParseColor(node, "kd"),
-                                                    ParseColor(node, "ks"));
+                                                    ParseColor(node, "ks"),
+                                                    std::stod(node->attributes_["power"]));
     } else {
         mat = std::make_shared<BlackMaterial>();
     }

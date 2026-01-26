@@ -79,6 +79,13 @@ private:
     std::array<double, 4> data_;
 };
 
+static Color Clamp(const Color& c) {
+    return { std::min(1.0, std::max(0.0, c.R())),
+             std::min(1.0, std::max(0.0, c.G())),
+             std::min(1.0, std::max(0.0, c.B()))
+             };
+}
+
 bool operator==(const Color& c1, const Color& c2);
 bool operator!=(const Color& c1, const Color& c2);
 Color operator+(const Color& c1, const Color& c2);

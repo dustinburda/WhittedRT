@@ -211,6 +211,11 @@ static double Angle(const Vector<T, N>& v1, const Vector<T, N>& v2)
     return acos(cos_theta);
 }
 
+template<typename  T, size_t N = 3>
+static Vector<T, N> Reflect(const Vector<T,N>& v, const Vector<T, N>& n) {
+    return v - 2 * Dot(v, n) * n;
+}
+
 
 using Vec4f = Vector<float, 4>;
 using Vec4d = Vector<double, 4>;

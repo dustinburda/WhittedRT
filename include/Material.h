@@ -39,13 +39,14 @@ public:
 class SimplePhongMaterial : public MaterialInterface {
 public:
     SimplePhongMaterial();
-    SimplePhongMaterial(Color ka, Color kd, Color ks);
+    SimplePhongMaterial(Color ka, Color kd, Color ks, double p);
 
     Color Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights, double ambient_intensity) override;
 
     Color ka_;
     Color kd_;
     Color ks_;
+    double p_;
 };
 
 
