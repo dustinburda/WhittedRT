@@ -9,6 +9,6 @@
 
     <shape type="sphere" material="phong_purple" transformation="t1"></shape>
 
-    <light type="point" position="7.0, 10.0, 10.0" color="1.0, 1.0, 1.0" intensity="1.0"></light>
+    <light type="point" position="0.0, 0.0, 10.0" color="1.0, 1.0, 1.0" intensity="1.0"></light>
     <light type="ambient" intensity="0.1"></light>
 </scene>
