@@ -11,9 +11,6 @@ Implement Shaders
 =============================================
 (Requires: Sampler) Anti-Aliasing w/ Adaptive Sampling
 =============================================
-(Requires: Light) Diffuse Shading
-(Requires: Light) Specular Highlights
-=============================================
 (Required: Shading) Rework shading - BRDF
 =============================================
 (Requires: Light) Shadows

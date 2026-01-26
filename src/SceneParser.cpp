@@ -25,7 +25,7 @@
 
 static std::unordered_map<std::string, std::shared_ptr<Transformation>> name_transformation;
 static std::unordered_map<std::string, std::shared_ptr<Instance>> name_instance;
-static std::unordered_map<std::string, std::shared_ptr<Material>> name_material;
+static std::unordered_map<std::string, std::shared_ptr<MaterialInterface>> name_material;
 
 static std::shared_ptr<Transformation> ParseRotation(std::unique_ptr<XMLNode>& node) {
     std::string axis = node->attributes_["axis"];
@@ -90,6 +90,8 @@ static std::shared_ptr<Transformation> ParseTransformation(std::unique_ptr<XMLNo
             transformations.push(ParseTranslation(child));
         } else if (child->tag_ == "scale") {
             transformations.push(ParseScale(child));
+        } else {
+            transformations.push(std::make_shared<Transformation>(Transformation::Identity()));
         }
     }
 
@@ -161,10 +163,10 @@ static std::shared_ptr<Instance> ParseShape(std::unique_ptr<XMLNode>& node) {
     return std::make_shared<Instance>(transformation_ptr, shape_ptr, material_ptr, instance_type);
 }
 
-static std::shared_ptr<Material> ParseMaterial(std::unique_ptr<XMLNode>& node) {
-    double r, g, b;
-    std::stringstream s { node->attributes_["color"] };
+static Color ParseColor(std::unique_ptr<XMLNode>& node, std::string attribute) {
+    std::stringstream s { node->attributes_[attribute] };
 
+    double r, b, g;
     std::string token;
     std::getline(s, token, ',');
     r = std::stod(token);
@@ -175,7 +177,23 @@ static std::shared_ptr<Material> ParseMaterial(std::unique_ptr<XMLNode>& node) {
     std::getline(s, token, ',');
     b = std::stod(token);
 
-    return std::make_shared<Material>(Color {r, g, b});
+    return Color {r, g, b};
+}
+
+static std::shared_ptr<MaterialInterface> ParseMaterial(std::unique_ptr<XMLNode>& node) {
+    std::string type = node->attributes_["type"];
+
+    std::shared_ptr<MaterialInterface> mat = nullptr;
+
+    if (type == "simple_phong") {
+        mat = std::make_shared<SimplePhongMaterial>(ParseColor(node, "ka"),
+                                                    ParseColor(node, "kd"),
+                                                    ParseColor(node, "ks"));
+    } else {
+        mat = std::make_shared<BlackMaterial>();
+    }
+
+    return mat;
 }
 
 static std::shared_ptr<Sampler> ParseSampler(std::unique_ptr<XMLNode>& node) {
@@ -230,7 +248,11 @@ static std::shared_ptr<Light> ParseLight(std::unique_ptr<XMLNode>& node) {
     return light;
 }
 
-void SceneParser::ParseScene(std::filesystem::path path, std::unique_ptr<World>& world, std::shared_ptr<Sampler>& sampler, std::vector<std::shared_ptr<Light>>& lights) {
+void SceneParser::ParseScene(std::filesystem::path path,
+                             std::unique_ptr<World>& world,
+                             std::shared_ptr<Sampler>& sampler,
+                             std::vector<std::shared_ptr<Light>>& lights,
+                             double& ambient_intensity) {
     std::ifstream file {path};
     auto file_size = std::filesystem::file_size(path);
 
@@ -249,8 +271,13 @@ void SceneParser::ParseScene(std::filesystem::path path, std::unique_ptr<World>&
             name_material[child->attributes_["name"]] = ParseMaterial(child);
         else if (child->tag_ == "antialiasing")
             sampler = ParseSampler(child);
-        else if (child->tag_ == "light")
-            lights.push_back(ParseLight(child));
+        else if (child->tag_ == "light") {
+            if (child->attributes_["type"] == "ambient") {
+                ambient_intensity = std::stod(child->attributes_["intensity"]);
+            } else {
+                lights.push_back(ParseLight(child));
+            }
+        }
     }
 
     world = std::make_unique<World>();

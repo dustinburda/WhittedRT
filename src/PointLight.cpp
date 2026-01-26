@@ -3,6 +3,7 @@
 //
 
 #include "../include/PointLight.h"
+#include "../include/ShadeContext.h"
 
 
 PointLight::PointLight(Point3d position, double intensity, Color light_color)

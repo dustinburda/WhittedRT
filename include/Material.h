@@ -5,12 +5,47 @@
 #ifndef WHITTED_MATERIAL_H
 #define WHITTED_MATERIAL_H
 
-#include "Point.h"
 #include "Canvas.h"
+#include "Point.h"
 
-struct Material {
-    Material(Color color) : color_{color} {}
-    Color color_;
+#include <vector>
+#include <memory>
+
+class Light;
+struct ShadeContext;
+
+enum class MaterialType {
+    Black,
+    SimplePhong,
+    Reflective,
+    Refractive
+};
+
+class MaterialInterface {
+public:
+    explicit MaterialInterface(MaterialType mat_type);
+    virtual ~MaterialInterface() = default;
+
+    virtual Color Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights, double ambient_intensity) = 0;
+    MaterialType mat_type_;
+};
+
+class BlackMaterial : public MaterialInterface {
+public:
+    BlackMaterial();
+    Color Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights, double ambient_intensity) override;
+};
+
+class SimplePhongMaterial : public MaterialInterface {
+public:
+    SimplePhongMaterial();
+    SimplePhongMaterial(Color ka, Color kd, Color ks);
+
+    Color Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights, double ambient_intensity) override;
+
+    Color ka_;
+    Color kd_;
+    Color ks_;
 };
 
 

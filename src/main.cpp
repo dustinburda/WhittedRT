@@ -14,33 +14,20 @@
 static constexpr uint16_t HEIGHT = 1000;
 static constexpr uint16_t WIDTH =  2000;
 
-Color Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights) {
-    Color shade;
-
-    for (auto& light : lights)
-    {
-        auto n_dot_l = std::max(0.0, Dot(context.normal_, light->GetDirection(context)));
-        shade += context.mat_->color_ * (light->GetIntensity() * light->GetColor()) * n_dot_l;
-    }
-
-    return shade;
-}
-
-Color Trace(World& w, Ray& r, ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights) {
+Color Trace(World& w, Ray& r, ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights, double ambient_intensity) {
     if(w.Hit(r, context))
     {
-        return Shade(context, lights);
+        return context.mat_->Shade(context, lights, ambient_intensity);
     }
-
 
     return {0.0, 0.0, 0.0};
 }
 
 
-void Render(CameraInterface* camera, Canvas& canvas, World& w, std::vector<std::shared_ptr<Light>>& lights) {
+void Render(CameraInterface* camera, Canvas& canvas, World& w, std::vector<std::shared_ptr<Light>>& lights, double ambient_intensity) {
     std::size_t num_threads = std::thread::hardware_concurrency() - 2;
     ThreadPool pool;
-    auto render = [&camera, &canvas, &lights](World& w, int x_start, int chunk_x_size, int y_start, int chunk_y_size) {
+    auto render = [&camera, &canvas, &lights, & ambient_intensity](World& w, int x_start, int chunk_x_size, int y_start, int chunk_y_size) {
         for(int y = y_start; y < y_start + chunk_y_size; y++)
             for(int x = x_start; x < x_start + chunk_x_size; x++) {
                 auto rays = camera->GetRayAt(x, y);
@@ -48,7 +35,7 @@ void Render(CameraInterface* camera, Canvas& canvas, World& w, std::vector<std::
                 Color pixel_color;
                 for (auto& ray : rays) {
                     ShadeContext context;
-                    pixel_color += Trace(w, ray, context, lights);
+                    pixel_color += Trace(w, ray, context, lights, ambient_intensity);
                 }
                 pixel_color /= rays.size();
 
@@ -90,15 +77,19 @@ int main(int argc, char** argv)
     Canvas canvas {WIDTH, HEIGHT};
 
     ProjectiveCamera camera {WIDTH, HEIGHT, 1.0};
+
+    // TODO, encapsulate into scene class
     std::unique_ptr<World> world = nullptr;
     std::shared_ptr<Sampler> sampler = nullptr;
     std::vector<std::shared_ptr<Light>> lights;
+    double ambient_intensity = 0.0;
 
-    SceneParser::GetInstance().ParseScene(scene_description_file_path, world, sampler, lights);
+
+    SceneParser::GetInstance().ParseScene(scene_description_file_path, world, sampler, lights, ambient_intensity);
 
     camera.SetSampler(sampler);
     world->Build(); // Construct BVH
-    Render(&camera, canvas, *world, lights);
+    Render(&camera, canvas, *world, lights, ambient_intensity);
 
     canvas.Flush(scene_description_file_name + ".ppm");
 

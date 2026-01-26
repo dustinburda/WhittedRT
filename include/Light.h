@@ -5,12 +5,16 @@
 #ifndef WHITTED_LIGHT_H
 #define WHITTED_LIGHT_H
 
-#include "ShadeContext.h"
+#include "Color.h"
+#include "Vector.h"
+
+struct ShadeContext;
 
 class Light {
 public:
     Light();
     Light(double intensity, Color light_color);
+    virtual ~Light() = default;
 
     virtual Vec3d GetDirection(ShadeContext& ctx) const = 0;
 

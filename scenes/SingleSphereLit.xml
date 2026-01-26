@@ -1,5 +1,5 @@
 <scene>
-    <material name="flat_red_color" color="1.0, 0.0, 1.0"></material>
+    <material name="phong_purple" type="simple_phong" ka="0.6, 0.0, 0.6" kd="1.0, 0.0, 1.0" ks="1.0, 0.0, 1.0"></material>
     <antialiasing type="jittered" samples="16"></antialiasing>
 
     <transformation name="t1">
@@ -7,7 +7,8 @@
         <translation z="2.0"></translation>
     </transformation>
 
-    <shape type="sphere" material="flat_red_color" transformation="t1"></shape>
+    <shape type="sphere" material="phong_purple" transformation="t1"></shape>
 
-    <light type="point" position="3.0, 10.0, 0.0" color="1,0, 1.0, 1.0" intensity="0.5"></light>
+    <light type="point" position="3.0, 10.0, 0.0" color="1.0, 1.0, 1.0" intensity="0.5"></light>
+    <light type="ambient" intensity="0.4"></light>
 </scene>

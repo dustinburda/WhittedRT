@@ -6,10 +6,10 @@
 
 #include "../include/Mesh.h"
 
-Instance::Instance(std::shared_ptr<ShapeInterface> shape, std::shared_ptr<Material> mat, InstanceType type)
+Instance::Instance(std::shared_ptr<ShapeInterface> shape, std::shared_ptr<MaterialInterface> mat, InstanceType type)
     : transform_{nullptr}, shape_{std::move(shape)}, mat_{std::move(mat)}, instance_type_{type} {}
 
-Instance::Instance(std::shared_ptr<Transformation> t, std::shared_ptr<ShapeInterface> shape, std::shared_ptr<Material> mat, InstanceType type)
+Instance::Instance(std::shared_ptr<Transformation> t, std::shared_ptr<ShapeInterface> shape, std::shared_ptr<MaterialInterface> mat, InstanceType type)
     :transform_{t}, shape_{std::move(shape)}, mat_{std::move(mat)}, instance_type_{type} {}
 
 Normal<double, 3> Instance::NormalAt(const Point<double, 3>& p) const {
