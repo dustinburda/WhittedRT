@@ -4,7 +4,7 @@
 #include "../include/ProjectiveCamera.h"
 #include "../include/SceneParser.h"
 #include "../include/Sphere.h"
-#include "../include/Threadpool.h"
+#include "../include/ThreadPool.h"
 #include "../include/World.h"
 #include "../include/Vector.h"
 

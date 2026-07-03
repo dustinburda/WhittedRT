@@ -59,8 +59,6 @@ rgb to linear to grayscale
 
 Make boxes renderable
 
-
-UNIT TEST
 CLangFormat
 CI/CD Pipeline
 

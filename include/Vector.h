@@ -15,6 +15,8 @@
 #include <string>
 #include <sstream>
 
+#include "Util.h"
+
 
 template<typename T, size_t N>
 class Vector {
@@ -39,7 +41,9 @@ public:
     }
 
     Vector(const Vector<T, N - 1>& v, T val) {
-         std::memcpy(data_.data(), v.data_.data(), (N - 1) * sizeof(T));
+         for (int i = 0; i < N - 1; i++) {
+             data_[i] = v[i];
+         }
          data_[N - 1] = val;
     }
 
@@ -107,6 +111,9 @@ public:
      }
 
     Vector<T, N> UnitVector() const {
+         if (Length() < epsilon)
+             throw std::logic_error("Cannot normalize a vector of length 1.");
+
          return (*this) / Length();
     }
 
@@ -118,9 +125,13 @@ public:
          ss << "Vector: [";
          for(std::size_t i = 0; i < N; i++)
          {
-             ss << " " <<  data_[i];
+             if (i != 0)
+                ss << " ";
+
+             ss <<  data_[i];
+
              if (i != N - 1)
-                 ss << ", ";
+                 ss << ",";
          }
          ss << "]";
 
@@ -168,7 +179,7 @@ static Vector<double, N> operator/(const Vector<T,N>& v1, const double t) {
 
 
 template<typename T, size_t N>
-static bool operator==(const Vector<T, N>& v1, Vector<T,N> &v2){
+static bool operator==(const Vector<T, N>& v1, const Vector<T,N> &v2){
     for(int i = 0; i < N; i++){
         if(v1[i] != v2[i])
             return false;
@@ -201,18 +212,19 @@ static Vector<T, N> Cross(const Vector<T,N>& v1, const Vector<T, N>& v2) {
     return cross_product;
 }
 
-// IN RADIANS
-template<typename T, size_t N>
+template<typename  T, size_t N>
 static double Angle(const Vector<T, N>& v1, const Vector<T, N>& v2)
 {
-    double dot_product = dot(v1, v2);
-    double cos_theta = dot_product / (v1.length() * v2.length());
+    double dot_product = Dot(v1, v2);
+    double cos_theta = dot_product / (v1.Length() * v2.Length());
 
     return acos(cos_theta);
 }
 
 template<typename  T, size_t N = 3>
 static Vector<T, N> Reflect(const Vector<T,N>& v, const Vector<T, N>& n) {
+    // the head of v touches the tail of n
+
     return v - 2 * Dot(v, n) * n;
 }
 

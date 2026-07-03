@@ -33,15 +33,17 @@ Color SimplePhongMaterial::Shade(ShadeContext& context, std::vector<std::shared_
         auto l = light->GetDirection(context);
         auto n = context.normal_;
 
-        auto n_dot_l = std::max(0.0, Dot(n, l));
-        auto light_color = light->GetIntensity() * light->GetColor();
+        auto n_dot_l = Dot(n, l);
 
-        auto v = (-context.point_).ToVector().UnitVector(); // Camera is at origin
+        if (n_dot_l > 0.0) {
+            auto light_color = light->GetIntensity() * light->GetColor();
+            auto v = (-context.point_).ToVector().UnitVector(); // Camera is at origin
 
 
-        auto h = (v + l).UnitVector();
-        auto n_dot_h = std::max(0.0, Dot(n, h));
-        shade += kd_ * light_color * n_dot_l + ks_ * light_color * std::pow(n_dot_h, p_);
+            auto h = (v + l).UnitVector();
+            auto n_dot_h = std::max(0.0, Dot(n, h));
+            shade += light_color * (kd_ * n_dot_l + ks_ * std::pow(n_dot_h, p_));
+        }
 
 //        auto r = Reflect(-l, n.ToVector());
 //        auto r_dot_v = std::max(0.0, Dot(r, v));
