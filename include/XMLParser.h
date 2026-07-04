@@ -18,7 +18,14 @@ using XMLNodePtr = std::unique_ptr<XMLNode>;
 struct XMLNode {
     std::unordered_map<std::string, std::string> attributes_;
     std::string tag_;
+
+    union {
+
+    };
+    std::string value_;
     std::vector<XMLNodePtr> children_;
+
+    std::optional<std::string> ChildValue(std::string_view tag);
 };
 
 
@@ -26,8 +33,6 @@ struct XMLNode {
  * This is a naive and feature deficient XML Parser
  *
  * No Error Checking
- * Balanced tags only
- * No text content
  * */
 
 class XMLParser {

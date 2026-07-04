@@ -60,12 +60,38 @@ TEST(XMLTest, BasicTag) {
     EXPECT_EQ(child2->attributes_["attr3"], "val3");
 }
 
-//TEST(XMLTest, BasicTagNested) {
-//    std::string src = "<tag1 attr1=\"val1\" attr2=\"val2\">"
-//                      "<tag2>"
-//                      "<nestedChildTag1></nestedChildTag1>"
-//                      "<nestedChildTag2></nestedChildTag2>"
-//                      "</tag2>"
-//                      "<tag3 attr1=\"val1\" attr2=\"val2\"></tag3>"
-//                      "</tag1>";
-//}
+TEST(XMLTest, TagWithValue) {
+    auto& p = XMLParser::GetInstance();
+
+    std::string src = "<tag1>   Value1   </tag1>";
+
+    auto node = p.Parse(src);
+
+    EXPECT_EQ(node->tag_, "tag1");
+    EXPECT_EQ(node->value_, "Value1");
+}
+
+TEST(XMLTest, SelfClosingTag) {
+    auto& p = XMLParser::GetInstance();
+
+    std::string src = "<tag1/>";
+
+    auto node = p.Parse(src);
+
+    EXPECT_EQ(node->tag_, "tag1");
+    EXPECT_TRUE(node->value_.empty());
+}
+
+TEST(XMLTest, SelfClosingTagWithAttributes) {
+    auto& p = XMLParser::GetInstance();
+
+    std::string src = "<tag1 attr1=\"val1\" attr2=\"val2\" \\>";
+
+    auto node = p.Parse(src);
+
+    EXPECT_EQ(node->tag_, "tag1");
+    EXPECT_EQ(node->attributes_["attr1"], "val1");
+    EXPECT_EQ(node->attributes_["attr2"], "val2");
+
+    EXPECT_TRUE(node->value_.empty());
+}

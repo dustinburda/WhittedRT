@@ -1,5 +1,6 @@
 #include "../include/BoundingBox.h"
 #include "../include/BVH.h"
+#include "../include/ConfigParser.h"
 #include "../include/Light.h"
 #include "../include/ProjectiveCamera.h"
 #include "../include/SceneParser.h"
@@ -10,9 +11,6 @@
 
 #include <cstdlib>
 #include <thread>
-
-static constexpr uint16_t HEIGHT = 1000;
-static constexpr uint16_t WIDTH =  2000;
 
 Color Trace(World& w, Ray& r, ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights, double ambient_intensity) {
     if(w.Hit(r, context))
@@ -25,8 +23,8 @@ Color Trace(World& w, Ray& r, ShadeContext& context, std::vector<std::shared_ptr
 
 
 void Render(CameraInterface* camera, Canvas& canvas, World& w, std::vector<std::shared_ptr<Light>>& lights, double ambient_intensity) {
-    std::size_t num_threads = std::thread::hardware_concurrency() - 2;
-    ThreadPool pool;
+    int num_threads = std::max(static_cast<int>(std::thread::hardware_concurrency()) - 2, 2);
+    ThreadPool pool {num_threads};
     auto render = [&camera, &canvas, &lights, & ambient_intensity](World& w, int x_start, int chunk_x_size, int y_start, int chunk_y_size) {
         for(int y = y_start; y < y_start + chunk_y_size; y++)
             for(int x = x_start; x < x_start + chunk_x_size; x++) {
@@ -43,40 +41,40 @@ void Render(CameraInterface* camera, Canvas& canvas, World& w, std::vector<std::
             }
     };
 
-    std::size_t chunk_x_size = WIDTH / std::min<std::size_t>(WIDTH, num_threads);
-    std::size_t chunk_y_size = HEIGHT /  std::min<std::size_t>(HEIGHT, num_threads);
+    std::size_t chunk_x_size = canvas.Width() / std::min<std::size_t>(canvas.Width(), num_threads);
+    std::size_t chunk_y_size = canvas.Height() /  std::min<std::size_t>(canvas.Height(), num_threads);
 
-    for (std::size_t y = 0; y < HEIGHT; y += chunk_y_size)
-        for(std::size_t x = 0; x < WIDTH; x += chunk_x_size) {
-            chunk_y_size = std::min(chunk_y_size, HEIGHT - y);
-            chunk_x_size = std::min(chunk_x_size, WIDTH - x);
-
+    for (std::size_t y = 0; y < canvas.Height(); y += std::min(chunk_y_size, canvas.Height() - y))
+        for(std::size_t x = 0; x < canvas.Width(); x += std::min(chunk_x_size, canvas.Width() - x)) {
             std::thread t ( render, std::ref(w), x, chunk_x_size, y, chunk_y_size);
             pool.Add(std::move(t));
         }
 }
 
+class Renderer {
+public:
+private:
+    Renderer() {
+
+    }
+
+    int num_threads;
+};
+
+class Scene {
+
+};
+
 
 int main(int argc, char** argv)
 {
-    if (argc != 2) {
-        throw std::logic_error("Can only pass a single parameter!");
-    }
+    Config config = ConfigParser::GetInstance().Parse("/config/Config.xml");
 
-    auto start = std::chrono::steady_clock::now();
+    // TODO: Get Render Time
 
-    std::string scene_description_file_name = argv[1];
 
-    auto scene_description_file_path = "../scenes/" + scene_description_file_name + ".xml";
-    std::ifstream scene_description_file {scene_description_file_path};
-
-    if (!scene_description_file.is_open()) {
-        throw std::logic_error("Scene description file: \"" + scene_description_file_name + ".xml" +  "\" does not exist.");
-    }
-
-    Canvas canvas {WIDTH, HEIGHT};
-
-    ProjectiveCamera camera {WIDTH, HEIGHT, 1.0};
+    Canvas canvas {config.width_, config.height_};
+    std::unique_ptr<CameraInterface> camera_ptr = std::make_unique<ProjectiveCamera>(config.width_, config.height_, 1.0);
 
     // TODO, encapsulate into scene class
     std::unique_ptr<World> world = nullptr;
@@ -85,16 +83,11 @@ int main(int argc, char** argv)
     double ambient_intensity = 0.0;
 
 
-    SceneParser::GetInstance().ParseScene(scene_description_file_path, world, sampler, lights, ambient_intensity);
+    SceneParser::GetInstance().ParseScene(config.scene_description_path_, world, sampler, lights, ambient_intensity);
 
-    camera.SetSampler(sampler);
+    camera_ptr->SetSampler(sampler);
     world->Build(); // Construct BVH
-    Render(&camera, canvas, *world, lights, ambient_intensity);
+    Render(camera_ptr.get(), canvas, *world, lights, ambient_intensity);
 
-    canvas.Flush(scene_description_file_name + ".ppm");
-
-
-    auto end = std::chrono::steady_clock::now();
-
-    std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << std::endl;
+    canvas.Flush(config.output_path_);
 }

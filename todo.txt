@@ -1,4 +1,10 @@
 =============================================
+Config Parser
+- Height
+- Width
+- Scene Description Path
+
+=============================================
 (Requires: Light) Implement Flat Shading
 (Requires: Light) Implement Gourard Shading
 Implement Shaders

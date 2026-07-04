@@ -31,6 +31,9 @@ public:
 	Color GetColorAt(uint16_t i, uint16_t j) const;
 	void Flush(const std::string& path = "");
 
+	uint16_t Width() const { return width_; }
+	uint16_t Height() const { return height_; }
+
 private:
 
 	const uint16_t width_;
