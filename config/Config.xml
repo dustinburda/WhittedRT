@@ -1,0 +1,12 @@
+<Config>
+    <ThreadCount>4</ThreadCount>
+
+    <Height>1920</Height>
+    <Width>1080</Width>
+
+    <CameraType>Projective</CameraType>
+
+    <SceneDescriptionPath>/scenes/SingleSphere.xml</SceneDescriptionPath>
+    <OutputPath>/images/SingleSphere.ppm</OutputPath>
+
+</Config>

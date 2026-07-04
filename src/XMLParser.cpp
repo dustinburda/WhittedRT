@@ -4,6 +4,15 @@
 
 #include "../include/XMLParser.h"
 
+std::optional<std::string> XMLNode::ChildValue(std::string_view tag) {
+    for (auto& child : children_) {
+        if (tag == child->tag_)
+            return child->value_;
+    }
+
+    return std::nullopt;
+}
+
 
 XMLParser& XMLParser::GetInstance() {
     static XMLParser parser;
@@ -88,7 +97,7 @@ std::string XMLParser::ConsumeUntilToken(char c) {
 std::unordered_map<std::string, std::string> XMLParser::ParseAttributes() {
     std::unordered_map<std::string, std::string> attributes;
 
-    while (Peek() != '>') {
+    while ((Peek().has_value() && Peek() != '>') && (PeekAhead(2).has_value() && PeekAhead(2).value() != "/>")) {
         ConsumeWhitespace();
         auto attribute = ConsumeUntilToken('=');
         Consume(); // =
@@ -115,10 +124,26 @@ XMLNodePtr XMLParser::ParseNode() {
     node->attributes_ = ParseAttributes();
     ConsumeWhitespace();
 
+    if (PeekAhead(2).has_value() && PeekAhead(2).value() == "/>") {
+        // Self closing tag
+
+        Consume(); // /
+        Consume(); // >
+
+        return node;
+    }
+
+
     ConsumeUntilToken('>');
     Consume(); // >
+    ConsumeWhitespace();
 
-    node->children_ = ParseChildren();
+    if (Peek() == '<')
+        node->children_ = ParseChildren();
+    else {
+        node->value_ = ConsumeAlphaNumeric();
+        ConsumeWhitespace();
+    }
 
     ConsumeWhitespace();
     Consume(); // <
