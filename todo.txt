@@ -1,10 +1,4 @@
 =============================================
-Config Parser
-- Height
-- Width
-- Scene Description Path
-
-=============================================
 (Requires: Light) Implement Flat Shading
 (Requires: Light) Implement Gourard Shading
 Implement Shaders
@@ -13,7 +7,7 @@ Implement Shaders
 =============================================
 (Requires: Shape Interface) Implement Cylinder
 (Requires: Shape Interface) Implement Cone
-(Requires: Shape Interface) Implement Box
+(Requires: Shape Interface) Implement Renderable Box
 =============================================
 (Requires: Sampler) Anti-Aliasing w/ Adaptive Sampling
 =============================================
@@ -38,6 +32,7 @@ Implement Shaders
 (Requires: Sampler) Ambient Occlusion
 (Requires: Sampler) Path Tracing
 =============================================
+(Requires: BVH) Stop Copying Vectors
 (Requires: BVH) Various Split Methods
 =============================================
 (Requires: None) Unit Tests
@@ -61,9 +56,6 @@ finish hammersley sampler
 Fix size_t stuff in loops
 gamma correction
 rgb to linear to grayscale
-
-
-Make boxes renderable
 
 CLangFormat
 CI/CD Pipeline

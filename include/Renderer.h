@@ -1,0 +1,74 @@
+//
+// Created by Dustin on 7/4/26.
+//
+
+#ifndef WHITTED_RENDERER_H
+#define WHITTED_RENDERER_H
+
+#include "Color.h"
+#include "SceneParser.h"
+#include "ShadeContext.h"
+#include "Material.h"
+
+#include <thread>
+#include <vector>
+
+
+class Renderer {
+public:
+    static Renderer GetInstance() {
+        static Renderer renderer;
+
+        return renderer;
+    }
+
+    void Render (Scene& scene, Canvas& canvas) {
+
+        auto trace = [](Scene& scene, Ray& r, ShadeContext& context) -> Color {
+            if(scene.world_->Hit(r, context))
+            {
+                return context.mat_->Shade(context, scene.lights_, scene.ambient_intensity_);
+            }
+
+            return {0.0, 0.0, 0.0};
+        };
+
+        auto render = [&scene, &canvas, &trace](int x_start, int chunk_x_size, int y_start, int chunk_y_size) {
+            for(int y = y_start; y < y_start + chunk_y_size; y++)
+                for(int x = x_start; x < x_start + chunk_x_size; x++) {
+                    auto rays = scene.camera_->GetRayAt(x, y);
+
+                    Color pixel_color;
+                    for (auto& ray : rays) {
+                        ShadeContext context;
+                        pixel_color += trace(scene, ray, context);
+                    }
+                    pixel_color /= rays.size();
+
+                    canvas.SetColorAt(pixel_color, x, y);
+                }
+        };
+
+        std::size_t chunk_x_size = canvas.Width() / std::min<std::size_t>(canvas.Width(), num_threads_);
+        std::size_t chunk_y_size = canvas.Height() /  std::min<std::size_t>(canvas.Height(), num_threads_);
+
+        // TODO: Make a tile queue and fixed number of threads
+        std::vector<std::thread> pool;
+        for (std::size_t y = 0; y < canvas.Height(); y += std::min(chunk_y_size, canvas.Height() - y))
+            for(std::size_t x = 0; x < canvas.Width(); x += std::min(chunk_x_size, canvas.Width() - x)) {
+                std::thread t ( render, x, chunk_x_size, y, chunk_y_size);
+                pool.push_back(std::move(t));
+            }
+    }
+
+
+private:
+    Renderer() : num_threads_{4} {
+
+    }
+
+    int num_threads_;
+
+};
+
+#endif //WHITTED_RENDERER_H

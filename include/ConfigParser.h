@@ -32,7 +32,7 @@ public:
         return parser;
     }
 
-    Config Parse(std::string config_path) {
+    Config ParseConfig(std::string config_path) {
         Config config;
 
         auto node_ptr = xml_parser_.Parse(config_path);
