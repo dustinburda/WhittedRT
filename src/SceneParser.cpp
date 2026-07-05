@@ -253,11 +253,7 @@ static std::shared_ptr<Light> ParseLight(std::unique_ptr<XMLNode>& node) {
     return light;
 }
 
-void SceneParser::ParseScene(std::filesystem::path path,
-                             std::unique_ptr<World>& world,
-                             std::shared_ptr<Sampler>& sampler,
-                             std::vector<std::shared_ptr<Light>>& lights,
-                             double& ambient_intensity) {
+Scene SceneParser::ParseScene(std::string path) {
     std::ifstream file {path};
     auto file_size = std::filesystem::file_size(path);
 
@@ -267,6 +263,8 @@ void SceneParser::ParseScene(std::filesystem::path path,
 
     auto node = xml_parser_.Parse(src);
 
+    Scene scene;
+
     for (auto& child : node->children_) {
         if (child->tag_ == "transformation")
             name_transformation[child->attributes_["name"]] = ParseTransformation(child);
@@ -275,19 +273,21 @@ void SceneParser::ParseScene(std::filesystem::path path,
         else if (child->tag_ == "material")
             name_material[child->attributes_["name"]] = ParseMaterial(child);
         else if (child->tag_ == "antialiasing")
-            sampler = ParseSampler(child);
+            scene.sampler_ = ParseSampler(child);
         else if (child->tag_ == "light") {
             if (child->attributes_["type"] == "ambient") {
-                ambient_intensity = std::stod(child->attributes_["intensity"]);
+                scene.ambient_intensity_ = std::stod(child->attributes_["intensity"]);
             } else {
-                lights.push_back(ParseLight(child));
+                scene.lights_.push_back(ParseLight(child));
             }
         }
     }
 
-    world = std::make_unique<World>();
+    scene.world_ = std::make_unique<World>();
     for (auto [_, shape_ptr] : name_instance)
-        world->AddShape(*shape_ptr);
+        scene.world_->AddShape(*shape_ptr);
+
+    return scene;
 }
 
 SceneParser::SceneParser() : xml_parser_{XMLParser::GetInstance()} {}

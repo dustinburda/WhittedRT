@@ -5,13 +5,35 @@
 #ifndef SCENEPARSER_H
 #define SCENEPARSER_H
 
+#include "CameraInterface.h"
+#include "Light.h"
 #include "Sampler.h"
 #include "XMLParser.h"
 #include "World.h"
 
-#include <filesystem>
 #include <string>
-#include <unordered_map>
+#include <vector>
+
+struct Scene {
+    std::unique_ptr<World> world_;
+    std::shared_ptr<Sampler> sampler_;
+    std::unique_ptr<CameraInterface> camera_;
+    std::vector<std::shared_ptr<Light>> lights_;
+    double ambient_intensity_;
+
+    Scene() {
+        world_ = nullptr;
+        sampler_ = nullptr;
+        lights_ = {};
+        ambient_intensity_ = 0.0;
+    }
+
+    Scene(const Scene&) = delete;
+    Scene& operator=(const Scene&) = delete;
+
+    Scene(Scene&&) = default;
+    Scene& operator=(Scene&&) = default;
+};
 
 class SceneParser {
 public:
@@ -21,11 +43,7 @@ public:
         return p;
     }
 
-    void ParseScene(std::filesystem::path path,
-                    std::unique_ptr<World>& world,
-                    std::shared_ptr<Sampler>& sampler,
-                    std::vector<std::shared_ptr<Light>>& lights,
-                    double& ambient_intensity);
+    Scene ParseScene(std::string path);
 
 private:
     SceneParser();
