@@ -5,7 +5,7 @@
 #include "../include/ProjectiveCamera.h"
 #include "../include/Util.h"
 
-std::vector<Ray> ProjectiveCamera::GetRayAt(int x, int y) const
+std::vector<Ray> ProjectiveCamera::GetRayAt(int x, int y, const ImagePlane& p) const
 {
     double height = (1.0 / v_y_[1]) * (-2.0 / 1.0);
     double width = height * aspect_ratio_;

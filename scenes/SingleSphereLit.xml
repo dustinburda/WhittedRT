@@ -1,4 +1,11 @@
 <scene>
+    <camera type="projective">
+        <origin x="0.0" y="0.0" z="0.0"></origin>
+        <up x="0.0" y="1.0" z="0.0"></up>
+        <lookat x="0.0" y="0.0" z="-1.0"></lookat>
+        <fov>60</fov>
+    </camera>
+
     <material name="phong_purple" type="simple_phong" ka="0.4, 0.0, 0.4" kd="0.8, 0.0, 0.8" ks="1.0, 1.0, 1.0" power="1.3"></material>
     <antialiasing type="jittered" samples="16"></antialiasing>
 

@@ -8,6 +8,7 @@
 #include "CameraInterface.h"
 #include "Light.h"
 #include "Sampler.h"
+#include "Triangle.h"
 #include "XMLParser.h"
 #include "World.h"
 
@@ -48,9 +49,35 @@ public:
 private:
     SceneParser();
 
+    std::shared_ptr<Transformation> ParseRotation(std::unique_ptr<XMLNode>& node);
+    std::shared_ptr<Transformation> ParseReflection(std::unique_ptr<XMLNode>& node);
+    std::shared_ptr<Transformation> ParseTranslation(std::unique_ptr<XMLNode>& node);
+    std::shared_ptr<Transformation> ParseScale(std::unique_ptr<XMLNode>& node);
+    std::shared_ptr<Transformation> ParseTransformation(std::unique_ptr<XMLNode>& node);
+
+    std::unique_ptr<CameraInterface> ParseCamera(std::unique_ptr<XMLNode>& node);
+
+    Point3d ParseVertex (std::string point);
+    std::shared_ptr<Triangle> ParseTriangle(std::unique_ptr<XMLNode>& node);
+    std::shared_ptr<Instance> ParseShape(std::unique_ptr<XMLNode>& node);
+
+    Color ParseColor(std::unique_ptr<XMLNode>& node, std::string attribute);
+
+    std::shared_ptr<MaterialInterface> ParseMaterial(std::unique_ptr<XMLNode>& node);
+
+    std::shared_ptr<Sampler> ParseSampler(std::unique_ptr<XMLNode>& node);
+    std::shared_ptr<Light> ParsePointLight(std::unique_ptr<XMLNode>& node);
+    std::shared_ptr<Light> ParseLight(std::unique_ptr<XMLNode>& node);
+
+
+    struct {
+        std::unordered_map<std::string, std::shared_ptr<Transformation>> name_transformation_;
+        std::unordered_map<std::string, std::shared_ptr<Instance>> name_instance_;
+        std::unordered_map<std::string, std::shared_ptr<MaterialInterface>> name_material_;
+    } parsing_context_;
+
     XMLParser& xml_parser_;
 };
-
 
 
 #endif //SCENEPARSER_H
