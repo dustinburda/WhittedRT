@@ -12,7 +12,7 @@ MaterialInterface::MaterialInterface(MaterialType mat_type)
 BlackMaterial::BlackMaterial()
     : MaterialInterface(MaterialType::Black) {}
 
-Color BlackMaterial::Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights, double ambient_intensity) {
+Color BlackMaterial::Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights) {
     return {0.0, 0.0, 0.0};
 }
 
@@ -23,10 +23,10 @@ SimplePhongMaterial::SimplePhongMaterial(Color ka, Color kd, Color ks, double p)
         : MaterialInterface{MaterialType::SimplePhong}, ka_{ka}, kd_{kd}, ks_{ks}, p_{p} {}
 
 
-Color SimplePhongMaterial::Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights, [[ maybe_unused ]] double ambient_intensity) {
+Color SimplePhongMaterial::Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights) {
     Color shade;
 
-    shade += ka_ * ambient_intensity;
+    // shade += ka_ * ambient_intensity;
 
     for (auto& light : lights)
     {

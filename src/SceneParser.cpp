@@ -1,12 +1,14 @@
 //
 // Created by Dustin on 11/25/24.
 //
-
+#include "../include/AmbientLight.h"
 #include "../include/HammersleySampler.h"
-#include "../include/JitteredSampler.h"
 #include "../include/Instance.h"
+#include "../include/JitteredSampler.h"
 #include "../include/Light.h"
+#include "../include/OrthographicCamera.h"
 #include "../include/PointLight.h"
+#include "../include/ProjectiveCamera.h"
 #include "../include/Mesh.h"
 #include "../include/Plane.h"
 #include "../include/RandomSampler.h"
@@ -22,9 +24,6 @@
 
 #include <sstream>
 #include <string>
-
-#include "../include/OrthographicCamera.h"
-#include "../include/ProjectiveCamera.h"
 
 std::shared_ptr<Transformation> SceneParser::ParseRotation(std::unique_ptr<XMLNode>& node) {
     std::string axis = node->attributes_["axis"];
@@ -83,7 +82,7 @@ std::shared_ptr<Transformation> SceneParser::ParseTransformation(std::unique_ptr
     // Order of transformations matters
     std::stack<std::shared_ptr<Transformation>> transformations;
 
-    // TODO: Use Child Value
+    // TODO: Remove the
     for (auto& child : node->children_) {
         std::shared_ptr<Transformation> curr_transformation = nullptr;
         if (child->tag_ == "rotation") {
@@ -275,11 +274,20 @@ std::shared_ptr<Light> SceneParser::ParsePointLight(std::unique_ptr<XMLNode>& no
     return std::make_shared<PointLight>(position, intensity, color);
 }
 
+std::shared_ptr<Light> SceneParser::ParseAmbientLight(std::unique_ptr<XMLNode>& node) {
+    auto intensity = std::stod(node->ChildNode("intensity")->value_);
+    auto color = Color {1.0, 1.0, 1.0};
+
+    return std::make_shared<AmbientLight>(intensity, color);
+}
+
 std::shared_ptr<Light> SceneParser::ParseLight(std::unique_ptr<XMLNode>& node) {
 
     std::shared_ptr<Light> light = nullptr;
     if (node->attributes_["type"] == "point") {
         light = ParsePointLight(node);
+    } else if (node->attributes_["type"] == "ambient") {
+        light = ParseAmbientLight(node);
     }
 
     return light;
@@ -310,11 +318,7 @@ Scene SceneParser::ParseScene(std::string path) {
         else if (child->tag_ == "camera")
             scene.camera_ = std::move(ParseCamera(child));
         else if (child->tag_ == "light") {
-            if (child->attributes_["type"] == "ambient") {
-                scene.ambient_intensity_ = std::stod(child->attributes_["intensity"]);
-            } else {
-                scene.lights_.push_back(ParseLight(child));
-            }
+            scene.lights_.push_back(ParseLight(child));
         }
     }
 

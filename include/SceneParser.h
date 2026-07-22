@@ -20,13 +20,11 @@ struct Scene {
     std::shared_ptr<Sampler> sampler_;
     std::unique_ptr<CameraInterface> camera_;
     std::vector<std::shared_ptr<Light>> lights_;
-    double ambient_intensity_;
 
     Scene() {
         world_ = nullptr;
         sampler_ = nullptr;
         lights_ = {};
-        ambient_intensity_ = 0.0;
     }
 
     Scene(const Scene&) = delete;
@@ -67,6 +65,7 @@ private:
 
     std::shared_ptr<Sampler> ParseSampler(std::unique_ptr<XMLNode>& node);
     std::shared_ptr<Light> ParsePointLight(std::unique_ptr<XMLNode>& node);
+    std::shared_ptr<Light> ParseAmbientLight(std::unique_ptr<XMLNode>& node);
     std::shared_ptr<Light> ParseLight(std::unique_ptr<XMLNode>& node);
 
 
