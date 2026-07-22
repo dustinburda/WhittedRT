@@ -23,11 +23,10 @@
 #include <sstream>
 #include <string>
 
-static std::unordered_map<std::string, std::shared_ptr<Transformation>> name_transformation;
-static std::unordered_map<std::string, std::shared_ptr<Instance>> name_instance;
-static std::unordered_map<std::string, std::shared_ptr<MaterialInterface>> name_material;
+#include "../include/OrthographicCamera.h"
+#include "../include/ProjectiveCamera.h"
 
-static std::shared_ptr<Transformation> ParseRotation(std::unique_ptr<XMLNode>& node) {
+std::shared_ptr<Transformation> SceneParser::ParseRotation(std::unique_ptr<XMLNode>& node) {
     std::string axis = node->attributes_["axis"];
     double degrees = std::stod(node->attributes_["val"]);
     double radians = degrees * pi / 180.0;
@@ -44,7 +43,7 @@ static std::shared_ptr<Transformation> ParseRotation(std::unique_ptr<XMLNode>& n
     return t;
 }
 
-static std::shared_ptr<Transformation> ParseReflection(std::unique_ptr<XMLNode>& node) {
+std::shared_ptr<Transformation> SceneParser::ParseReflection(std::unique_ptr<XMLNode>& node) {
     std::string axis = node->attributes_["axis"];
 
     std::shared_ptr<Transformation> t = nullptr;
@@ -59,7 +58,7 @@ static std::shared_ptr<Transformation> ParseReflection(std::unique_ptr<XMLNode>&
     return t;
 }
 
-static std::shared_ptr<Transformation> ParseTranslation(std::unique_ptr<XMLNode>& node) {
+std::shared_ptr<Transformation> SceneParser::ParseTranslation(std::unique_ptr<XMLNode>& node) {
     double x = (node->attributes_.count("x") > 0.0) ? std::stod(node->attributes_["x"]) : 0.0;
     double y = (node->attributes_.count("y") > 0.0) ? std::stod(node->attributes_["y"]) : 0.0;
     double z = (node->attributes_.count("z") > 0.0) ? std::stod(node->attributes_["z"]) : 0.0;
@@ -71,7 +70,7 @@ static std::shared_ptr<Transformation> ParseTranslation(std::unique_ptr<XMLNode>
     return std::make_shared<Transformation>(Transformation::Translation(x_translation, y_translation, z_translation));
 }
 
-static std::shared_ptr<Transformation> ParseScale(std::unique_ptr<XMLNode>& node) {
+std::shared_ptr<Transformation> SceneParser::ParseScale(std::unique_ptr<XMLNode>& node) {
     double x_scale = (node->attributes_.count("x") > 0) ? std::stod(node->attributes_["x"]) : 0.0;
     double y_scale = (node->attributes_.count("y") > 0) ? std::stod(node->attributes_["y"]) : 0.0;
     double z_scale = (node->attributes_.count("z") > 0) ? std::stod(node->attributes_["z"]) : 0.0;
@@ -79,11 +78,12 @@ static std::shared_ptr<Transformation> ParseScale(std::unique_ptr<XMLNode>& node
     return std::make_shared<Transformation>(Transformation::Scale(x_scale, y_scale, z_scale));
 }
 
-static std::shared_ptr<Transformation> ParseTransformation(std::unique_ptr<XMLNode>& node) {
+std::shared_ptr<Transformation> SceneParser::ParseTransformation(std::unique_ptr<XMLNode>& node) {
     auto transformation = std::make_shared<Transformation>(Transformation::Identity());
     // Order of transformations matters
     std::stack<std::shared_ptr<Transformation>> transformations;
 
+    // TODO: Use Child Value
     for (auto& child : node->children_) {
         std::shared_ptr<Transformation> curr_transformation = nullptr;
         if (child->tag_ == "rotation") {
@@ -99,6 +99,7 @@ static std::shared_ptr<Transformation> ParseTransformation(std::unique_ptr<XMLNo
         }
     }
 
+    // TODO: Get rid of this stupid loop
     while (transformations.size()) {
         auto curr_transformation = transformations.top();
         transformations.pop();
@@ -108,7 +109,8 @@ static std::shared_ptr<Transformation> ParseTransformation(std::unique_ptr<XMLNo
     return transformation;
 }
 
-static Point3d ParsePoint (std::string point) {
+// TODO: Get rid of this diabolically stupid function
+Point3d SceneParser::ParseVertex (std::string point) {
     std::stringstream ss {point};
     std::string token;
 
@@ -126,23 +128,23 @@ static Point3d ParsePoint (std::string point) {
     return Point3d {x, y, z};
 }
 
-static std::shared_ptr<Triangle> ParseTriangle(std::unique_ptr<XMLNode>& node) {
-    auto vertex1 { ParsePoint(node->attributes_["point1"]) };
-    auto vertex2 { ParsePoint(node->attributes_["point2"]) };
-    auto vertex3 { ParsePoint(node->attributes_["point3"]) };
+std::shared_ptr<Triangle> SceneParser::ParseTriangle(std::unique_ptr<XMLNode>& node) {
+    auto vertex1 { ParseVertex(node->attributes_["point1"]) };
+    auto vertex2 { ParseVertex(node->attributes_["point2"]) };
+    auto vertex3 { ParseVertex(node->attributes_["point3"]) };
 
     return std::make_shared<Triangle>(vertex1, vertex2, vertex3);
 }
 
-static std::shared_ptr<Instance> ParseShape(std::unique_ptr<XMLNode>& node) {
+std::shared_ptr<Instance> SceneParser::ParseShape(std::unique_ptr<XMLNode>& node) {
     std::string type = node->attributes_["type"];
 
     // Handle case where transformation is not provided
     std::string transformation_name = node->attributes_["transformation"];
     std::string material_name = node->attributes_["material"];
 
-    auto material_ptr = name_material[material_name];
-    auto transformation_ptr = name_transformation[transformation_name]; // Confusing, fix this
+    auto material_ptr = parsing_context_.name_material_[material_name];
+    auto transformation_ptr = parsing_context_.name_transformation_[transformation_name]; // Confusing, fix this
     std::shared_ptr<ShapeInterface> shape_ptr = nullptr;
     InstanceType instance_type;
 
@@ -167,7 +169,7 @@ static std::shared_ptr<Instance> ParseShape(std::unique_ptr<XMLNode>& node) {
     return std::make_shared<Instance>(transformation_ptr, shape_ptr, material_ptr, instance_type);
 }
 
-static Color ParseColor(std::unique_ptr<XMLNode>& node, std::string attribute) {
+Color SceneParser::ParseColor(std::unique_ptr<XMLNode>& node, std::string attribute) {
     std::stringstream s { node->attributes_[attribute] };
 
     double r, b, g;
@@ -184,7 +186,7 @@ static Color ParseColor(std::unique_ptr<XMLNode>& node, std::string attribute) {
     return Color {r, g, b};
 }
 
-static std::shared_ptr<MaterialInterface> ParseMaterial(std::unique_ptr<XMLNode>& node) {
+std::shared_ptr<MaterialInterface> SceneParser::ParseMaterial(std::unique_ptr<XMLNode>& node) {
     std::string type = node->attributes_["type"];
 
     std::shared_ptr<MaterialInterface> mat = nullptr;
@@ -201,7 +203,7 @@ static std::shared_ptr<MaterialInterface> ParseMaterial(std::unique_ptr<XMLNode>
     return mat;
 }
 
-static std::shared_ptr<Sampler> ParseSampler(std::unique_ptr<XMLNode>& node) {
+std::shared_ptr<Sampler> SceneParser::ParseSampler(std::unique_ptr<XMLNode>& node) {
     // TODO: handle case where there is no sampler node
 
     auto num_samples = std::stoi(node->attributes_["samples"]);
@@ -222,7 +224,37 @@ static std::shared_ptr<Sampler> ParseSampler(std::unique_ptr<XMLNode>& node) {
     return sampler;
 }
 
-static std::shared_ptr<Light> ParsePointLight(std::unique_ptr<XMLNode>& node) {
+template<typename T>
+T Parse3D(const XMLNode* node) {
+    auto x = std::stod(node->attributes_.at("x"));
+    auto y = std::stod(node->attributes_.at("y"));
+    auto z = std::stod(node->attributes_.at("z"));
+
+    return T {x, y, z};
+}
+
+std::unique_ptr<CameraInterface> SceneParser::ParseCamera(std::unique_ptr<XMLNode>& node) {
+    std::unique_ptr<CameraInterface> camera = nullptr;
+
+    auto type = node->attributes_["type"];
+
+    auto origin = Parse3D<Point3d>(node->ChildNode("origin"));
+    auto lookat = Parse3D<Vec3d>(node->ChildNode("lookat"));
+    auto up = Parse3D<Vec3d>(node->ChildNode("up"));
+    auto fov = std::stoi(node->ChildNode("fov")->value_);
+
+    if (type == "projective") {
+        camera = std::make_unique<ProjectiveCamera>(origin, lookat, up, fov);
+    } else if (type == "orthographic") {
+        camera = std::make_unique<OrthographicCamera>(origin, lookat, up, fov);
+    } else {
+        throw std::logic_error ("Uknown Camera Type");
+    }
+
+    return camera;
+}
+
+std::shared_ptr<Light> SceneParser::ParsePointLight(std::unique_ptr<XMLNode>& node) {
     double r, g, b;
     std::stringstream s { node->attributes_["color"] };
 
@@ -237,13 +269,13 @@ static std::shared_ptr<Light> ParsePointLight(std::unique_ptr<XMLNode>& node) {
     b = std::stod(token);
 
     auto color = Color{r,g,b};
-    auto position = ParsePoint( node->attributes_["position"]);
+    auto position = ParseVertex( node->attributes_["position"]); // TODO: THIS IS BS, REDO SCHEMA HERE
     auto intensity = std::stof(node->attributes_["intensity"]);
 
     return std::make_shared<PointLight>(position, intensity, color);
 }
 
-static std::shared_ptr<Light> ParseLight(std::unique_ptr<XMLNode>& node) {
+std::shared_ptr<Light> SceneParser::ParseLight(std::unique_ptr<XMLNode>& node) {
 
     std::shared_ptr<Light> light = nullptr;
     if (node->attributes_["type"] == "point") {
@@ -265,15 +297,18 @@ Scene SceneParser::ParseScene(std::string path) {
 
     Scene scene;
 
+    // TODO: Use ChildValue
     for (auto& child : node->children_) {
         if (child->tag_ == "transformation")
-            name_transformation[child->attributes_["name"]] = ParseTransformation(child);
+            parsing_context_.name_transformation_[child->attributes_["name"]] = ParseTransformation(child);
         else if (child->tag_ == "shape")
-            name_instance[child->attributes_["name"]] = ParseShape(child);
+            parsing_context_.name_instance_[child->attributes_["name"]] = ParseShape(child);
         else if (child->tag_ == "material")
-            name_material[child->attributes_["name"]] = ParseMaterial(child);
+            parsing_context_.name_material_[child->attributes_["name"]] = ParseMaterial(child);
         else if (child->tag_ == "antialiasing")
             scene.sampler_ = ParseSampler(child);
+        else if (child->tag_ == "camera")
+            scene.camera_ = std::move(ParseCamera(child));
         else if (child->tag_ == "light") {
             if (child->attributes_["type"] == "ambient") {
                 scene.ambient_intensity_ = std::stod(child->attributes_["intensity"]);
@@ -283,9 +318,12 @@ Scene SceneParser::ParseScene(std::string path) {
         }
     }
 
+
+    // TODO: Questionable. Shouldn't a scene parser just parse the scene?
     scene.world_ = std::make_unique<World>();
-    for (auto [_, shape_ptr] : name_instance)
+    for (auto [_, shape_ptr] : parsing_context_.name_instance_)
         scene.world_->AddShape(*shape_ptr);
+    scene.world_->Build();
 
     return scene;
 }

@@ -4,7 +4,7 @@
 
 #include "../include/OrthographicCamera.h"
 
-std::vector<Ray> OrthographicCamera::GetRayAt(int x, int y) const {
+std::vector<Ray> OrthographicCamera::GetRayAt(int x, int y, const ImagePlane& p) const {
     double height = (1.0 / v_y_[1]) * (-2.0 / 1.0);
     double width = height * aspect_ratio_;
     Point3d upper_left_corner { -0.5 * (width * v_x_[0] + height * v_y_[0]), -0.5 * (width * v_x_[1] + height * v_y_[1]), 0.0};

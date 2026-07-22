@@ -1,17 +1,10 @@
-
 #include "../include/ConfigParser.h"
 #include "../include/SceneParser.h"
 #include "../include/Renderer.h"
 
-#include <cstdlib>
-#include <thread>
-
-
-
-
 int main(int argc, char** argv)
 {
-    Config config = ConfigParser::GetInstance().ParseConfig("/config/Config.xml");
+    Config config = ConfigParser::GetInstance().ParseConfig("../config/Config.xml");
 
     Scene scene = SceneParser::GetInstance().ParseScene(config.scene_description_path_);
     Canvas canvas {config.width_, config.height_};

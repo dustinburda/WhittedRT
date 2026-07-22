@@ -19,21 +19,12 @@ struct XMLNode {
     std::unordered_map<std::string, std::string> attributes_;
     std::string tag_;
 
-    union {
-
-    };
     std::string value_;
     std::vector<XMLNodePtr> children_;
 
-    std::optional<std::string> ChildValue(std::string_view tag);
+    std::optional<std::string> ChildValue(std::string_view tag) const;
+    const XMLNode* ChildNode(std::string_view tag) const;
 };
-
-
-/*
- * This is a naive and feature deficient XML Parser
- *
- * No Error Checking
- * */
 
 class XMLParser {
 public:
@@ -47,13 +38,13 @@ private:
     std::optional<std::string> PeekAhead(int n);
     std::optional<char> Consume();
 
-    static bool IsWhitespace(char c);
     void ConsumeWhitespace();
 
     std::string ConsumeAlphabetic();
     int ConsumeNumeric();
     std::string ConsumeAlphaNumeric();
-    std::string ConsumeUntilToken(char c);
+    std::string ConsumeUntilChar(char token);
+    std::string ConsumeUntilString(std::string token);
 
     std::unordered_map<std::string, std::string> ParseAttributes();
 

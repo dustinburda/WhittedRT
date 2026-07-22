@@ -4,13 +4,32 @@
 
 #include "../include/XMLParser.h"
 
-std::optional<std::string> XMLNode::ChildValue(std::string_view tag) {
+static bool IsWhitespace(char c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\r';
+}
+
+static std::string Trim(std::string s) {
+    while (IsWhitespace(s.back()))
+        s.pop_back();
+
+    return s;
+}
+
+std::optional<std::string> XMLNode::ChildValue(std::string_view tag) const {
     for (auto& child : children_) {
         if (tag == child->tag_)
             return child->value_;
     }
 
     return std::nullopt;
+}
+const XMLNode* XMLNode::ChildNode(std::string_view tag) const {
+    for (auto& child : children_) {
+        if (tag == child->tag_)
+            return child.get();
+    }
+
+    return nullptr;
 }
 
 
@@ -55,10 +74,6 @@ std::optional<char> XMLParser::Consume() {
     return next_char;
 }
 
-bool XMLParser::IsWhitespace(char c) {
-    return c == ' ' || c == '\t' || c == '\n' || c == '\r';
-}
-
 void XMLParser::ConsumeWhitespace() {
     while (Peek().has_value() && IsWhitespace(Peek().value()))
         pos_++;
@@ -85,9 +100,20 @@ std::string XMLParser::ConsumeAlphaNumeric() {
     return s;
 }
 
-std::string XMLParser::ConsumeUntilToken(char c) {
+std::string XMLParser::ConsumeUntilChar(char token) {
     std::string s;
-    while (Peek().has_value() && Peek().value() != c) {
+    while (Peek().has_value() && Peek().value() != token) {
+        s.push_back(Consume().value());
+    }
+
+    return s;
+}
+
+std::string XMLParser::ConsumeUntilString(std::string token) {
+    std::string s;
+
+    int token_size = token.size();
+    while (PeekAhead(token_size).has_value() && PeekAhead(token_size) != token) {
         s.push_back(Consume().value());
     }
 
@@ -99,10 +125,10 @@ std::unordered_map<std::string, std::string> XMLParser::ParseAttributes() {
 
     while ((Peek().has_value() && Peek() != '>') && (PeekAhead(2).has_value() && PeekAhead(2).value() != "/>")) {
         ConsumeWhitespace();
-        auto attribute = ConsumeUntilToken('=');
+        auto attribute = ConsumeUntilChar('=');
         Consume(); // =
         Consume(); // '
-        auto value = ConsumeUntilToken('\"');
+        auto value = ConsumeUntilChar('\"');
         Consume(); //'
         attributes[attribute] = value;
     }
@@ -134,21 +160,25 @@ XMLNodePtr XMLParser::ParseNode() {
     }
 
 
-    ConsumeUntilToken('>');
+    ConsumeUntilChar('>');
     Consume(); // >
     ConsumeWhitespace();
 
     if (Peek() == '<')
         node->children_ = ParseChildren();
     else {
-        node->value_ = ConsumeAlphaNumeric();
+        auto raw_value = ConsumeUntilString("</");
+        node->value_ = Trim(raw_value);
+
+        // NOTE WE STRIP WHITESPACE OFF THE NODE VALUE
+
         ConsumeWhitespace();
     }
 
     ConsumeWhitespace();
     Consume(); // <
     Consume(); // /
-    ConsumeUntilToken('>'); // tagname
+    ConsumeUntilChar('>'); // tagname
     Consume(); // >
 
 
