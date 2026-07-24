@@ -6,7 +6,7 @@
 
     <CameraType>Projective</CameraType>
 
-    <SceneDescriptionPath>../scenes/SingleSphere.xml</SceneDescriptionPath>
+    <SceneDescriptionPath>../scenes/SingleSphereLit.xml</SceneDescriptionPath>
     <OutputPath>../images/SingleSphere.ppm</OutputPath>
 
 </Config>

@@ -16,6 +16,7 @@ struct ShadeContext;
 
 enum class MaterialType {
     Black,
+    SolidColor,
     SimplePhong,
     Reflective,
     Refractive
@@ -28,6 +29,19 @@ public:
 
     virtual Color Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights) = 0;
     MaterialType mat_type_;
+};
+
+class SolidMaterial : public MaterialInterface {
+public:
+    SolidMaterial(Color color) : MaterialInterface(MaterialType::SolidColor), color_{color} {
+
+    }
+
+    Color Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights) {
+        return color_;
+    }
+private:
+    Color color_;
 };
 
 class BlackMaterial : public MaterialInterface {
