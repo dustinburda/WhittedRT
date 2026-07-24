@@ -20,13 +20,12 @@ struct Scene {
     std::shared_ptr<Sampler> sampler_;
     std::unique_ptr<CameraInterface> camera_;
     std::vector<std::shared_ptr<Light>> lights_;
-    double ambient_intensity_;
 
     Scene() {
-        world_ = nullptr;
+        world_ = std::make_unique<World>();
         sampler_ = nullptr;
+        camera_ = nullptr;
         lights_ = {};
-        ambient_intensity_ = 0.0;
     }
 
     Scene(const Scene&) = delete;
@@ -46,6 +45,14 @@ public:
 
     Scene ParseScene(std::string path);
 
+    // TODO: Do we need this? SceneParser only runs once for now
+    // void ClearContext() {
+    //     parsing_context_.name_sampler_.clear();
+    //     parsing_context_.name_material_.clear();
+    //     parsing_context_.name_instance_.clear();
+    //     parsing_context_.name_transformation_.clear();
+    // }
+
 private:
     SceneParser();
 
@@ -61,12 +68,13 @@ private:
     std::shared_ptr<Triangle> ParseTriangle(std::unique_ptr<XMLNode>& node);
     std::shared_ptr<Instance> ParseShape(std::unique_ptr<XMLNode>& node);
 
-    Color ParseColor(std::unique_ptr<XMLNode>& node, std::string attribute);
+    Color ParseColor(const XMLNode* node);
 
     std::shared_ptr<MaterialInterface> ParseMaterial(std::unique_ptr<XMLNode>& node);
 
     std::shared_ptr<Sampler> ParseSampler(std::unique_ptr<XMLNode>& node);
     std::shared_ptr<Light> ParsePointLight(std::unique_ptr<XMLNode>& node);
+    std::shared_ptr<Light> ParseAmbientLight(std::unique_ptr<XMLNode>& node);
     std::shared_ptr<Light> ParseLight(std::unique_ptr<XMLNode>& node);
 
 
@@ -74,6 +82,7 @@ private:
         std::unordered_map<std::string, std::shared_ptr<Transformation>> name_transformation_;
         std::unordered_map<std::string, std::shared_ptr<Instance>> name_instance_;
         std::unordered_map<std::string, std::shared_ptr<MaterialInterface>> name_material_;
+        std::unordered_map<std::string, std::shared_ptr<Sampler>> name_sampler_;
     } parsing_context_;
 
     XMLParser& xml_parser_;

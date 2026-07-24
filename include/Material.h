@@ -16,6 +16,7 @@ struct ShadeContext;
 
 enum class MaterialType {
     Black,
+    SolidColor,
     SimplePhong,
     Reflective,
     Refractive
@@ -26,14 +27,27 @@ public:
     explicit MaterialInterface(MaterialType mat_type);
     virtual ~MaterialInterface() = default;
 
-    virtual Color Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights, double ambient_intensity) = 0;
+    virtual Color Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights) = 0;
     MaterialType mat_type_;
+};
+
+class SolidMaterial : public MaterialInterface {
+public:
+    SolidMaterial(Color color) : MaterialInterface(MaterialType::SolidColor), color_{color} {
+
+    }
+
+    Color Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights) {
+        return color_;
+    }
+private:
+    Color color_;
 };
 
 class BlackMaterial : public MaterialInterface {
 public:
     BlackMaterial();
-    Color Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights, double ambient_intensity) override;
+    Color Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights) override;
 };
 
 class SimplePhongMaterial : public MaterialInterface {
@@ -41,7 +55,7 @@ public:
     SimplePhongMaterial();
     SimplePhongMaterial(Color ka, Color kd, Color ks, double p);
 
-    Color Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights, double ambient_intensity) override;
+    Color Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights) override;
 
     Color ka_;
     Color kd_;

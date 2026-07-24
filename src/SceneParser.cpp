@@ -1,12 +1,14 @@
 //
 // Created by Dustin on 11/25/24.
 //
-
+#include "../include/AmbientLight.h"
 #include "../include/HammersleySampler.h"
-#include "../include/JitteredSampler.h"
 #include "../include/Instance.h"
+#include "../include/JitteredSampler.h"
 #include "../include/Light.h"
+#include "../include/OrthographicCamera.h"
 #include "../include/PointLight.h"
+#include "../include/ProjectiveCamera.h"
 #include "../include/Mesh.h"
 #include "../include/Plane.h"
 #include "../include/RandomSampler.h"
@@ -22,9 +24,6 @@
 
 #include <sstream>
 #include <string>
-
-#include "../include/OrthographicCamera.h"
-#include "../include/ProjectiveCamera.h"
 
 std::shared_ptr<Transformation> SceneParser::ParseRotation(std::unique_ptr<XMLNode>& node) {
     std::string axis = node->attributes_["axis"];
@@ -80,30 +79,19 @@ std::shared_ptr<Transformation> SceneParser::ParseScale(std::unique_ptr<XMLNode>
 
 std::shared_ptr<Transformation> SceneParser::ParseTransformation(std::unique_ptr<XMLNode>& node) {
     auto transformation = std::make_shared<Transformation>(Transformation::Identity());
-    // Order of transformations matters
-    std::stack<std::shared_ptr<Transformation>> transformations;
 
-    // TODO: Use Child Value
     for (auto& child : node->children_) {
-        std::shared_ptr<Transformation> curr_transformation = nullptr;
         if (child->tag_ == "rotation") {
-            transformations.push(ParseRotation(child));
+            *transformation = *ParseRotation(child) * *transformation;
         } else if (child->tag_ == "reflection") {
-            transformations.push(ParseReflection(child));
+            *transformation = *ParseReflection(child) * *transformation;
         } else if (child->tag_ == "translation") {
-            transformations.push(ParseTranslation(child));
+            *transformation = *ParseTranslation(child) * *transformation;
         } else if (child->tag_ == "scale") {
-            transformations.push(ParseScale(child));
+            *transformation = *ParseScale(child) * *transformation;
         } else {
-            transformations.push(std::make_shared<Transformation>(Transformation::Identity()));
+            *transformation = *std::make_shared<Transformation>(Transformation::Identity()) * *transformation;
         }
-    }
-
-    // TODO: Get rid of this stupid loop
-    while (transformations.size()) {
-        auto curr_transformation = transformations.top();
-        transformations.pop();
-        *transformation = (*transformation) * (*curr_transformation);
     }
 
     return transformation;
@@ -169,19 +157,15 @@ std::shared_ptr<Instance> SceneParser::ParseShape(std::unique_ptr<XMLNode>& node
     return std::make_shared<Instance>(transformation_ptr, shape_ptr, material_ptr, instance_type);
 }
 
-Color SceneParser::ParseColor(std::unique_ptr<XMLNode>& node, std::string attribute) {
-    std::stringstream s { node->attributes_[attribute] };
+Color SceneParser::ParseColor(const XMLNode* node) {
+    if (node == nullptr)
+        throw std::runtime_error("Color node must exist");
 
     double r, b, g;
-    std::string token;
-    std::getline(s, token, ',');
-    r = std::stod(token);
 
-    std::getline(s, token, ',');
-    g = std::stod(token);
-
-    std::getline(s, token, ',');
-    b = std::stod(token);
+    r = std::stod(node->attributes_.at("r"));
+    g = std::stod(node->attributes_.at("g"));
+    b = std::stod(node->attributes_.at("b"));
 
     return Color {r, g, b};
 }
@@ -192,10 +176,12 @@ std::shared_ptr<MaterialInterface> SceneParser::ParseMaterial(std::unique_ptr<XM
     std::shared_ptr<MaterialInterface> mat = nullptr;
 
     if (type == "simple_phong") {
-        mat = std::make_shared<SimplePhongMaterial>(ParseColor(node, "ka"),
-                                                    ParseColor(node, "kd"),
-                                                    ParseColor(node, "ks"),
-                                                    std::stod(node->attributes_["power"]));
+        mat = std::make_shared<SimplePhongMaterial>(ParseColor(node->ChildNode("ka")),
+                                                    ParseColor(node->ChildNode("kd")),
+                                                    ParseColor(node->ChildNode("ks")),
+                                                    std::stod(node->ChildNode("power")->value_));
+    } else if (type == "solid") {
+      mat = std::make_shared<SolidMaterial>(ParseColor(node->ChildNode("color")));
     } else {
         mat = std::make_shared<BlackMaterial>();
     }
@@ -206,8 +192,14 @@ std::shared_ptr<MaterialInterface> SceneParser::ParseMaterial(std::unique_ptr<XM
 std::shared_ptr<Sampler> SceneParser::ParseSampler(std::unique_ptr<XMLNode>& node) {
     // TODO: handle case where there is no sampler node
 
-    auto num_samples = std::stoi(node->attributes_["samples"]);
     auto sampler_type = node->attributes_["type"];
+    auto name = node->attributes_["name"];
+
+    auto samples_node = node->ChildNode("samples");
+    if (samples_node == nullptr)
+        throw std::runtime_error("sampler node must have a samples child");
+
+    auto num_samples = std::stoi(samples_node->value_);
 
     std::shared_ptr<Sampler> sampler = nullptr;
 
@@ -255,24 +247,31 @@ std::unique_ptr<CameraInterface> SceneParser::ParseCamera(std::unique_ptr<XMLNod
 }
 
 std::shared_ptr<Light> SceneParser::ParsePointLight(std::unique_ptr<XMLNode>& node) {
-    double r, g, b;
-    std::stringstream s { node->attributes_["color"] };
+    auto color_node = node->ChildNode("color");
+    if (color_node == nullptr)
+        throw std::runtime_error("point light must have a color child node");
+    auto color = ParseColor(color_node);
 
-    std::string token;
-    std::getline(s, token, ',');
-    r = std::stod(token);
 
-    std::getline(s, token, ',');
-    g = std::stod(token);
+    auto position_node = node->ChildNode("position");
+    if (position_node == nullptr)
+        throw std::runtime_error("point light must have a position child node");
+    auto position = Parse3D<Point3d>( position_node ); // TODO: THIS IS BS, REDO SCHEMA HERE
 
-    std::getline(s, token, ',');
-    b = std::stod(token);
 
-    auto color = Color{r,g,b};
-    auto position = ParseVertex( node->attributes_["position"]); // TODO: THIS IS BS, REDO SCHEMA HERE
-    auto intensity = std::stof(node->attributes_["intensity"]);
+    auto intensity_node = node->ChildNode("intensity");
+    if (intensity_node == nullptr)
+        throw std::runtime_error("point light must have an intensity");
+    double intensity = std::stoi(intensity_node->value_);
 
     return std::make_shared<PointLight>(position, intensity, color);
+}
+
+std::shared_ptr<Light> SceneParser::ParseAmbientLight(std::unique_ptr<XMLNode>& node) {
+    auto intensity = std::stod(node->ChildNode("intensity")->value_);
+    auto color = Color {1.0, 1.0, 1.0};
+
+    return std::make_shared<AmbientLight>(intensity, color);
 }
 
 std::shared_ptr<Light> SceneParser::ParseLight(std::unique_ptr<XMLNode>& node) {
@@ -280,6 +279,8 @@ std::shared_ptr<Light> SceneParser::ParseLight(std::unique_ptr<XMLNode>& node) {
     std::shared_ptr<Light> light = nullptr;
     if (node->attributes_["type"] == "point") {
         light = ParsePointLight(node);
+    } else if (node->attributes_["type"] == "ambient") {
+        light = ParseAmbientLight(node);
     }
 
     return light;
@@ -297,33 +298,23 @@ Scene SceneParser::ParseScene(std::string path) {
 
     Scene scene;
 
-    // TODO: Use ChildValue
     for (auto& child : node->children_) {
         if (child->tag_ == "transformation")
             parsing_context_.name_transformation_[child->attributes_["name"]] = ParseTransformation(child);
         else if (child->tag_ == "shape")
-            parsing_context_.name_instance_[child->attributes_["name"]] = ParseShape(child);
+            scene.world_->AddShape(*ParseShape(child)); // TODO: Stop copying Instance
         else if (child->tag_ == "material")
             parsing_context_.name_material_[child->attributes_["name"]] = ParseMaterial(child);
         else if (child->tag_ == "antialiasing")
-            scene.sampler_ = ParseSampler(child);
+            scene.sampler_ = parsing_context_.name_sampler_[child->attributes_["sampler"]];
+        else if (child->tag_ == "sampler")
+            parsing_context_.name_sampler_[child->attributes_["name"]] = ParseSampler(child);
         else if (child->tag_ == "camera")
             scene.camera_ = std::move(ParseCamera(child));
         else if (child->tag_ == "light") {
-            if (child->attributes_["type"] == "ambient") {
-                scene.ambient_intensity_ = std::stod(child->attributes_["intensity"]);
-            } else {
-                scene.lights_.push_back(ParseLight(child));
-            }
+            scene.lights_.push_back(ParseLight(child));
         }
     }
-
-
-    // TODO: Questionable. Shouldn't a scene parser just parse the scene?
-    scene.world_ = std::make_unique<World>();
-    for (auto [_, shape_ptr] : parsing_context_.name_instance_)
-        scene.world_->AddShape(*shape_ptr);
-    scene.world_->Build();
 
     return scene;
 }

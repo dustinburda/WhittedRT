@@ -38,7 +38,7 @@ public:
         auto trace = [](Scene& scene, Ray& r, ShadeContext& context) -> Color {
             if(scene.world_->Hit(r, context))
             {
-                return context.mat_->Shade(context, scene.lights_, scene.ambient_intensity_);
+                return context.mat_->Shade(context, scene.lights_);
             }
 
             return {0.0, 0.0, 0.0};
