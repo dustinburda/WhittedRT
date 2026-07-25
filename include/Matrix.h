@@ -180,7 +180,7 @@ static Matrix<T, N, N> Determinant(const Matrix<T, N, N> m) {
 }
 
 template<typename T, size_t N>
-static Matrix<T, N, N> Inverse(const Matrix<T, N, N> m) {
+static Matrix<T, N, N> Inverse(const Matrix<T, N, N>& m) {
     Matrix<T, N,2*N> augmented;
     for(std::size_t i = 0; i < N; i++) {
         for(std::size_t j = 0; j < N; j++) {
@@ -205,7 +205,7 @@ static Matrix<T, N, N> Inverse(const Matrix<T, N, N> m) {
         }
 
         for(std::size_t k = i + 1; k < N; k++) {
-            float coeff = augmented[k][i];
+            T coeff = augmented[k][i];
             for(std::size_t j = 0; j < 2*N; j++) {
                 augmented[k][j] -= augmented[i][j] * coeff;
             }
@@ -218,7 +218,7 @@ static Matrix<T, N, N> Inverse(const Matrix<T, N, N> m) {
     // second pass
     for (int i = N -1; i > 0; i--) {
         for (int k= i -1; k >= 0; k--) {
-            float coeff = augmented[k][i];
+            T coeff = augmented[k][i];
             for (std::size_t j=0; j < 2*N; j++) {
                 augmented[k][j] -= augmented[i][j] * coeff;
             }
