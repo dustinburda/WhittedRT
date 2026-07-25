@@ -25,6 +25,9 @@
 #include <sstream>
 #include <string>
 
+// TODO: Add more error handling and throw exceptions
+// TODO: Change the function
+
 std::shared_ptr<Transformation> SceneParser::ParseRotation(std::unique_ptr<XMLNode>& node) {
     std::string axis = node->attributes_["axis"];
     double degrees = std::stod(node->attributes_["val"]);
@@ -89,8 +92,6 @@ std::shared_ptr<Transformation> SceneParser::ParseTransformation(std::unique_ptr
             *transformation = *ParseTranslation(child) * *transformation;
         } else if (child->tag_ == "scale") {
             *transformation = *ParseScale(child) * *transformation;
-        } else {
-            *transformation = *std::make_shared<Transformation>(Transformation::Identity()) * *transformation;
         }
     }
 

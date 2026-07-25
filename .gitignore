@@ -4,3 +4,4 @@ cmake-build*
 images
 *ppm
 .DS_Store
+RAY_TRACER_REVIEW.md

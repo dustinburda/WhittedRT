@@ -179,7 +179,7 @@ static Normal<double, N> operator*(const double t, const Normal<T,N>& n) {
 
 template<typename T, size_t N>
 static Normal<double, N> operator/(const Normal<T,N>& n, const double t) {
-    return n * 1/t;
+    return n * (1.0/t); // TODO: If you remove the parenthesis, you get infinite recursion (I think)
 }
 
 template<typename T, size_t N>

@@ -65,7 +65,7 @@ public:
 
         for(int i = 0; i < M; i++)
             for(int j = 0; j < N; j++)
-                negative[i][j] *= -data_[i][j];
+                negative[i][j] = -data_[i][j];
 
         return negative;
     }
@@ -191,15 +191,26 @@ static Matrix<T, N, N> Inverse(const Matrix<T, N, N> m) {
     for(std::size_t i = 0; i < N; i++)
         augmented[i][i+N] = 1;
     for(std::size_t i = 0; i < N -1; i++) {
+        std::size_t pivot_row = i;
+        for (int r = i + 1; r < N; r++) {
+            if (std::abs(augmented[r][i]) > std::abs(augmented[pivot_row][i]))
+                pivot_row = r;
+        }
+
+        if (pivot_row != i)
+            std::swap(augmented[pivot_row], augmented[i]);
+
         for(int  j = 2*N -1; j >= 0; j--) {
             augmented[i][j] /= augmented[i][i];
         }
+
         for(std::size_t k = i + 1; k < N; k++) {
             float coeff = augmented[k][i];
             for(std::size_t j = 0; j < 2*N; j++) {
                 augmented[k][j] -= augmented[i][j] * coeff;
             }
         }
+
     }
 
     for(int j = 2*N -1; j >= N - 1; j--)
