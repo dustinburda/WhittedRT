@@ -64,7 +64,7 @@ private:
 
     std::unique_ptr<CameraInterface> ParseCamera(std::unique_ptr<XMLNode>& node);
 
-    Point3d ParseVertex (std::string point);
+    Point3D ParseVertex (std::string point);
     std::shared_ptr<Triangle> ParseTriangle(std::unique_ptr<XMLNode>& node);
     std::shared_ptr<Instance> ParseShape(std::unique_ptr<XMLNode>& node);
 

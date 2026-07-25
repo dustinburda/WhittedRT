@@ -12,7 +12,7 @@ MaterialInterface::MaterialInterface(MaterialType mat_type)
 BlackMaterial::BlackMaterial()
     : MaterialInterface(MaterialType::Black) {}
 
-Color BlackMaterial::Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights) {
+Color BlackMaterial::Shade([[ maybe_unused ]] ShadeContext& context, [[ maybe_unused ]] std::vector<std::shared_ptr<Light>>& lights) {
     return {0.0, 0.0, 0.0};
 }
 

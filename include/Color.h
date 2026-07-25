@@ -79,6 +79,7 @@ private:
     std::array<double, 4> data_;
 };
 
+[[ maybe_unused ]]
 static Color Clamp(const Color& c) {
     return { std::min(1.0, std::max(0.0, c.R())),
              std::min(1.0, std::max(0.0, c.G())),

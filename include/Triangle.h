@@ -13,11 +13,11 @@
 
 struct Vertex {
     Vertex() = default;
-    Vertex(Point3d position) : position_{position}, texture_coordinate_{std::nullopt} {}
-    Vertex(Point3d position, std::optional<Point2d> texture_coordinate) : position_{position}, texture_coordinate_{texture_coordinate} {}
+    Vertex(Point3D position) : position_{position}, texture_coordinate_{std::nullopt} {}
+    Vertex(Point3D position, std::optional<Point2D> texture_coordinate) : position_{position}, texture_coordinate_{texture_coordinate} {}
 
-    Point3d position_;
-    std::optional<Point2d> texture_coordinate_;
+    Point3D position_;
+    std::optional<Point2D> texture_coordinate_;
 };
 
 class Triangle : public ShapeInterface {

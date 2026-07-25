@@ -59,5 +59,4 @@ gamma correction
 rgb to linear to grayscale
 
 CLangFormat
-CI/CD Pipeline
 

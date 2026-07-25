@@ -13,11 +13,11 @@
 
 class PointLight : public Light {
 public:
-    PointLight(Point3d position, double intensity, Color light_color);
-    Vec3d GetDirection(ShadeContext& ctx) const override;
+    PointLight(Point3D position, double intensity, Color light_color);
+    Vec3D GetDirection(ShadeContext& ctx) const override;
 
 private:
-    Point3d position_;
+    Point3D position_;
 };
 
 

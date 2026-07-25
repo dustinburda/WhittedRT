@@ -22,7 +22,7 @@ struct ShadeContext {
     double t_min_ = 0;
     double t_max_ = std::numeric_limits<double>::max();
 
-    Point2d uv_;
+    Point2D uv_;
 };
 
 

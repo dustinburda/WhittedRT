@@ -57,8 +57,8 @@ std::unique_ptr<BVHNode> BVH::Build(std::vector<Instance> shapes) const {
     std::vector<Instance> s1 {shapes.begin(), shapes.begin() + shapes.size() / 2};
     std::vector<Instance> s2 {shapes.begin() + shapes.size() / 2, shapes.end()};
 
-    auto left = std::move(Build(s1));
-    auto right = std::move(Build(s2));
+    auto left = Build(s1);
+    auto right = Build(s2);
 
     return std::make_unique<BVHNode>(std::move(left), std::move(right));
 }

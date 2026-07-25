@@ -6,9 +6,9 @@
 #include "../include/ShadeContext.h"
 
 
-PointLight::PointLight(Point3d position, double intensity, Color light_color)
-    : position_{position}, Light{intensity, light_color} {}
+PointLight::PointLight(Point3D position, double intensity, Color light_color)
+    : Light{intensity, light_color}, position_{position} {}
 
-Vec3d PointLight::GetDirection(ShadeContext& ctx) const {
+Vec3D PointLight::GetDirection(ShadeContext& ctx) const {
     return (position_ - ctx.point_).UnitVector();
 }

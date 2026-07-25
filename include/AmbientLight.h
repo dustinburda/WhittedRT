@@ -12,8 +12,8 @@ public:
     AmbientLight (double intensity, Color light_color)
         : Light(intensity, light_color) {}
 
-    virtual Vec3d GetDirection(ShadeContext& ctx) const {
-        return Vec3d {0.0, 0.0, 0.0};
+    virtual Vec3D GetDirection([[ maybe_unused ]] ShadeContext& ctx) const {
+        return Vec3D {0.0, 0.0, 0.0};
     }
 };
 

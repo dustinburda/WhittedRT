@@ -8,30 +8,37 @@
 #include "Vector.h"
 #include "Point.h"
 
+#define RAY_TYPES \
+    X(PrimaryRay) \
+    X(SecondaryRay) \
+    X(ShadowRay) \
+    X(LightRay)
+
 enum class RayType {
-    PrimaryRay,
-    SecondaryRay,
-    ShadowRay,
-    LightRay
+#define X(name) name,
+    RAY_TYPES
+#undef X
 };
+
+std::string RayTypeToString(RayType type);
 
 // Ray Direction is normalized
 class Ray {
 public:
     Ray() = default;
-    Ray(const Point3d& origin, const Vec3d& direction, RayType type)
+    Ray(const Point3D& origin, const Vec3D& direction, RayType type)
         : origin_(origin), direction_(direction.UnitVector()), type_(type) { }
 
-    Point3d At(double t) const;
-    Point3d Origin() const;
-    Vec3d Direction() const;
+    Point3D At(double t) const;
+    Point3D Origin() const;
+    Vec3D Direction() const;
 
-    std::string toString() const;
+    std::string ToString() const;
 
 
 private:
-    Point3d origin_;
-    Vec3d direction_;
+    Point3D origin_;
+    Vec3D direction_;
     RayType type_;
 };
 

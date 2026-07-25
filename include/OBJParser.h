@@ -27,13 +27,13 @@ struct VertexIndex {
 using Face = std::array<VertexIndex, 3>;
 
 struct MeshData {
-    std::vector<Point3d> vertices_;
+    std::vector<Point3D> vertices_;
     std::vector<Face> faces_;
     std::vector<Normal<double, 3>> normals_;
-    std::vector<Point2d> texture_coordinates_;
+    std::vector<Point2D> texture_coordinates_;
 
-    std::optional<Point2d> GetTextureCoordinate(VertexIndex vi);
-    Point3d GetVertex(VertexIndex vi);
+    std::optional<Point2D> GetTextureCoordinate(VertexIndex vi);
+    Point3D GetVertex(VertexIndex vi);
 };
 
 class OBJParser {

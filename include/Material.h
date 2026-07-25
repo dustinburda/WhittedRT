@@ -37,7 +37,7 @@ public:
 
     }
 
-    Color Shade(ShadeContext& context, std::vector<std::shared_ptr<Light>>& lights) {
+    Color Shade( [[ maybe_unused ]] ShadeContext& context, [[ maybe_unused ]] std::vector<std::shared_ptr<Light>>& lights) {
         return color_;
     }
 private:

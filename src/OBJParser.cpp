@@ -9,14 +9,14 @@
 #include <sstream>
 
 
-std::optional<Point2d> MeshData::GetTextureCoordinate(VertexIndex vi) {
+std::optional<Point2D> MeshData::GetTextureCoordinate(VertexIndex vi) {
     if (vi.texture_index_ == std::nullopt)
         return std::nullopt;
 
     return texture_coordinates_[vi.texture_index_.value()];
 }
 
-Point3d MeshData::GetVertex(VertexIndex vi) {
+Point3D MeshData::GetVertex(VertexIndex vi) {
     return vertices_[vi.vertex_index_];
 }
 
@@ -53,7 +53,7 @@ void OBJParser::ParseVertex(std::string line, std::shared_ptr<MeshData> mesh_dat
     std::string token;
     std::stringstream s_line {line};
 
-    Point3d p;
+    Point3D p;
     for(int i = 0; i < 4; i++){
         std::getline(s_line >> std::ws, token, ' ');
 
@@ -88,7 +88,7 @@ void OBJParser::ParseFace(std::string line, std::shared_ptr<MeshData> mesh_data)
     }
 
     // Face can be a quad, break it into multiple triangles
-    for(int i = 1; i < indices.size() - 1; i++) {
+    for(std::size_t i = 1; i < indices.size() - 1; i++) {
         std::array<VertexIndex, 3> face = {indices[0], indices[i], indices[i + 1]};
         mesh_data->faces_.push_back(face);
     }
@@ -114,7 +114,7 @@ void OBJParser::ParseTexture(std::string line, std::shared_ptr<MeshData> mesh_da
     std::string token;
     std::stringstream s_line {line};
 
-    Point2d uv;
+    Point2D uv;
     for(int i = 0; i < 3; i++) {
         std::getline(s_line >> std::ws, token, ' ');
         if(token == "vt")

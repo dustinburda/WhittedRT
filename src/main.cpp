@@ -2,7 +2,7 @@
 #include "../include/SceneParser.h"
 #include "../include/Renderer.h"
 
-int main(int argc, char** argv)
+int main(int, char**)
 {
     Config config = ConfigParser::GetInstance().ParseConfig("../config/Config.xml");
 

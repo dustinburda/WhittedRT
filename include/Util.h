@@ -17,16 +17,16 @@ struct deg {
 };
 
 // User-defined literal: Degrees
-static deg operator ""_deg(long double degrees) { return deg{degrees}; };
+[[ maybe_unused ]] static deg operator ""_deg(long double degrees) { return deg{degrees}; };
 
 struct rad {
     long double radians;
 };
 
 // User-defined literal: Radians
-static rad operator  ""_rad(long double radians) { return rad{radians}; };
+[[ maybe_unused ]] static rad operator  ""_rad(long double radians) { return rad{radians}; };
 
-static int RandomInt(int min = 0, int max = std::numeric_limits<int>::max()) {
+[[ maybe_unused ]] static int RandomInt(int min = 0, int max = std::numeric_limits<int>::max()) {
     static std::random_device rd;
     static std::mt19937 gen{rd()};
 
@@ -35,7 +35,7 @@ static int RandomInt(int min = 0, int max = std::numeric_limits<int>::max()) {
     return distribution(gen);
 }
 
-static double RandomDouble(double min = 0, double max = std::numeric_limits<double>::max()) {
+[[ maybe_unused ]] static double RandomDouble(double min = 0, double max = std::numeric_limits<double>::max()) {
     static std::random_device rd;
     static std::mt19937 gen{rd()};
     static std::uniform_real_distribution<double> distribution{min, max};

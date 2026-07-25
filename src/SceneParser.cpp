@@ -99,7 +99,7 @@ std::shared_ptr<Transformation> SceneParser::ParseTransformation(std::unique_ptr
 }
 
 // TODO: Get rid of this diabolically stupid function
-Point3d SceneParser::ParseVertex (std::string point) {
+Point3D SceneParser::ParseVertex (std::string point) {
     std::stringstream ss {point};
     std::string token;
 
@@ -114,7 +114,7 @@ Point3d SceneParser::ParseVertex (std::string point) {
     std::getline(ss, token, ',');
     z = std::stod(token);
 
-    return Point3d {x, y, z};
+    return Point3D {x, y, z};
 }
 
 std::shared_ptr<Triangle> SceneParser::ParseTriangle(std::unique_ptr<XMLNode>& node) {
@@ -231,9 +231,9 @@ std::unique_ptr<CameraInterface> SceneParser::ParseCamera(std::unique_ptr<XMLNod
 
     auto type = node->attributes_["type"];
 
-    auto origin = Parse3D<Point3d>(node->ChildNode("origin"));
-    auto lookat = Parse3D<Vec3d>(node->ChildNode("lookat"));
-    auto up = Parse3D<Vec3d>(node->ChildNode("up"));
+    auto origin = Parse3D<Point3D>(node->ChildNode("origin"));
+    auto lookat = Parse3D<Vec3D>(node->ChildNode("lookat"));
+    auto up = Parse3D<Vec3D>(node->ChildNode("up"));
     auto fov = std::stoi(node->ChildNode("fov")->value_);
 
     if (type == "projective") {
@@ -257,7 +257,7 @@ std::shared_ptr<Light> SceneParser::ParsePointLight(std::unique_ptr<XMLNode>& no
     auto position_node = node->ChildNode("position");
     if (position_node == nullptr)
         throw std::runtime_error("point light must have a position child node");
-    auto position = Parse3D<Point3d>( position_node ); // TODO: THIS IS BS, REDO SCHEMA HERE
+    auto position = Parse3D<Point3D>( position_node ); // TODO: THIS IS BS, REDO SCHEMA HERE
 
 
     auto intensity_node = node->ChildNode("intensity");
@@ -311,7 +311,7 @@ Scene SceneParser::ParseScene(std::string path) {
         else if (child->tag_ == "sampler")
             parsing_context_.name_sampler_[child->attributes_["name"]] = ParseSampler(child);
         else if (child->tag_ == "camera")
-            scene.camera_ = std::move(ParseCamera(child));
+            scene.camera_ = ParseCamera(child);
         else if (child->tag_ == "light") {
             scene.lights_.push_back(ParseLight(child));
         }

@@ -16,8 +16,8 @@ double phi(int i) {
     return result;
 }
 
-std::vector<Point3d> HammersleySampler::Sample(Point3d origin, Vec3d Vx, Vec3d Vy) {
-    std::vector<Point3d> samples;
+std::vector<Point3D> HammersleySampler::Sample(Point3D origin, Vec3D Vx, Vec3D Vy) {
+    std::vector<Point3D> samples;
 
     for (int i = 0; i < num_samples_; i++) {
         double x_coordinate = i / static_cast<double>(num_samples_);

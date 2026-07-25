@@ -26,19 +26,19 @@ struct Interval {
 class BoundingBox {
 public:
     BoundingBox() : min_{0.0 ,0.0 ,0.0}, max_{1.0, 1.0, 1.0} {}
-    BoundingBox(Point3d p1, Point3d p2);
+    BoundingBox(Point3D p1, Point3D p2);
 
     bool Hit(const Ray& r, ShadeContext& context) const;
 
-    Point3d Min() const { return min_; }
-    Point3d Max() const { return max_; }
+    Point3D Min() const { return min_; }
+    Point3D Max() const { return max_; }
 
     std::string toString() const;
 
 
 private:
-    Point3d min_;
-    Point3d max_;
+    Point3D min_;
+    Point3D max_;
 };
 
 BoundingBox Union(const BoundingBox& b1, const BoundingBox& b2);

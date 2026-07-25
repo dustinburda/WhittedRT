@@ -20,7 +20,7 @@ bool Interval::Intersects(std::vector<Interval> intervals) {
     std::sort(intervals.begin(), intervals.end());
 
     Interval intersection = intervals[0];
-    for(int i = 1; i < intervals.size(); i++) {
+    for(std::size_t i = 1; i < intervals.size(); i++) {
         const Interval& curr_interval = intervals[i];
         if(curr_interval.t_min_ > intersection.t_max_)
             return false;
@@ -33,16 +33,16 @@ bool Interval::Intersects(std::vector<Interval> intervals) {
     return true;
 }
 
-BoundingBox::BoundingBox(Point3d p1, Point3d p2) {
+BoundingBox::BoundingBox(Point3D p1, Point3D p2) {
     for(int i = 0; i < 3; i++) {
         min_[i] = std::min(p1[i], p2[i]);
         max_[i] = std::max(p1[i], p2[i]);
     }
 }
 
-bool BoundingBox::Hit(const Ray& r, ShadeContext& context) const {
-    Point3d orig = r.Origin();
-    Vec3d dir = r.Direction();
+bool BoundingBox::Hit(const Ray& r, [[ maybe_unused ]] ShadeContext& context) const {
+    Point3D orig = r.Origin();
+    Vec3D dir = r.Direction();
 
     Interval x_interval {(min_[0] - orig[0])/dir[0], (max_[0] - orig[0])/dir[0] };
     Interval y_interval {(min_[1] - orig[1])/dir[1], (max_[1] - orig[1])/dir[1] };
@@ -60,14 +60,14 @@ std::string BoundingBox::toString() const {
 }
 
 BoundingBox Union(const BoundingBox& b1, const BoundingBox& b2) {
-    Point3d min1 = b1.Min();
-    Point3d max1 = b1.Max();
+    Point3D min1 = b1.Min();
+    Point3D max1 = b1.Max();
 
-    Point3d min2 = b2.Min();
-    Point3d max2 = b2.Max();
+    Point3D min2 = b2.Min();
+    Point3D max2 = b2.Max();
 
-    Point3d new_min;
-    Point3d new_max;
+    Point3D new_min;
+    Point3D new_max;
 
     for(int i = 0; i < 3; i++) {
         new_min[i] = std::min(min1[i], min2[i]);

@@ -49,21 +49,21 @@ BoundingBox Instance::BBox() const {
     if(transform_ == nullptr)
         return shape_->BBox();
 
-    Point3d bbox_min = shape_->BBox().Min();
-    Point3d bbox_max = shape_->BBox().Max();
+    Point3D bbox_min = shape_->BBox().Min();
+    Point3D bbox_max = shape_->BBox().Max();
 
     auto length_x = bbox_max[0] - bbox_min[0];
     auto length_y = bbox_max[1] - bbox_min[1];
     auto length_z = bbox_max[2] - bbox_min[2];
 
-    Point3d transformed_bbox_min = { std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max() };
-    Point3d transformed_bbox_max = { std::numeric_limits<double>::min(), std::numeric_limits<double>::min(), std::numeric_limits<double>::min() };
+    Point3D transformed_bbox_min = { std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max() };
+    Point3D transformed_bbox_max = { std::numeric_limits<double>::min(), std::numeric_limits<double>::min(), std::numeric_limits<double>::min() };
     for (int i = 0; i < 8; i++) {
-        Point3d p { bbox_min[0] + (i & (1 << 0)) * length_x,
+        Point3D p { bbox_min[0] + (i & (1 << 0)) * length_x,
                     bbox_min[1] + (i & (1 << 1)) * length_y,
                     bbox_min[2] + (i & (1 << 2)) * length_z };
 
-        Point3d transformed_p = (*transform_)(p);
+        Point3D transformed_p = (*transform_)(p);
 
         for(int j = 0; j < 3; j++) {
             transformed_bbox_min[j] = std::min(transformed_bbox_min[j], transformed_p[j]);

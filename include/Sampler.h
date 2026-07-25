@@ -15,7 +15,7 @@ class Sampler {
 public:
   Sampler(int num_samples) : num_samples_{num_samples} {}
   virtual ~Sampler() = default;
-  virtual std::vector<Point3d> Sample(Point3d origin, Vec3d Vx, Vec3d Vy) = 0;
+  virtual std::vector<Point3D> Sample(Point3D origin, Vec3D Vx, Vec3D Vy) = 0;
 
 protected:
   int num_samples_;

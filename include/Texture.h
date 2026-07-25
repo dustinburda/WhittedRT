@@ -17,7 +17,7 @@
 class Texture {
 public:
     virtual ~Texture();
-    virtual Color GetTexel(Point2d texture_coordinates) = 0;
+    virtual Color GetTexel(Point2D texture_coordinates) = 0;
 };
 
 class ImageTexture : public Texture {
@@ -36,7 +36,7 @@ public:
         stbi_image_free(bitmap_data);
     }
 
-    Color GetTexel(Point2d texture_coordinates) override {
+    Color GetTexel(Point2D) override {
         return Color{};
     }
 
@@ -51,7 +51,7 @@ class CheckerTexture : public Texture {
 public:
     ~CheckerTexture() override;
 
-    Color GetTexel(Point2d texture_coordinates) override {
+    Color GetTexel(Point2D) override {
         return Color{};
     }
 };
@@ -60,7 +60,7 @@ class NoiseTexture : public Texture {
 public:
     ~NoiseTexture() override;
 
-    Color GetTexel(Point2d texture_coordinates) override {
+    Color GetTexel(Point2D) override {
         return Color{};
     }
 };

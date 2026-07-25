@@ -192,7 +192,7 @@ static Matrix<T, N, N> Inverse(const Matrix<T, N, N>& m) {
         augmented[i][i+N] = 1;
     for(std::size_t i = 0; i < N -1; i++) {
         std::size_t pivot_row = i;
-        for (int r = i + 1; r < N; r++) {
+        for (std::size_t r = i + 1; r < N; r++) {
             if (std::abs(augmented[r][i]) > std::abs(augmented[pivot_row][i]))
                 pivot_row = r;
         }
@@ -200,7 +200,7 @@ static Matrix<T, N, N> Inverse(const Matrix<T, N, N>& m) {
         if (pivot_row != i)
             std::swap(augmented[pivot_row], augmented[i]);
 
-        for(int  j = 2*N -1; j >= 0; j--) {
+        for(int j = 2*N -1; j >= 0; j--) {
             augmented[i][j] /= augmented[i][i];
         }
 
@@ -213,7 +213,7 @@ static Matrix<T, N, N> Inverse(const Matrix<T, N, N>& m) {
 
     }
 
-    for(int j = 2*N -1; j >= N - 1; j--)
+    for(int j = 2*N -1; j >= (static_cast<int>(N) - 1); j--)
         augmented[N-1][j] /= augmented[N-1][N-1];
     // second pass
     for (int i = N -1; i > 0; i--) {

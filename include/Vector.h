@@ -229,15 +229,15 @@ static Vector<T, N> Reflect(const Vector<T,N>& v, const Vector<T, N>& n) {
 }
 
 
-using Vec4f = Vector<float, 4>;
-using Vec4d = Vector<double, 4>;
-using Ve4i = Vector<int, 4>;
-using Vec3f = Vector<float, 3>;
-using Vec3d = Vector<double, 3>;
-using Ve3i = Vector<int, 3>;
-using Vec2f = Vector<float, 2>;
-using Vec2d = Vector<double, 2>;
-using Ve2i = Vector<int, 2>;
+using Vec4F = Vector<float, 4>;
+using Vec4D = Vector<double, 4>;
+using Vec4i = Vector<int, 4>;
+using Vec3F = Vector<float, 3>;
+using Vec3D = Vector<double, 3>;
+using Vec3i = Vector<int, 3>;
+using Vec2F = Vector<float, 2>;
+using Vec2D = Vector<double, 2>;
+using Vec2i = Vector<int, 2>;
 
 
 

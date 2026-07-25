@@ -7,7 +7,7 @@
 #include <string>
 #include <sstream>
 
-Normal<double, 3> Plane::NormalAt(const Point<double, 3>& p) const
+Normal<double, 3> Plane::NormalAt([[ maybe_unused ]] const Point<double, 3>& p) const
 {
     return normal_;
 }
@@ -31,8 +31,8 @@ bool Plane::Hit(const Ray& r, ShadeContext& context) const
 }
 
 BoundingBox Plane::BBox() const {
-    Point3d min { std::numeric_limits<double>::min(), std::numeric_limits<double>::min(), std::numeric_limits<double>::min() };
-    Point3d max { std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max() };
+    Point3D min { std::numeric_limits<double>::min(), std::numeric_limits<double>::min(), std::numeric_limits<double>::min() };
+    Point3D max { std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max() };
 
     return BoundingBox {min, max};
 }

@@ -1,7 +1,7 @@
 #include "../include/RegularSampler.h"
 
-std::vector<Point3d> RegularSampler::Sample(Point3d origin, Vec3d Vx, Vec3d Vy) {
-    std::vector<Point3d> samples;
+std::vector<Point3D> RegularSampler::Sample(Point3D origin, Vec3D Vx, Vec3D Vy) {
+    std::vector<Point3D> samples;
 
     int num_samples_per_dimension = (std::ceil(std::sqrt(num_samples_)) + 1); // Number of dimensions
 

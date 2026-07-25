@@ -10,7 +10,7 @@
 #include <sstream>
 #include <string>
 
-Normal<double, 3> Triangle::NormalAt(const Point<double, 3> &p) const
+Normal<double, 3> Triangle::NormalAt(const Point<double, 3> &) const
 {
     auto cross_product = Cross(vertices_[1].position_ - vertices_[0].position_,
                                vertices_[2].position_ - vertices_[0].position_);
@@ -44,17 +44,17 @@ bool Triangle::Hit(const Ray &r, ShadeContext &context) const
                           barycentric_coordinates[1] * vertices_[1].texture_coordinate_.value().ToVector() +
                           barycentric_coordinates[2] * vertices_[2].texture_coordinate_.value().ToVector();
 
-        context.uv_ = Point2d{uv_vector_[0], uv_vector_[1]};
+        context.uv_ = Point2D{uv_vector_[0], uv_vector_[1]};
     } else {
-        context.uv_ = Point2d {-1, -1};
+        context.uv_ = Point2D {-1, -1};
     }
 
     return true;
 }
 
 BoundingBox Triangle::BBox() const {
-    Point3d min { std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max() };
-    Point3d max { std::numeric_limits<double>::min(), std::numeric_limits<double>::min(), std::numeric_limits<double>::min() };
+    Point3D min { std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max() };
+    Point3D max { std::numeric_limits<double>::min(), std::numeric_limits<double>::min(), std::numeric_limits<double>::min() };
 
     for (auto& vertex : vertices_) {
         for (int i = 0; i < 3; i++) {

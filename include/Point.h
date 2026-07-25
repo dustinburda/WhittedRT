@@ -55,7 +55,7 @@ public:
     Point<T, N> operator-() const {
         Point<T, N> negative;
 
-        for(int i = 0; i < N; i++)
+        for(std::size_t i = 0; i < N; i++)
             negative[i] = -data_[i];
 
         return negative;
@@ -64,7 +64,7 @@ public:
     Vector<T, N> ToVector() const {
         Vector<T, N> v;
 
-        for(int i = 0; i < N - 1; i++)
+        for(std::size_t i = 0; i < N - 1; i++)
             v[i] = data_[i];
 
         return v;
@@ -74,7 +74,7 @@ public:
         std::stringstream ss;
 
         ss << "Point: [";
-        for(int i = 0; i < N; i++)
+        for(std::size_t i = 0; i < N; i++)
         {
             ss << " " <<  data_[i];
             if (i != N - 1)
@@ -109,7 +109,7 @@ template<typename T, size_t N>
 static Vector<T, N> operator-(const Point<T,N>& p1, const Point<T,N>& p2) {
     Vector<T,N> difference;
 
-    for(int i = 0; i < N; i++){
+    for(std::size_t i = 0; i < N; i++){
         difference[i] = p1[i] -  p2[i];
     }
 
@@ -154,8 +154,8 @@ static double Distance(const Point<T,N>& p1, const Point<T,N>& p2) {
     return std::sqrt(distance_squared);
 }
 
-using Point3d = Point<double, 3>;
-using Point2d = Point<double, 2>;
+using Point3D = Point<double, 3>;
+using Point2D = Point<double, 2>;
 
 
 

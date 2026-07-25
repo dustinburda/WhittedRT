@@ -13,20 +13,22 @@ class CameraInterface {
 public:
     CameraInterface() = delete;
 
-    CameraInterface(Point3d origin, Vec3d look_at_, Vec3d up, double h_fov)
+    CameraInterface(Point3D origin, Vec3D look_at_, Vec3D up, double h_fov)
         : origin_{origin}, look_at_{look_at_}, up_{up}, h_fov_{h_fov} {}
 
+    virtual ~CameraInterface() = default;
 
-    const Point3d& Origin() const { return origin_; }
+
+    const Point3D& Origin() const { return origin_; }
     virtual std::vector<Ray> GetRayAt(int x, int y, const ImagePlane& p) const = 0;
     void SetSampler(std::shared_ptr<Sampler> s) { s_ = s; }
 
 protected:
     std::shared_ptr<Sampler> s_;
 
-    Point3d origin_;
-    Vec3d look_at_;
-    Vec3d up_;
+    Point3D origin_;
+    Vec3D look_at_;
+    Vec3D up_;
 
     double h_fov_;
 };

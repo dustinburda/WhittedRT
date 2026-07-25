@@ -17,7 +17,7 @@ public:
     virtual ~Light() = default;
 
     // TODO: Change interface to accomodate AmbientLight
-    virtual Vec3d GetDirection(ShadeContext& ctx) const = 0;
+    virtual Vec3D GetDirection(ShadeContext& ctx) const = 0;
 
     double GetIntensity() const;
     Color GetColor() const;
