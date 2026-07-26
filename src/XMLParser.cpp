@@ -9,7 +9,7 @@ static bool IsWhitespace(char c) {
 }
 
 static std::string Trim(std::string s) {
-    while (IsWhitespace(s.back()))
+    while (!s.empty() && IsWhitespace(s.back()))
         s.pop_back();
 
     return s;
