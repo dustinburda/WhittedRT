@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "../include/ProjectiveCamera.h.h"
+#include "../include/ProjectiveCamera.h"
 
 TEST(ProjectiveCameraTest, ConstructorTest) {
 

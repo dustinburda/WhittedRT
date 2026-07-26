@@ -7,13 +7,13 @@
 Canvas::Canvas(uint16_t width, uint16_t height) : width_(width), height_(height) {
     buffer_.resize(width_ * height_);
 
-    std::memset(buffer_.data(), 0, sizeof(Color) * width_ * height_);
+    std::fill(buffer_.begin(), buffer_.end(), Color {0.0, 0.0, 0.0});
 
     flushed_ = false;
 }
 
 void Canvas::SetColorAt(const Color& color, uint16_t i, uint16_t j) {
-    if(i >= width_ || i < 0 || j >= height_ || j < 0)
+    if(i >= width_ || j >= height_)
         throw std::logic_error("Array indices must stay in bounds!");
 
     // std::unique_lock<std::shared_mutex> l(mutex_);
@@ -21,7 +21,7 @@ void Canvas::SetColorAt(const Color& color, uint16_t i, uint16_t j) {
 }
 
 Color Canvas::GetColorAt(uint16_t i, uint16_t j) const {
-    if(i >= width_ || i < 0 || j >= height_ || j < 0)
+    if(i >= width_  || j >= height_ )
         throw std::logic_error("Array indices must stay in bounds!");
 
     // std::shared_lock<std::shared_mutex> l(mutex_);

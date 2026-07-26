@@ -9,6 +9,8 @@
 #include "Ray.h"
 #include "Sampler.h"
 
+#include <memory>
+
 class CameraInterface {
 public:
     CameraInterface() = delete;

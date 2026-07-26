@@ -39,14 +39,14 @@ public:
     }
 
     T& operator[](size_t i) {
-        if(i >= N || i < 0)
+        if(i >= N)
             throw std::logic_error("Index must be within bounds!");
 
         return data_[i];
     }
 
     T operator[](size_t i) const {
-        if(i >= N || i < 0)
+        if(i >= N)
             throw std::logic_error("Index must be within bounds!");
 
         return data_[i];

@@ -33,7 +33,7 @@ public:
     double& B() { return data_[2]; }
 
     double operator[](std::size_t i) {
-        if (i >= 3 || i < 0)
+        if (i >= 3)
             throw std::logic_error("Color only has three components!");
 
         return data_[i];

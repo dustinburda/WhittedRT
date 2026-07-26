@@ -40,14 +40,14 @@ public:
     }
 
     std::array<T, N>& operator[](std::size_t index) {
-        if(index >= M || index < 0)
+        if(index >= M)
             throw std::logic_error("You must access an element within bounds!");
 
         return data_[index];
     }
 
     std::array<T, N> operator[](std::size_t index) const {
-        if(index >= M || index < 0)
+        if(index >= M)
             throw std::logic_error("You must access an element within bounds!");
 
         return data_[index];
