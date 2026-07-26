@@ -7,10 +7,11 @@ This is a Whitted Ray Tracer written in C++.
 * Image and Procedural Textures
 * Transformations and Instancing
 * Multithreading
-* Anti-Aliasing
+* Anti-Aliasing with Adaptive Super Sampling
 * Bounding Volume Hierarchies
 * Scene Parsing
 * Linear Algebra Library
+* XML Parser
 * Zero Dependencies, Pure Modern C++
 
 ## Table of Contents
