@@ -56,7 +56,7 @@ public:
     Normal<T, N> operator-() const {
         Normal<T, N> negative;
 
-        for(int i = 0; i < N; i++)
+        for(std::size_t i = 0; i < N; i++)
             negative[i] = -data_[i];
 
         return negative;
@@ -87,7 +87,7 @@ public:
 
     double LengthSquared() const {
         double magnitude = 0;
-        for(int i = 0; i < N; i++){
+        for(std::size_t i = 0; i < N; i++){
             magnitude += data_[i] * data_[i];
         }
 
@@ -105,7 +105,7 @@ public:
     Vector<T, N> ToVector() const {
         Vector<T, N> v;
 
-        for(int i = 0; i < N - 1; i++)
+        for(std::size_t i = 0; i < N - 1; i++)
             v[i] = data_[i];
 
         return v;
@@ -134,7 +134,7 @@ private:
 template<typename T, size_t N>
 static Normal<T, N> operator+(const Normal<T,N>& n1, const Normal<T, N>& n2) {
     Normal<T, N> n_plus;
-    for(int i = 0; i < N; i++) {
+    for(std::size_t i = 0; i < N; i++) {
         n_plus[i] = n1[i] + n2[i];
     }
 
@@ -165,7 +165,7 @@ static double Dot(const Normal<T,N>& n, const Vector<T, N>& v) {
 template<typename T, size_t N>
 static Normal<double, N> operator*(const Normal<T,N>& n, const double t) {
     Normal<double, N> n_scalar;
-    for(int i = 0; i < N; i++) {
+    for(std::size_t i = 0; i < N; i++) {
         n_scalar[i] = static_cast<double>(n[i]) * t;
     }
 
@@ -185,7 +185,7 @@ static Normal<double, N> operator/(const Normal<T,N>& n, const double t) {
 template<typename T, size_t N>
 static Vector<T, N> operator+(const Normal<T,N>& n, const Vector<T, N>& v) {
     Vector<T, N> v_plus;
-    for(int i = 0; i < N; i++) {
+    for(std::size_t i = 0; i < N; i++) {
         v_plus[i] = n[i] + v[i];
     }
 
@@ -195,7 +195,7 @@ static Vector<T, N> operator+(const Normal<T,N>& n, const Vector<T, N>& v) {
 template<typename T, size_t N>
 static Vector<T, N> operator+(const Vector<T, N>& v, const Normal<T,N>& n) {
     Vector<T, N> v_plus;
-    for(int i = 0; i < N; i++) {
+    for(std::size_t i = 0; i < N; i++) {
         v_plus[i] = n[i] + v[i];
     }
 

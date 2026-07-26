@@ -106,8 +106,6 @@ TEST(NormalTest, UnitNormal) {
 
     auto unit_normal = normal.UnitNormal();
 
-    auto unit_normal_length = unit_normal.Length();
-
     EXPECT_NEAR(unit_normal.Length(), 1.0, 1e-5);
 }
 

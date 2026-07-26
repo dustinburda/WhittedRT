@@ -63,16 +63,16 @@ public:
     Matrix<T, M, N> operator-() const {
         Matrix<T, M, N> negative;
 
-        for(int i = 0; i < M; i++)
-            for(int j = 0; j < N; j++)
+        for(std::size_t i = 0; i < M; i++)
+            for(std::size_t j = 0; j < N; j++)
                 negative[i][j] = -data_[i][j];
 
         return negative;
     }
 
     Matrix<T, M, N>& operator+=(const Matrix& m) {
-        for(int i = 0; i < M; i++)
-            for(int j = 0; j < N; j++)
+        for(std::size_t i = 0; i < M; i++)
+            for(std::size_t j = 0; j < N; j++)
                 data_[i][j] += m[i][j];
 
         return *this;
@@ -84,8 +84,8 @@ public:
     }
 
     Matrix<T, M, N>& operator*(double t) {
-        for(int i = 0; i < M; i++)
-            for(int j = 0; j < N; j++)
+        for(std::size_t i = 0; i < M; i++)
+            for(std::size_t j = 0; j < N; j++)
                 data_[i][j] *= t;
     }
 
@@ -120,8 +120,8 @@ private:
 
 template<typename T, size_t M, size_t N>
 static bool operator==(const Matrix<T, M, N>& m1, const Matrix<T, M, N>& m2) {
-    for(int i = 0; i < M; i++)
-        for(int j = 0; j < N; j++)
+    for(std::size_t i = 0; i < M; i++)
+        for(std::size_t j = 0; j < N; j++)
             if(m1[i][j] != m2[i][j])
                 return false;
 
@@ -137,7 +137,7 @@ template<typename T, size_t N>
 static Matrix<T, N, N> Identity() {
     Matrix<T, N, N> identity;
 
-    for(int i = 0; i < N; i++)
+    for(std::size_t i = 0; i < N; i++)
         identity[i][i] = 1;
 
     return identity;
@@ -152,8 +152,8 @@ template<typename T, size_t M, size_t N>
 static Matrix<T, N, M> Transpose(const Matrix<T, M, N> m) {
     Matrix<T, N, M> transpose;
 
-    for(int i = 0; i < M; i++)
-        for(int j = 0; j < N; j++)
+    for(std::size_t i = 0; i < M; i++)
+        for(std::size_t j = 0; j < N; j++)
             transpose[j][i] = m[i][j];
 
     return transpose;
@@ -163,17 +163,17 @@ template<typename T, size_t N>
 static Matrix<T, N, N> Determinant(const Matrix<T, N, N> m) {
     Matrix<T, N, N> copy = m;
 
-    for(int r = 0; r < N; r++) {
-        for(int r_next = r + 1; r_next < N; r_next++) {
+    for(std::size_t r = 0; r < N; r++) {
+        for(std::size_t r_next = r + 1; r_next < N; r_next++) {
             double f = copy[r_next][r] / copy[r][r];
-            for(int c = r; c < N; c++) {
+            for(std::size_t c = r; c < N; c++) {
                 copy[r_next][c] -= f * copy[r][c];
             }
         }
     }
 
     double det = 1;
-    for(int i = 0; i < N; i++)
+    for(std::size_t i = 0; i < N; i++)
         det *= copy[i][i];
 
     return det;

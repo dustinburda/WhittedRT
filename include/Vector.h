@@ -41,7 +41,7 @@ public:
     }
 
     Vector(const Vector<T, N - 1>& v, T val) {
-         for (int i = 0; i < N - 1; i++) {
+         for (std::size_t i = 0; i < N - 1; i++) {
              data_[i] = v[i];
          }
          data_[N - 1] = val;
@@ -180,7 +180,7 @@ static Vector<double, N> operator/(const Vector<T,N>& v1, const double t) {
 
 template<typename T, size_t N>
 static bool operator==(const Vector<T, N>& v1, const Vector<T,N> &v2){
-    for(int i = 0; i < N; i++){
+    for(std::size_t i = 0; i < N; i++){
         if(v1[i] != v2[i])
             return false;
     }

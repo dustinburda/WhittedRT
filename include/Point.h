@@ -120,7 +120,7 @@ template<typename T, size_t N>
 static Point<double, N> operator*(const Point<T,N>& p, double t) {
     Point<T,N> v;
 
-    for(int i = 0; i < N; i++){
+    for(std::size_t i = 0; i < N; i++){
         v[i] = p[i] * t;
     }
 
@@ -141,7 +141,7 @@ template<typename T, size_t N>
 static double DistanceSquared(const Point<T,N>& p1, const Point<T,N>& p2) {
     double distance_squared = 0;
 
-    for(int i = 0; i < N; i++){
+    for(std::size_t i = 0; i < N; i++){
         distance_squared += (p1[i] - p2[i]) * (p1[i] - p2[i]);
     }
 
