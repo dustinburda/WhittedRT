@@ -2,6 +2,9 @@
 build
 cmake-build*
 images
+models
+scenes
+config
 *ppm
 .DS_Store
 RAY_TRACER_REVIEW.md
