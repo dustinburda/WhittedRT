@@ -4,15 +4,18 @@
 
 #include "../include/Cylinder.h"
 
+Cylinder::Cylinder() : ShapeInterface(ShapeType::Cylinder) {
 
-Normal<double, 3> NormalAt(const Point<double, 3>& p) const {
+}
+
+Normal<double, 3> Cylinder::NormalAt([[ maybe_unused ]] const Point<double, 3>& p) const {
     return Normal<double, 3> {};
 }
 
-bool Hit(const Ray& r, ShadeContext& context) const {
+bool Cylinder::Hit( [[ maybe_unused ]] const Ray& r, [[ maybe_unused ]] ShadeContext& context) const {
     return false;
 }
 
-BoundingBox BBox() const {
+BoundingBox Cylinder::BBox() const {
     return BoundingBox{};
 }

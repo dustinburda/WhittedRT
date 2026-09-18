@@ -23,11 +23,11 @@ TEST(BVHTest, RayMissingAllInstancesReturnsNoHit) {
     auto right_sphere = std::make_shared<Sphere>(Point3D{3.0, 0.0, 0.0}, 1.0);
 
     std::vector<Instance> instances{
-        Instance{left_sphere, nullptr, InstanceType::Sphere},
-        Instance{right_sphere, nullptr, InstanceType::Sphere}
+        Instance{left_sphere, nullptr},
+        Instance{right_sphere, nullptr}
     };
 
-    BVH bvh{instances};
+    BVH bvh{instances, SplitMethod::RandomSplitAxis};
     Ray ray{{0.0, 3.0, -5.0}, {0.0, 0.0, 1.0}, RayType::PrimaryRay};
     ShadeContext context;
 

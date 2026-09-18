@@ -7,6 +7,10 @@
 #include <string>
 #include <sstream>
 
+Plane::Plane() : ShapeInterface(ShapeType::Plane), point_{1.0, 0.0, 0.0}, normal_{1.0, 1.0, 1.0} {}
+Plane::Plane(const Point<double, 3>& point, const Normal<double, 3>& normal)
+    : ShapeInterface(ShapeType::Plane), point_{point}, normal_{normal} {}
+
 Normal<double, 3> Plane::NormalAt([[ maybe_unused ]] const Point<double, 3>& p) const
 {
     return normal_;
@@ -35,6 +39,10 @@ BoundingBox Plane::BBox() const {
     Point3D max { std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max() };
 
     return BoundingBox {min, max};
+}
+
+std::vector<std::shared_ptr<ShapeInterface>> Plane::Decompose() const {
+    return {};
 }
 
 std::string Plane::toString() const {

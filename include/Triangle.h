@@ -22,15 +22,16 @@ struct Vertex {
 
 class Triangle : public ShapeInterface {
 public:
-    Triangle() = default;
-    Triangle(Vertex a, Vertex b, Vertex c)
-        : vertices_{a,b,c}, is_textured_{false} {}
+    Triangle();
+    Triangle(Vertex a, Vertex b, Vertex c);
     ~Triangle() override = default;
 
     Normal<double, 3> NormalAt(const Point<double, 3> &p) const override;
     bool Hit(const Ray &r, ShadeContext &context) const override;
     BoundingBox BBox() const override;
-    void SetIsTextured(bool is_textured);
+    std::vector<std::shared_ptr<ShapeInterface>> Decompose() const override;
+
+    void SetIsTextured(bool is_textured); // TODO: Does this belong here?
 
     std::string toString() const;
 private:

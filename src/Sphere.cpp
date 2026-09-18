@@ -11,6 +11,10 @@
 #include <string>
 #include <sstream>
 
+Sphere::Sphere() : ShapeInterface(ShapeType::Sphere), center_{0,0,0}, radius_{1.0} {}
+Sphere::Sphere(const Point<double, 3>& center, double radius)
+    : ShapeInterface(ShapeType::Sphere), center_{center}, radius_{radius} {}
+
 bool Sphere::Hit(const Ray& r, ShadeContext& context) const {
     double a = Dot(r.Direction(), r.Direction());
     double b = 2 * Dot(r.Direction(), r.Origin() - center_);
@@ -55,6 +59,10 @@ BoundingBox Sphere::BBox() const {
     Point3D max {center_[0] + radius_, center_[1] + radius_, center_[2] + radius_};
 
     return BoundingBox {min, max};
+}
+
+std::vector<std::shared_ptr<ShapeInterface>> Sphere::Decompose() const {
+    return {};
 }
 
 std::string Sphere::toString() const {
