@@ -15,17 +15,16 @@
 
 class Mesh : public ShapeInterface {
 public:
-    Mesh() = default;
+    Mesh();
     Mesh(std::shared_ptr<MeshData> mesh_data);
 
     Normal<double, 3> NormalAt(const Point<double, 3>& p) const override;
     bool Hit(const Ray& r, ShadeContext& context) const override;
     BoundingBox BBox() const override;
-
-    const std::vector<Triangle>& Triangles() const;
+    std::vector<std::shared_ptr<ShapeInterface>> Decompose() const override;
 
 private:
-    std::vector<Triangle> triangles_;
+    std::vector<std::shared_ptr<Triangle>> triangles_;
 
 
     // TODO: remove, mesh no longer directly rendered

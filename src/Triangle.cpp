@@ -10,6 +10,11 @@
 #include <sstream>
 #include <string>
 
+Triangle::Triangle() : ShapeInterface(ShapeType::Triangle) {}
+
+Triangle::Triangle(Vertex a, Vertex b, Vertex c)
+    : ShapeInterface(ShapeType::Triangle), vertices_{a,b,c}, is_textured_{false} {}
+
 Normal<double, 3> Triangle::NormalAt(const Point<double, 3> &) const
 {
     auto cross_product = Cross(vertices_[1].position_ - vertices_[0].position_,
@@ -64,6 +69,10 @@ BoundingBox Triangle::BBox() const {
     }
 
     return BoundingBox {min, max};
+}
+
+std::vector<std::shared_ptr<ShapeInterface>> Triangle::Decompose() const {
+    return {};
 }
 
 void Triangle::SetIsTextured(bool is_textured) {

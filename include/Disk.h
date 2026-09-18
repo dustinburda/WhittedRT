@@ -9,7 +9,7 @@
 
 class Disk : public ShapeInterface {
 public:
-    Disk() = default;
+    Disk();
     Disk(Normal<double, 3> normal, Point3D center);
 
     virtual ~Disk() override;
@@ -17,6 +17,7 @@ public:
     Normal<double, 3> NormalAt(const Point<double, 3>& p) const override;
     bool Hit(const Ray& r, ShadeContext& context) const override;
     BoundingBox BBox() const override;
+    std::vector<std::shared_ptr<ShapeInterface>> Decompose() const override;;
 
 private:
     // TODO: remove center

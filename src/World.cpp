@@ -6,13 +6,8 @@
 
 void World::AddShape(Instance instance)
 {
-    if(instance.Type() == InstanceType::Mesh) {
-        // adds individual triangles from Mesh class
-        instance.GetTriangles(instances_);
-    }
-    else {
-        instances_.push_back(instance);
-    }
+    for (auto& primitive_instance : instance.Decompose())
+        instances_.push_back(primitive_instance);
 }
 
 void World::Build() {

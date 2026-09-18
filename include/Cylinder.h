@@ -11,8 +11,7 @@
 
 class Cylinder : public ShapeInterface {
 public:
-    Cylinder() = default;
-    Cylinder(double radius, double height);
+    Cylinder();
 
     Normal<double, 3> NormalAt(const Point<double, 3>& p) const  override;
     bool Hit(const Ray& r, ShadeContext& context) const  override;

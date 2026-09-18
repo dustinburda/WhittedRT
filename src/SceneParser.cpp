@@ -135,27 +135,21 @@ std::shared_ptr<Instance> SceneParser::ParseShape(std::unique_ptr<XMLNode>& node
     auto material_ptr = parsing_context_.name_material_[material_name];
     auto transformation_ptr = parsing_context_.name_transformation_[transformation_name]; // Confusing, fix this
     std::shared_ptr<ShapeInterface> shape_ptr = nullptr;
-    InstanceType instance_type;
 
     if (type == "sphere") {
-        instance_type = InstanceType::Sphere;
         shape_ptr = std::make_shared<Sphere>();
     } else if (type == "plane") {
-        instance_type = InstanceType::Plane;
         shape_ptr = std::make_shared<Plane>();
     } else if (type == "mesh") {
-        instance_type = InstanceType::Mesh;
-
         std::string filename = node->attributes_["filename"];
         auto mesh_data = OBJParser::GetInstance().ParseOBJ( "../models/" + filename);
 
         shape_ptr = std::make_shared<Mesh>(mesh_data);
     } else if (type == "triangle") {
-        instance_type = InstanceType::Triangle;
         shape_ptr = ParseTriangle(node);
     }
 
-    return std::make_shared<Instance>(transformation_ptr, shape_ptr, material_ptr, instance_type);
+    return std::make_shared<Instance>(transformation_ptr, shape_ptr, material_ptr);
 }
 
 Color SceneParser::ParseColor(const XMLNode* node) {

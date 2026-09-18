@@ -6,11 +6,11 @@
 
 #include "../include/Mesh.h"
 
-Instance::Instance(std::shared_ptr<ShapeInterface> shape, std::shared_ptr<MaterialInterface> mat, InstanceType type)
-    : transform_{nullptr}, shape_{std::move(shape)}, mat_{std::move(mat)}, bounding_box_(ComputeBBox()), instance_type_{type} {}
+Instance::Instance(std::shared_ptr<ShapeInterface> shape, std::shared_ptr<MaterialInterface> mat)
+    : transform_{nullptr}, shape_{std::move(shape)}, mat_{std::move(mat)}, bounding_box_(ComputeBBox()) {}
 
-Instance::Instance(std::shared_ptr<Transformation> t, std::shared_ptr<ShapeInterface> shape, std::shared_ptr<MaterialInterface> mat, InstanceType type)
-    :transform_{t}, shape_{std::move(shape)}, mat_{std::move(mat)}, bounding_box_(ComputeBBox()), instance_type_{type} {}
+Instance::Instance(std::shared_ptr<Transformation> t, std::shared_ptr<ShapeInterface> shape, std::shared_ptr<MaterialInterface> mat)
+    :transform_{t}, shape_{std::move(shape)}, mat_{std::move(mat)}, bounding_box_(ComputeBBox()) {}
 
 Normal<double, 3> Instance::NormalAt(const Point<double, 3>& p) const {
     if(transform_ == nullptr)
@@ -49,8 +49,23 @@ BoundingBox Instance::BBox() const {
     return bounding_box_;
 }
 
-InstanceType Instance::Type() const {
-    return instance_type_;
+std::vector<Instance> Instance::Decompose() const {
+    auto shape_decomposition = shape_->Decompose();
+
+    if (shape_decomposition.empty())
+        return {*this};
+
+    std::vector<Instance> instance_decomposition;
+    instance_decomposition.reserve(shape_decomposition.size());
+    for (auto& shape_primitive : shape_decomposition)
+        instance_decomposition.emplace_back(transform_, shape_primitive, mat_);
+
+    return instance_decomposition;
+}
+
+
+ShapeType Instance::Type() const {
+    return shape_->Type();
 }
 
 double Instance::SurfaceAreaBBox() {
@@ -59,21 +74,6 @@ double Instance::SurfaceAreaBBox() {
     double f3Area = bounding_box_.Height() * bounding_box_.Length();
 
     return 2 * (f1Area + f2Area + f3Area);
-}
-
-void Instance::GetTriangles(std::vector<Instance>& instances) const {
-    if (instance_type_ != InstanceType::Mesh)
-        throw std::logic_error("Can only get triangles from a mesh");
-
-    auto mesh_ptr = dynamic_cast<Mesh*>(shape_.get());
-
-    auto triangles = mesh_ptr->Triangles();
-    for (auto& triangle : triangles) {
-        auto triangle_ptr = std::make_shared<Triangle>(triangle);
-        auto triangle_instance = Instance{transform_, triangle_ptr, mat_, InstanceType::Triangle};
-
-        instances.push_back(triangle_instance);
-    }
 }
 
 BoundingBox Instance::ComputeBBox() {

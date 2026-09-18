@@ -17,14 +17,14 @@
 
 class Sphere : public ShapeInterface {
 public:
-    Sphere() : center_{0,0,0}, radius_{1.0} {}
-    Sphere(const Point<double, 3>& center, double radius)
-        : center_{center}, radius_{radius} {}
+    Sphere();
+    Sphere(const Point<double, 3>& center, double radius);
     ~Sphere() override = default;
 
     bool Hit(const Ray& r, ShadeContext& context) const override;
     Normal<double, 3> NormalAt(const Point<double, 3>& p) const override;
     BoundingBox BBox() const override;
+    std::vector<std::shared_ptr<ShapeInterface>> Decompose() const override;
 
     std::string toString() const;
 private:
