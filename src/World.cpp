@@ -11,7 +11,7 @@ void World::AddShape(Instance instance)
 }
 
 void World::Build() {
-    bvh_.Build(instances_);
+    bvh_.Build(instances_, SplitMethod::RandomSplitAxis);
 }
 
 bool World::Hit(const Ray& r, ShadeContext& context)

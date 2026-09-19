@@ -28,10 +28,6 @@ bool BVHNode::Hit(const Ray& r, ShadeContext& context) {
 
 BVH::BVH() : root_{nullptr} {}
 
-BVH::BVH(std::vector<Instance>& shapes, [[ maybe_unused ]] SplitMethod split_method) {
-    root_ = Build(shapes);
-}
-
 bool BVH::Hit(const Ray& r, ShadeContext& s) {
     if (root_ == nullptr)
         return false;
@@ -39,7 +35,7 @@ bool BVH::Hit(const Ray& r, ShadeContext& s) {
     return root_->Hit(r, s);
 }
 
-std::unique_ptr<BVHNode> BVH::Build(std::vector<Instance> shapes) {
+std::unique_ptr<BVHNode> BVH::Build(std::vector<Instance> shapes, [[ maybe_unused ]] SplitMethod split_method) {
     if (shapes.size() == 0)
         return nullptr;
 

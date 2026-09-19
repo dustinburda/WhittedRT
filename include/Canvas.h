@@ -40,7 +40,8 @@ private:
 	const uint16_t height_;
 	std::vector<Color> buffer_;
     bool flushed_;
-	// mutable std::shared_mutex mutex_;
+
+	mutable std::shared_mutex mutex_;
 };
 
 #endif //CANVAS_H
