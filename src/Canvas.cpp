@@ -29,9 +29,11 @@ Color Canvas::GetColorAt(uint16_t i, uint16_t j) const {
 }
 
 void Canvas::Flush(const std::string& filename) {
-    auto current_dir = std::filesystem::current_path().parent_path();
-    std::string dir = current_dir.string() + "/images";
-    dir += (filename.empty()) ? "/image.ppm" : "/" + filename;
+    // TODO: Check if dir exists
+    // If it fails, write to a dummy location
+
+    std::filesystem::path dir = std::filesystem::current_path().parent_path() / "image";
+    std::filesystem::path output_path = dir / ((filename.empty()) ? "image.ppm" : filename);
 
     std::stringstream image_content;
 
