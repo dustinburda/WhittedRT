@@ -40,9 +40,8 @@ private:
 class BVH {
 public:
     BVH();
-    explicit BVH(std::vector<Instance>& shapes, SplitMethod split_method);
     bool Hit(const Ray& r, ShadeContext& s);
-    std::unique_ptr<BVHNode> Build(std::vector<Instance> shapes);
+    std::unique_ptr<BVHNode> Build(std::vector<Instance> shapes, SplitMethod split_method);
 private:
     std::unique_ptr<BVHNode> BuildRecursive(std::span<Instance> shapes) const;
 

@@ -27,7 +27,8 @@ TEST(BVHTest, RayMissingAllInstancesReturnsNoHit) {
         Instance{right_sphere, nullptr}
     };
 
-    BVH bvh{instances, SplitMethod::RandomSplitAxis};
+    BVH bvh;
+    bvh.Build(instances, SplitMethod::RandomSplitAxis);
     Ray ray{{0.0, 3.0, -5.0}, {0.0, 0.0, 1.0}, RayType::PrimaryRay};
     ShadeContext context;
 
