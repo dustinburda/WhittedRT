@@ -76,6 +76,12 @@ std::string BoundingBox::toString() const {
     return ss.str();
 }
 
+Point3D BoundingBox::Centroid() const {
+    auto centroid_vector = 0.5 * (min_.ToVector() + max_.ToVector() );
+
+    return {centroid_vector[0], centroid_vector[1], centroid_vector[2]};
+}
+
 BoundingBox Union(const BoundingBox& b1, const BoundingBox& b2) {
     Point3D min1 = b1.Min();
     Point3D max1 = b1.Max();

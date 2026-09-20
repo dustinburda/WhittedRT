@@ -36,6 +36,7 @@ public:
     double Width();
     double Height();
     double Length();
+    Point3D Centroid() const;
 
     std::string toString() const;
 
