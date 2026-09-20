@@ -11,7 +11,8 @@ void World::AddShape(Instance instance)
 }
 
 void World::Build() {
-    bvh_.Build(instances_, SplitMethod::RandomSplitAxis);
+    // TODO: World should have a choice of aggregate
+    bvh_.Build(instances_, BVH::SplitMethod::RandomSplitAxis);
 }
 
 bool World::Hit(const Ray& r, ShadeContext& context)
