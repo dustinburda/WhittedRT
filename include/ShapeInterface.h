@@ -9,14 +9,19 @@
 #include "Ray.h"
 #include "ShadeContext.h"
 
+#define SHAPE_TYPES \
+    X(Sphere) \
+    X(Mesh) \
+    X(Triangle) \
+    X(Plane) \
+    X(Cylinder) \
+    X(Disk) \
+    X(Box)
+
 enum class ShapeType {
-    Sphere,
-    Mesh,
-    Triangle,
-    Plane,
-    Cylinder,
-    Disk,
-    Box
+#define X(name) name,
+    SHAPE_TYPES
+#undef X
 };
 
 class ShapeInterface {
