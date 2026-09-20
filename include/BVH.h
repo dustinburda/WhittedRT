@@ -34,7 +34,7 @@ public:
     enum class SplitMethod {
         RandomSplitAxis,
         CentroidCountMedianSplit,
-        CentroidSpatialMedianSplit,
+        CentroidSpatialMidpointSplit,
         SurfaceAreaHeuristic,
     };
 

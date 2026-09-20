@@ -13,7 +13,7 @@ using ShapePartition = std::pair<std::span<Instance>, std::span<Instance>>;
 
 ShapePartition RandomSplitAxisMethod(std::span<Instance> shapes);
 ShapePartition CentroidCountMedianSplit(std::span<Instance> shapes);
-ShapePartition CentroidSpatialMedianSplit(std::span<Instance> shapes);
+ShapePartition CentroidSpatialMidpointSplit(std::span<Instance> shapes);
 ShapePartition SurfaceAreaHeuristic(std::span<Instance> shapes);
 
 ShapePartition Split(std::span<Instance> shapes, BVH::SplitMethod split_method);

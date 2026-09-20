@@ -6,7 +6,6 @@
 
 
 ShapePartition RandomSplitAxisMethod(std::span<Instance> shapes) {
-
     int split_axis = RandomInt(0, 2);
 
     auto comparator = [&split_axis](const Instance& i1, const Instance& i2) {
@@ -21,13 +20,79 @@ ShapePartition RandomSplitAxisMethod(std::span<Instance> shapes) {
     return {s1, s2};
 };
 
+int GetLargestSpatialExtent(std::span<Instance> shapes) {
+    // TODO: Is this really defensive programming
+    if (shapes.size() == 0)
+        return 0;
 
-ShapePartition CentroidCountMedianSplit ( [[ maybe_unused]] std::span<Instance> shapes) {
-    return {};
+    std::array<std::tuple<double, double>, 3> spatial_extents {{
+        {std::numeric_limits<double>::max(), std::numeric_limits<double>::lowest()},
+        {std::numeric_limits<double>::max(), std::numeric_limits<double>::lowest()},
+        {std::numeric_limits<double>::max(), std::numeric_limits<double>::lowest()},
+    }};
+
+    for (auto& shape : shapes) {
+        const auto& centroid = shape.BBox().Centroid();
+
+        for (std::size_t axis = 0; axis < 3; axis++) {
+            auto& [extent_min, extent_max] = spatial_extents[axis];
+            extent_min = std::min(extent_min, centroid[axis]);
+            extent_max = std::max(extent_max, centroid[axis]);
+        }
+    };
+
+    auto max_it = std::max_element(spatial_extents.begin(), spatial_extents.end(),
+        [](const auto& extent1, const auto& extent2) {
+        auto& [extent1_min, extent1_max] = extent1;
+        auto& [extent2_min, extent2_max] = extent2;
+
+        return std::abs(extent1_max - extent1_min) < std::abs(extent2_max - extent2_min);
+    });
+
+    return static_cast<int>(std::distance(spatial_extents.begin(), max_it));
+}
+
+double GetCentroidMidpoint(std::span<Instance> shapes, int split_axis) {
+    auto min = std::numeric_limits<double>::max();
+    auto max = std::numeric_limits<double>::lowest();
+
+    for (auto& shape : shapes) {
+        min = std::min(min , shape.BBox().Centroid()[split_axis]);
+        max = std::max(max , shape.BBox().Centroid()[split_axis]);
+    }
+
+    return (min + max) * 0.5;
+}
+
+ShapePartition CentroidCountMedianSplit (std::span<Instance> shapes) {
+    int split_axis = GetLargestSpatialExtent(shapes);
+
+    auto comparator = [&split_axis](const Instance& i1, const Instance& i2) {
+        return i1.BBox().Centroid()[split_axis] < i2.BBox().Centroid()[split_axis];
+    };
+
+    std::sort(shapes.begin(), shapes.end(), comparator);
+
+    std::span s1 {shapes.begin(), shapes.begin() + shapes.size() / 2};
+    std::span s2 {shapes.begin() + shapes.size() / 2, shapes.end() };
+
+    return {s1, s2};
 };
 
-ShapePartition CentroidSpatialMedianSplit ( [[ maybe_unused]]  std::span<Instance> shapes) {
-    return {};
+ShapePartition CentroidSpatialMidpointSplit (std::span<Instance> shapes) {
+    int split_axis = GetLargestSpatialExtent(shapes);
+
+    double centroid_midpoint = GetCentroidMidpoint(shapes, split_axis);
+
+    // TODO: What if the partition returns shape.begin()?
+    auto it = std::partition(shapes.begin(), shapes.end(), [&centroid_midpoint, &split_axis](const Instance& i1) {
+        return i1.BBox().Centroid()[split_axis] < centroid_midpoint;
+    });
+
+    std::span s1 {shapes.begin(), it};
+    std::span s2 {it, shapes.end()};
+
+    return {s1, s2};
 };
 
 ShapePartition SurfaceAreaHeuristic ( [[ maybe_unused]]  std::span<Instance> shapes) {
@@ -41,8 +106,8 @@ ShapePartition Split(std::span<Instance> shapes, BVH::SplitMethod split_method) 
             return RandomSplitAxisMethod(shapes);
         case BVH::SplitMethod::CentroidCountMedianSplit:
             return CentroidCountMedianSplit(shapes);
-        case BVH::SplitMethod::CentroidSpatialMedianSplit:
-            return CentroidSpatialMedianSplit(shapes);
+        case BVH::SplitMethod::CentroidSpatialMidpointSplit:
+            return CentroidSpatialMidpointSplit(shapes);
         case BVH::SplitMethod::SurfaceAreaHeuristic:
             return SurfaceAreaHeuristic(shapes);
         default:

@@ -56,15 +56,15 @@ bool BoundingBox::Hit(const Ray& r, [[ maybe_unused ]] ShadeContext& context) co
     return Interval::Intersects({x_interval, y_interval, z_interval});
 }
 
-double BoundingBox::Width() {
+double BoundingBox::Width() const {
     return std::abs(max_[0] - min_[0]);
 }
 
-double BoundingBox::Height() {
+double BoundingBox::Height() const {
     return std::abs(max_[1] - min_[1]);
 }
 
-double BoundingBox::Length() {
+double BoundingBox::Length() const {
     return std::abs(max_[2] - min_[2]);
 }
 
@@ -74,6 +74,20 @@ std::string BoundingBox::toString() const {
     ss << min_.toString() << "\n" << max_.toString();
 
     return ss.str();
+}
+
+Point3D BoundingBox::Centroid() const {
+    auto centroid_vector = 0.5 * (min_.ToVector() + max_.ToVector() );
+
+    return {centroid_vector[0], centroid_vector[1], centroid_vector[2]};
+}
+
+double BoundingBox::SurfaceArea() const {
+    double f1Area = Height() * Width();
+    double f2Area = Width() * Length();
+    double f3Area = Height() * Length();
+
+    return 2 * (f1Area + f2Area + f3Area);
 }
 
 BoundingBox Union(const BoundingBox& b1, const BoundingBox& b2) {
@@ -93,4 +107,3 @@ BoundingBox Union(const BoundingBox& b1, const BoundingBox& b2) {
 
     return {new_min, new_max};
 }
-

@@ -33,9 +33,12 @@ public:
     Point3D Min() const { return min_; }
     Point3D Max() const { return max_; }
 
-    double Width();
-    double Height();
-    double Length();
+    double Width() const;
+    double Height() const;
+    double Length() const;
+
+    Point3D Centroid() const;
+    double SurfaceArea() const;
 
     std::string toString() const;
 

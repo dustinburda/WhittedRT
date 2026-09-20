@@ -68,14 +68,6 @@ ShapeType Instance::Type() const {
     return shape_->Type();
 }
 
-double Instance::SurfaceAreaBBox() {
-    double f1Area = bounding_box_.Height() * bounding_box_.Width();
-    double f2Area = bounding_box_.Width() * bounding_box_.Length();
-    double f3Area = bounding_box_.Height() * bounding_box_.Length();
-
-    return 2 * (f1Area + f2Area + f3Area);
-}
-
 BoundingBox Instance::ComputeBBox() {
     if(transform_ == nullptr)
         return shape_->BBox();
