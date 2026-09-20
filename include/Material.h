@@ -14,12 +14,17 @@
 class Light;
 struct ShadeContext;
 
+#define MATERIAL_TYPES \
+    X(Black) \
+    X(SolidColor) \
+    X(SimplePhong) \
+    X(Reflective) \
+    X(Refractive)
+
 enum class MaterialType {
-    Black,
-    SolidColor,
-    SimplePhong,
-    Reflective,
-    Refractive
+#define X(name) name,
+    MATERIAL_TYPES
+#undef X
 };
 
 class MaterialInterface {
