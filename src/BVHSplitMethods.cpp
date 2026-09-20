@@ -52,10 +52,22 @@ int GetLargestSpatialExtent(std::span<Instance> shapes) {
     return static_cast<int>(std::distance(spatial_extents.begin(), max_it));
 }
 
-ShapePartition CentroidCountMedianSplit ( [[ maybe_unused]] std::span<Instance> shapes) {
+double GetCentroidMidpoint(std::span<Instance> shapes, int split_axis) {
+    auto min = std::numeric_limits<double>::max();
+    auto max = std::numeric_limits<double>::lowest();
+
+    for (auto& shape : shapes) {
+        min = std::min(min , shape.BBox().Centroid()[split_axis]);
+        max = std::max(max , shape.BBox().Centroid()[split_axis]);
+    }
+
+    return (min + max) * 0.5;
+}
+
+ShapePartition CentroidCountMedianSplit (std::span<Instance> shapes) {
     int split_axis = GetLargestSpatialExtent(shapes);
 
-    auto comparator = [&split_axis](Instance& i1, Instance i2) {
+    auto comparator = [&split_axis](const Instance& i1, const Instance& i2) {
         return i1.BBox().Centroid()[split_axis] < i2.BBox().Centroid()[split_axis];
     };
 
@@ -67,8 +79,20 @@ ShapePartition CentroidCountMedianSplit ( [[ maybe_unused]] std::span<Instance> 
     return {s1, s2};
 };
 
-ShapePartition CentroidSpatialMedianSplit ( [[ maybe_unused]]  std::span<Instance> shapes) {
-    return {};
+ShapePartition CentroidSpatialMidpointSplit (std::span<Instance> shapes) {
+    int split_axis = GetLargestSpatialExtent(shapes);
+
+    double centroid_midpoint = GetCentroidMidpoint(shapes, split_axis);
+
+    // TODO: What if the partition returns shape.begin()?
+    auto it = std::partition(shapes.begin(), shapes.end(), [&centroid_midpoint, &split_axis](const Instance& i1) {
+        return i1.BBox().Centroid()[split_axis] < centroid_midpoint;
+    });
+
+    std::span s1 {shapes.begin(), it};
+    std::span s2 {it, shapes.end()};
+
+    return {s1, s2};
 };
 
 ShapePartition SurfaceAreaHeuristic ( [[ maybe_unused]]  std::span<Instance> shapes) {
@@ -82,8 +106,8 @@ ShapePartition Split(std::span<Instance> shapes, BVH::SplitMethod split_method) 
             return RandomSplitAxisMethod(shapes);
         case BVH::SplitMethod::CentroidCountMedianSplit:
             return CentroidCountMedianSplit(shapes);
-        case BVH::SplitMethod::CentroidSpatialMedianSplit:
-            return CentroidSpatialMedianSplit(shapes);
+        case BVH::SplitMethod::CentroidSpatialMidpointSplit:
+            return CentroidSpatialMidpointSplit(shapes);
         case BVH::SplitMethod::SurfaceAreaHeuristic:
             return SurfaceAreaHeuristic(shapes);
         default:

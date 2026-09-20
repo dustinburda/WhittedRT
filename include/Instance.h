@@ -24,8 +24,6 @@ public:
     std::vector<Instance> Decompose() const;;
 
     ShapeType Type() const;
-
-    double SurfaceAreaBBox();
     
 private:
     BoundingBox ComputeBBox();
