@@ -4,6 +4,7 @@
 
 #include "../include/BVH.h"
 
+#include "../include/BVHSplitMethods.h"
 #include "../include/Util.h"
 
 BVHNode::BVHNode(Instance instance)
@@ -35,32 +36,22 @@ bool BVH::Hit(const Ray& r, ShadeContext& s) {
     return root_->Hit(r, s);
 }
 
-std::unique_ptr<BVHNode> BVH::Build(std::vector<Instance> shapes, [[ maybe_unused ]] SplitMethod split_method) {
+std::unique_ptr<BVHNode> BVH::Build(std::vector<Instance> shapes, SplitMethod split_method) {
     if (shapes.size() == 0)
         return nullptr;
 
-    return BuildRecursive(shapes);
+    return BuildRecursive(shapes, split_method);
 }
 
-std::unique_ptr<BVHNode> BVH::BuildRecursive(std::span<Instance> shapes) const {
-    if (shapes.size() == 1) {
+std::unique_ptr<BVHNode> BVH::BuildRecursive(std::span<Instance> shapes, SplitMethod split_method) const {
+    //  TODO: have a configurable value for number of instances in a leaf
+    if (shapes.size() == 1)
         return std::make_unique<BVHNode>(shapes[0]);
-    }
 
-    int split_axis = RandomInt(0, 2);
+    auto [s1, s2 ] = Split(shapes, split_method);
 
-    // TODO: replace basic comparator with Surface Area Heuristic
-    auto comparator = [&split_axis](const Instance& i1, const Instance& i2) {
-        return i1.BBox().Min()[split_axis] < i2.BBox().Min()[split_axis];
-    };
-
-    std::sort(shapes.begin(), shapes.end(), comparator);
-
-    std::span<Instance> s1 {shapes.begin(), shapes.begin() + shapes.size() / 2};
-    std::span<Instance> s2 {shapes.begin() + shapes.size() / 2, shapes.end()};
-
-    auto left = BuildRecursive(s1);
-    auto right = BuildRecursive(s2);
+    auto left = BuildRecursive(s1, split_method);
+    auto right = BuildRecursive(s2, split_method);
 
     return std::make_unique<BVHNode>(std::move(left), std::move(right));
 }

@@ -2,6 +2,8 @@
 #include "../include/SceneParser.h"
 #include "../include/Renderer.h"
 
+#include "../include/Cylinder.h"
+
 int main(int, char**)
 {
     Config config = ConfigParser::GetInstance().ParseConfig("../config/Config.xml");
@@ -10,7 +12,7 @@ int main(int, char**)
 
     // Computation necessary for scene constructions, generating samples for samplers, etc
     scene.world_->Build(); // TODO: Figure out where to put this
-    // Maye need to generate samples for each sampler instance here
+    // May need to generate samples for each sampler instance here
 
     Canvas canvas {config.width_, config.height_};
 

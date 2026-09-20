@@ -23,9 +23,12 @@ class ShapeInterface {
 public:
     ShapeInterface(ShapeType type);
     virtual ~ShapeInterface() = default;
-    virtual Normal<double, 3> NormalAt(const Point<double, 3>& p) const = 0;
+
     virtual bool Hit(const Ray& r, ShadeContext& context) const = 0;
+
+    virtual Normal<double, 3> NormalAt(const Point<double, 3>& p) const = 0;
     virtual BoundingBox BBox() const = 0;
+
     virtual std::vector<std::shared_ptr<ShapeInterface>> Decompose() const = 0;
 
     ShapeType Type() const;
