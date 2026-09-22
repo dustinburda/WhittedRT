@@ -162,7 +162,7 @@ static Matrix<T, N, M> Transpose(const Matrix<T, M, N> m) {
 }
 
 template<typename T, size_t N>
-static Matrix<T, N, N> Determinant(const Matrix<T, N, N> m) {
+static double Determinant(const Matrix<T, N, N> m) {
     Matrix<T, N, N> copy = m;
 
     for(std::size_t r = 0; r < N; r++) {
@@ -276,10 +276,10 @@ static Matrix<double, M, N> operator/(const Matrix<T, M, N>& m, double t) {
 }
 
 template<size_t M, size_t N, typename T>
-static Vector<T, N> operator*(const Matrix<T, M, N>& m, const Vector<T, N>& v) {
-    Vector<T, N> v_mult;
+static Vector<T, M> operator*(const Matrix<T, M, N>& m, const Vector<T, N>& v) {
+    Vector<T, M> v_mult;
 
-    for(std::size_t i = 0; i < N; i++) {
+    for(std::size_t i = 0; i < M; i++) {
         double dot = 0;
         for(std::size_t j = 0; j < N; j++)
             dot += m[i][j] * v[j];
