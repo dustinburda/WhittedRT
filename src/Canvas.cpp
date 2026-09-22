@@ -16,7 +16,7 @@ void Canvas::SetColorAt(const Color& color, uint16_t i, uint16_t j) {
     if(i >= width_ || j >= height_)
         throw std::logic_error("Array indices must stay in bounds!");
 
-    std::shared_lock<std::shared_mutex> l(mutex_);
+    std::unique_lock<std::shared_mutex> l(mutex_);
     buffer_[j * width_ + i] = color;
 }
 
@@ -47,7 +47,7 @@ void Canvas::Flush(const std::string& filename) {
                        + std::to_string(static_cast<uint8_t>(color[2] * 255)) + "\n";
     }
 
-    std::ofstream image { dir };
+    std::ofstream image { output_path };
     if(!image.is_open()) {
         std::cerr << "Image failed to open!";
     }

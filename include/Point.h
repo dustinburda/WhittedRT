@@ -5,7 +5,6 @@
 #ifndef WHITTED_POINT_H
 #define WHITTED_POINT_H
 
-#include "../include/Point.h"
 #include "../include/Vector.h"
 
 #include <string>
@@ -34,7 +33,9 @@ public:
     }
 
     Point(const Vector<T, N - 1>& v, T val) {
-        std::memcpy(data_.data(), v.data_.data(), (N - 1) * sizeof(T));
+        for (std::size_t i = 0; i < N - 2; i++)
+            data_[i] = v[i];
+
         data_[N - 1] = val;
     }
 

@@ -2,8 +2,8 @@
 // Created by Dustin on 8/10/24.
 //
 
-#ifndef TUPLE_H
-#define TUPLE_H
+#ifndef VECTOR_H
+#define VECTOR_H
 
 #include <algorithm>
 #include <array>
@@ -112,7 +112,7 @@ public:
 
     Vector<T, N> UnitVector() const {
          if (Length() < epsilon)
-             throw std::logic_error("Cannot normalize a vector of length 1.");
+             throw std::logic_error("Cannot normalize a vector of length 0.");
 
          return (*this) / Length();
     }
@@ -242,4 +242,4 @@ using Vec2i = Vector<int, 2>;
 
 
 
-#endif //TUPLE_H
+#endif //VECTOR_H
