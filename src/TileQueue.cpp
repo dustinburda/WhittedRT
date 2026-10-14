@@ -4,6 +4,8 @@
 
 #include "../include/TileQueue.h"
 
+#include <stdexcept>
+
 TileQueue::TileQueue() : state_{TileQueueState::Open}, current_tile_(0) {
 
 }

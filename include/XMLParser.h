@@ -5,6 +5,7 @@
 #ifndef WHITTED_XMLPARSER_H
 #define WHITTED_XMLPARSER_H
 
+#include <cstddef>
 #include <fstream>
 #include <memory>
 #include <optional>
@@ -35,7 +36,7 @@ private:
     explicit XMLParser();
 
     std::optional<char> Peek();
-    std::optional<std::string> PeekAhead(int n);
+    std::optional<std::string> PeekAhead(std::size_t n);
     std::optional<char> Consume();
 
     void ConsumeWhitespace();

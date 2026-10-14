@@ -16,7 +16,7 @@ public:
 
     virtual ~OrthographicCamera() = default;
 
-    Ray GetRayAt(int x, int y, const ImagePlane& p) const override;
+    Ray GetRayAt(std::size_t x, std::size_t y, const ImagePlane& p) const override;
 
 private:
 

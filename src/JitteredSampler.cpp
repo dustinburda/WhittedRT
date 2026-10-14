@@ -3,7 +3,7 @@
 std::vector<Point2D> JitteredSampler::Sample() {
     std::vector<Point2D> samples;
 
-    int num_samples_per_dimension = std::ceil(std::sqrt(num_samples_));
+    int num_samples_per_dimension = static_cast<int>(std::ceil(std::sqrt(num_samples_)));
 
     for(int i = 0; i < num_samples_per_dimension; i++) {
         for(int j = 0; j < num_samples_per_dimension; j++) {

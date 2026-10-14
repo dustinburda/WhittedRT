@@ -37,8 +37,8 @@ public:
         auto node_ptr = xml_parser_.Parse(ss.str());
 
         config.num_threads_ = std::stoi(node_ptr->ChildValue("ThreadCount").value());
-        config.height_ = std::stoi(node_ptr->ChildValue("Height").value());
-        config.width_ = std::stoi(node_ptr->ChildValue("Width").value());
+        config.height_ = static_cast<std::uint16_t>(std::stoi(node_ptr->ChildValue("Height").value()));
+        config.width_ = static_cast<std::uint16_t>(std::stoi(node_ptr->ChildValue("Width").value()));
         config.scene_description_path_ = node_ptr->ChildValue("SceneDescriptionPath").value();
         config.output_path_ = node_ptr->ChildValue("OutputPath").value();
 

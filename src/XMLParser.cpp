@@ -55,8 +55,8 @@ std::optional<char> XMLParser::Peek() {
     return src_[pos_];
 }
 
-std::optional<std::string> XMLParser::PeekAhead(int n) {
-    int amount_left = std::max(std::min(n, static_cast<int>(src_.size() - pos_)), 0);
+std::optional<std::string> XMLParser::PeekAhead(std::size_t n) {
+    auto amount_left = std::max(std::min(n, src_.size() - pos_), 0zu);
 
     if (amount_left == 0)
         return std::nullopt;
@@ -112,7 +112,7 @@ std::string XMLParser::ConsumeUntilChar(char token) {
 std::string XMLParser::ConsumeUntilString(std::string token) {
     std::string s;
 
-    int token_size = token.size();
+    std::size_t token_size = token.size();
     while (PeekAhead(token_size).has_value() && PeekAhead(token_size) != token) {
         s.push_back(Consume().value());
     }

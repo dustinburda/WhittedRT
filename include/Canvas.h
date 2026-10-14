@@ -21,23 +21,23 @@
 class Canvas {
 public:
 
-	explicit Canvas(uint16_t width, uint16_t height);
+	explicit Canvas(std::size_t width, std::size_t height);
 	~Canvas() {
         if(!flushed_)
 		    Flush();
 	}
 
-	void SetColorAt(const Color& color, uint16_t i, uint16_t j);
-	Color GetColorAt(uint16_t i, uint16_t j) const;
+	void SetColorAt(const Color& color, std::size_t i, std::size_t j);
+	Color GetColorAt(std::size_t i, std::size_t j) const;
 	void Flush(const std::string& path = "");
 
-	uint16_t Width() const { return width_; }
-	uint16_t Height() const { return height_; }
+	std::size_t Width() const { return width_; }
+	std::size_t Height() const { return height_; }
 
 private:
 
-	const uint16_t width_;
-	const uint16_t height_;
+	const std::size_t width_;
+	const std::size_t height_;
 	std::vector<Color> buffer_;
     bool flushed_;
 
