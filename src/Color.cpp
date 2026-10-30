@@ -57,6 +57,6 @@ double Color::sRGBToLinear(double sRGB) {
         return std::pow( (sRGB + 0.055) / (1.055), 2.4);
 }
 
-double Color::GrayScale() const {
-    return 0.2126 * sRGBToLinear(data_[0]) + 0.7152 * sRGBToLinear(data_[1]) + 0.0722 * sRGBToLinear(data_[2]);
+double Color::Luminance() const {
+    return 0.2126 * data_[0] + 0.7152 * data_[1] + 0.0722 * data_[2];
 }

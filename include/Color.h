@@ -73,7 +73,7 @@ public:
     }
 
     static double sRGBToLinear(double sRGB);
-    double GrayScale() const;
+    double Luminance() const;
 
 private:
     std::array<double, 4> data_;

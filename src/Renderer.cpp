@@ -12,6 +12,8 @@ Renderer& Renderer::GetInstance() {
 
 Renderer::Renderer() {
     threads_.reserve(4);
+
+    // TODO: Why do we need this runtime value?
     num_threads_ = 4;
 }
 
@@ -20,6 +22,7 @@ Renderer::~Renderer() {
 }
 
 void Renderer::SetThreads(std::size_t num_threads) {
+    num_threads_ = num_threads;
     threads_.reserve(num_threads);
 }
 
@@ -73,10 +76,21 @@ void Renderer::RenderTile(const Tile& t, Scene& scene, Canvas& canvas) const {
 
     for (std::size_t y = t.y_; y < t.y_ + t.y_length_; y++)
         for (std::size_t x = t.x_; x < t.x_ + t.x_length_; x++) {
-            auto ray = scene.camera_->GetRayAt(x, y, p);
 
-            ShadeContext context;
-            Color pixel_color = Trace(scene, ray, context);
+            Color pixel_color;
+            // How will this work with adaptive super sampling?
+            // Perhaps
+
+            auto samples = scene.sampler_->Sample();
+
+            for (auto& sample : samples) {
+                // TODO: Use sample
+                auto ray = scene.camera_->GetRayAt(x, y, p);
+                ShadeContext context;
+                pixel_color += Trace(scene, ray, context);
+            }
+
+            pixel_color /= static_cast<float> (samples.size());
 
             canvas.SetColorAt(pixel_color, x, y);
         }

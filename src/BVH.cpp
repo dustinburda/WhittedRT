@@ -2,13 +2,20 @@
 // Created by Dustin on 12/22/24.
 //
 
+#include <utility>
+
 #include "../include/BVH.h"
 
 #include "../include/BVHSplitMethods.h"
 #include "../include/Util.h"
 
-BVHNode::BVHNode(Instance instance)
-    : left_{nullptr}, right_{nullptr}, bounding_box_{instance.BBox()}, instance_ {instance}, is_leaf_{true} {}
+BVHNode::BVHNode(std::vector<Instance> instances)
+    : left_{nullptr}, right_{nullptr}, instances_ {std::move(instances)}, is_leaf_{true}
+{
+    for (auto& instance : instances_) {
+        bounding_box_ = Union(instance.BBox(), bounding_box_);
+    }
+}
 
 BVHNode::BVHNode(std::unique_ptr<BVHNode> left, std::unique_ptr<BVHNode> right)
     : left_ {std::move(left)}, right_ {std::move(right)}, bounding_box_{Union(left_->bounding_box_, right_->bounding_box_)}, instance_{std::nullopt}, is_leaf_{false} {}
@@ -18,16 +25,21 @@ bool BVHNode::Hit(const Ray& r, ShadeContext& context) {
         return false;
 
     if (is_leaf_) {
-        return instance_->Hit(r, context);
+        bool hit = false;
+        for (auto& instance : instances_) {
+            hit |= instance.Hit(r, context);
+        }
+        return hit;
+    } else {
+        bool left = left_->Hit(r, context);
+        bool right = right_->Hit(r, context);
+
+        return left || right;
     }
-
-    bool left = left_->Hit(r, context);
-    bool right = right_->Hit(r, context);
-
-    return left || right;
 }
 
-BVH::BVH() : root_{nullptr} {}
+BVH::BVH(std::size_t num_primitives_leaf, SplitMethod split_method)
+    : root_{nullptr}, num_primitives_leaf_{num_primitives_leaf}, split_method_{split_method} {}
 
 bool BVH::Hit(const Ray& r, ShadeContext& s) {
     if (root_ == nullptr)
@@ -36,22 +48,28 @@ bool BVH::Hit(const Ray& r, ShadeContext& s) {
     return root_->Hit(r, s);
 }
 
-std::unique_ptr<BVHNode> BVH::Build(std::vector<Instance> shapes, SplitMethod split_method) {
+void BVH::Build(std::vector<Instance> shapes) {
+    if (shapes.size() == 0)
+        return;
+
+    root_ = BuildRecursive(shapes);
+}
+
+std::unique_ptr<BVHNode> BVH::BuildRecursive(std::span<Instance> shapes) const {
     if (shapes.size() == 0)
         return nullptr;
 
-    return BuildRecursive(shapes, split_method);
-}
+    if (shapes.size() <= num_primitives_leaf_)
+        return std::make_unique<BVHNode>(std::vector<Instance> { shapes.begin(), shapes.end()} );
 
-std::unique_ptr<BVHNode> BVH::BuildRecursive(std::span<Instance> shapes, SplitMethod split_method) const {
-    //  TODO: have a configurable value for number of instances in a leaf
-    if (shapes.size() == 1)
-        return std::make_unique<BVHNode>(shapes[0]);
+    auto [s1, s2 ] = Split(shapes, split_method_);
 
-    auto [s1, s2 ] = Split(shapes, split_method);
+    if (s1.empty() || s2.empty()) {
+        return std::make_unique<BVHNode>(std::vector<Instance> { shapes.begin(), shapes.end()} );
+    } else {
+        auto left = BuildRecursive(s1);
+        auto right = BuildRecursive(s2);
 
-    auto left = BuildRecursive(s1, split_method);
-    auto right = BuildRecursive(s2, split_method);
-
-    return std::make_unique<BVHNode>(std::move(left), std::move(right));
+        return std::make_unique<BVHNode>(std::move(left), std::move(right));
+    }
 }

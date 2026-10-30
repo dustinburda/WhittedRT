@@ -5,7 +5,7 @@
 #ifndef WHITTED_WORLD_H
 #define WHITTED_WORLD_H
 
-#include "BVH.h"
+#include "AcceleratorInterface.h"
 #include "Instance.h"
 #include "Ray.h"
 #include "ShadeContext.h"
@@ -19,22 +19,12 @@ class World {
 public:
     World() = default;
 
-    World(const std::initializer_list<Instance>& instances)
-    {
-        for (const Instance& instance : instances)
-            instances_.push_back(instance);
-    }
+    World(std::unique_ptr<AcceleratorInterface> accelerator)
+        : accelerator_{ std::move(accelerator) } {}
 
-    World(std::vector<Instance>& instances)
-        : instances_(instances), bvh_{} {}
-
-    void AddShape(Instance instance);
     bool Hit(const Ray& r, ShadeContext& context);
-    void Build();
-
 private:
-    std::vector<Instance> instances_;
-    BVH bvh_;
+    std::unique_ptr<AcceleratorInterface> accelerator_;
 };
 
 

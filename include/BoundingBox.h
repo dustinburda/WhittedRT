@@ -25,7 +25,7 @@ struct Interval {
 // Not templated for now
 class BoundingBox {
 public:
-    BoundingBox() : min_{0.0 ,0.0 ,0.0}, max_{1.0, 1.0, 1.0} {}
+    BoundingBox() : min_{0.0 ,0.0 ,0.0}, max_{0.0, 0.0, 0.0} {}
     BoundingBox(Point3D p1, Point3D p2);
 
     bool Hit(const Ray& r, ShadeContext& context) const;
