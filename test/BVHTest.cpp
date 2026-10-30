@@ -11,7 +11,7 @@
 #include "../include/Sphere.h"
 
 TEST(BVHTest, EmptyBVHReturnsNoHit) {
-    BVH bvh;
+    BVH bvh {8, BVH::SplitMethod::CentroidCountMedianSplit};
     Ray ray{{0.0, 0.0, -3.0}, {0.0, 0.0, 1.0}, RayType::PrimaryRay};
     ShadeContext context;
 
@@ -27,8 +27,8 @@ TEST(BVHTest, RayMissingAllInstancesReturnsNoHit) {
         Instance{right_sphere, nullptr}
     };
 
-    BVH bvh;
-    bvh.Build(instances, BVH::SplitMethod::RandomSplitAxis);
+    BVH bvh {8, BVH::SplitMethod::RandomSplitAxis};
+    bvh.Build(instances);
     Ray ray{{0.0, 3.0, -5.0}, {0.0, 0.0, 1.0}, RayType::PrimaryRay};
     ShadeContext context;
 

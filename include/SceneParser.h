@@ -44,15 +44,6 @@ public:
     }
 
     Scene ParseScene(std::string path);
-
-    // TODO: Do we need this? SceneParser only runs once for now
-    // void ClearContext() {
-    //     parsing_context_.name_sampler_.clear();
-    //     parsing_context_.name_material_.clear();
-    //     parsing_context_.name_instance_.clear();
-    //     parsing_context_.name_transformation_.clear();
-    // }
-
 private:
     SceneParser();
 
@@ -71,11 +62,11 @@ private:
     Color ParseColor(const XMLNode* node);
 
     std::shared_ptr<MaterialInterface> ParseMaterial(std::unique_ptr<XMLNode>& node);
-
     std::shared_ptr<Sampler> ParseSampler(std::unique_ptr<XMLNode>& node);
     std::shared_ptr<Light> ParsePointLight(std::unique_ptr<XMLNode>& node);
     std::shared_ptr<Light> ParseAmbientLight(std::unique_ptr<XMLNode>& node);
     std::shared_ptr<Light> ParseLight(std::unique_ptr<XMLNode>& node);
+    std::unique_ptr<AcceleratorInterface> ParseAccelerator(std::unique_ptr<XMLNode>& node);
 
 
     struct {

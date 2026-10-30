@@ -21,10 +21,6 @@ ShapePartition RandomSplitAxisMethod(std::span<Instance> shapes) {
 };
 
 int GetLargestSpatialExtent(std::span<Instance> shapes) {
-    // TODO: Is this really defensive programming
-    if (shapes.size() == 0)
-        return 0;
-
     std::array<std::tuple<double, double>, 3> spatial_extents {{
         {std::numeric_limits<double>::max(), std::numeric_limits<double>::lowest()},
         {std::numeric_limits<double>::max(), std::numeric_limits<double>::lowest()},
@@ -95,8 +91,56 @@ ShapePartition CentroidSpatialMidpointSplit (std::span<Instance> shapes) {
     return {s1, s2};
 };
 
-ShapePartition SurfaceAreaHeuristic ( [[ maybe_unused]]  std::span<Instance> shapes) {
-    return {};
+std::pair<double, std::span<Instance>::iterator> ComputeCheapestSAHSplit(std::span<Instance> shapes) {
+    int split_axis = GetLargestSpatialExtent(shapes);
+
+    auto comparator = [&split_axis](const Instance& i1, const Instance& i2) {
+        return i1.BBox().Centroid()[split_axis] < i2.BBox().Centroid()[split_axis];
+    };
+
+    std::sort(shapes.begin(), shapes.end(), comparator);
+
+    double min_split_cost = std::numeric_limits<double>::max();
+    std::span<Instance>::iterator min_split_it = shapes.begin();
+    for (std::size_t i = 0; i < shapes.size() - 1; i++) {
+        BoundingBox b1 = shapes[0].BBox();
+        for (std::size_t j = 0; j <= i; j++) {
+            b1 = Union(b1, shapes[j].BBox());
+        }
+
+        BoundingBox b2 = shapes[i + 1].BBox();
+        for (std::size_t j = i + 1; j < shapes.size(); j++) {
+            b2 = Union(b2, shapes[j].BBox());
+        }
+
+        double curr_split_cost = (b1.SurfaceArea() * static_cast<double>(i + 1)
+                               + b2.SurfaceArea() * static_cast<double>(shapes.size() - i - 1)) / (Union(b1, b2).SurfaceArea());
+
+        if ( curr_split_cost < min_split_cost) {
+            min_split_cost = curr_split_cost;
+            min_split_it = std::next(shapes.begin(), i + 1 );
+        }
+    }
+
+    return {min_split_cost, min_split_it};
+}
+
+ShapePartition SurfaceAreaHeuristic (std::span<Instance> shapes) {
+    auto leaf_cost = static_cast<double>(shapes.size());
+    auto split_cost = 0.125; // Initial cost
+
+    auto [min_split_cost, min_split_it] = ComputeCheapestSAHSplit(shapes);
+
+    split_cost += min_split_cost;
+
+    if (leaf_cost < split_cost) {
+        return {shapes, {}};
+    } else {
+        std::span<Instance> s1 {shapes.begin(), min_split_it};
+        std::span<Instance> s2 {min_split_it , shapes.end()};
+
+        return {s1, s2};
+    }
 };
 
 ShapePartition Split(std::span<Instance> shapes, BVH::SplitMethod split_method) {

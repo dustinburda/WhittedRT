@@ -14,6 +14,7 @@
     X(Mesh) \
     X(Triangle) \
     X(Plane) \
+    X(UncappedCylinder) \
     X(Cylinder) \
     X(Disk) \
     X(Box)
@@ -31,6 +32,7 @@ public:
 
     virtual bool Hit(const Ray& r, ShadeContext& context) const = 0;
 
+    // TODO: make the return type std::optional
     virtual Normal<double, 3> NormalAt(const Point<double, 3>& p) const = 0;
     virtual BoundingBox BBox() const = 0;
 

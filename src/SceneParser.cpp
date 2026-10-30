@@ -2,6 +2,7 @@
 // Created by Dustin on 11/25/24.
 //
 #include "../include/AmbientLight.h"
+#include "../include/BVH.h"
 #include "../include/HammersleySampler.h"
 #include "../include/Instance.h"
 #include "../include/JitteredSampler.h"
@@ -186,6 +187,9 @@ std::shared_ptr<MaterialInterface> SceneParser::ParseMaterial(std::unique_ptr<XM
 
 std::shared_ptr<Sampler> SceneParser::ParseSampler(std::unique_ptr<XMLNode>& node) {
     // TODO: handle case where there is no sampler node
+    // ^^^ Which sampler is this... camera sampler, etc?
+
+    // If no camera sampler is specified, create a regular sampler with a sample count of 1
 
     auto sampler_type = node->attributes_["type"];
     auto name = node->attributes_["name"];
@@ -209,6 +213,19 @@ std::shared_ptr<Sampler> SceneParser::ParseSampler(std::unique_ptr<XMLNode>& nod
     }
 
     return sampler;
+}
+
+std::unique_ptr<AcceleratorInterface> SceneParser::ParseAccelerator(std::unique_ptr<XMLNode>& node) {
+    auto type = node->attributes_["type"];
+
+    if (type == "bvh") {
+        auto primitive_leaf_count = std::stoi(node->ChildValue("primitive-leafcount").value());
+        auto split_method = BVH::StringToSplitMethod(node->ChildValue("splitmethod").value());
+
+        return std::make_unique<BVH>(primitive_leaf_count, split_method);
+    }
+
+    return nullptr;
 }
 
 template<typename T>
@@ -300,7 +317,9 @@ Scene SceneParser::ParseScene(std::string path) {
         if (child->tag_ == "transformation")
             parsing_context_.name_transformation_[child->attributes_["name"]] = ParseTransformation(child);
         else if (child->tag_ == "shape")
-            scene.world_->AddShape(*ParseShape(child)); // TODO: Stop copying Instance
+            parsing_context_.name_instance_[child->attributes_["name"]] = ParseShape(child); // TODO: Stop copying Instance
+        else if (child->tag_ == "accelerator")
+            scene.world_ = std::make_unique<World> ( ParseAccelerator(child) );
         else if (child->tag_ == "material")
             parsing_context_.name_material_[child->attributes_["name"]] = ParseMaterial(child);
         else if (child->tag_ == "antialiasing")
@@ -313,6 +332,8 @@ Scene SceneParser::ParseScene(std::string path) {
             scene.lights_.push_back(ParseLight(child));
         }
     }
+
+    // TODO: Separate out scene parsing and scene construction. Maybe return the parsing context object, then build
 
     return scene;
 }
