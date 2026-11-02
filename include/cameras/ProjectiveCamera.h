@@ -1,0 +1,28 @@
+//
+// Created by Advil on 11/3/2024.
+//
+
+#ifndef WHITTED_CAMERA_H
+#define WHITTED_CAMERA_H
+
+#include "CameraInterface.h"
+#include "../math/Point.h"
+#include "Vector.h"
+#include "../math/Ray.h"
+
+#include <cstdint>
+
+class ProjectiveCamera : public CameraInterface {
+public:
+    ProjectiveCamera(Point3D origin, Point3D look_at_, Vec3D up, double h_fov)
+        : CameraInterface(origin, look_at_, up), h_fov_{h_fov} {}
+
+    virtual ~ProjectiveCamera() = default;
+
+    Ray GetRayAt(std::size_t x, std::size_t y, const ImagePlane& p) const override;
+private:
+    double h_fov_;
+};
+
+
+#endif //WHITTED_CAMERA_H

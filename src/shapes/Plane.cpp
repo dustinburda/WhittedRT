@@ -1,0 +1,59 @@
+//
+// Created by Advil on 11/6/2024.
+//
+
+#include "../../include/shapes/Plane.h"
+
+#include <string>
+#include <sstream>
+
+Plane::Plane() : ShapeInterface(ShapeType::Plane), point_{1.0, 0.0, 0.0}, normal_{1.0, 1.0, 1.0} {}
+Plane::Plane(const Point<double, 3>& point, const Normal<double, 3>& normal)
+    : ShapeInterface(ShapeType::Plane), point_{point}, normal_{normal} {}
+
+Normal<double, 3> Plane::NormalAt([[ maybe_unused ]] const Point<double, 3>& p) const
+{
+    return normal_;
+}
+
+bool Plane::Hit(const Ray& r, ShadeContext& context) const
+{
+    // Ray parallel to Plane
+    if (std::abs(Dot(r.Direction(), normal_)) <= epsilon)
+        return false;
+
+    double hit_time = Dot(normal_, point_- r.Origin()) / Dot(normal_, r.Direction());
+
+    if(hit_time > context.t_max_ || hit_time < context.t_min_)
+        return false;
+
+    context.t_max_ = hit_time;
+    context.point_ = r.At(hit_time);
+    context.normal_ = normal_;
+
+    return true;
+}
+
+BoundingBox Plane::BBox() const {
+    Point3D min { std::numeric_limits<double>::min(), std::numeric_limits<double>::min(), std::numeric_limits<double>::min() };
+    Point3D max { std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max() };
+
+    return BoundingBox {min, max};
+}
+
+std::vector<std::shared_ptr<ShapeInterface>> Plane::Decompose() const {
+    return {};
+}
+
+std::string Plane::toString() const {
+    std::stringstream ss;
+
+    ss << "Plane: [\n";
+
+    ss << point_.toString() << "\n";
+    ss << normal_.toString() << "\n";
+
+    ss << "]";
+
+    return ss.str();
+}

@@ -1,0 +1,58 @@
+//
+// Created by Dustin on 8/7/24.
+//
+
+#include "../../include/util/Canvas.h"
+
+Canvas::Canvas(std::size_t width, std::size_t height) : width_(width), height_(height) {
+    buffer_.resize(width_ * height_);
+
+    std::fill(buffer_.begin(), buffer_.end(), Color {0.0, 0.0, 0.0});
+
+    flushed_ = false;
+}
+
+void Canvas::SetColorAt(const Color& color, size_t i, size_t j) {
+    if(i >= width_ || j >= height_)
+        throw std::logic_error("Array indices must stay in bounds!");
+
+    std::unique_lock<std::shared_mutex> l(mutex_);
+    buffer_[j * width_ + i] = color;
+}
+
+Color Canvas::GetColorAt(size_t i, size_t j) const {
+    if(i >= width_  || j >= height_ )
+        throw std::logic_error("Array indices must stay in bounds!");
+
+    std::shared_lock<std::shared_mutex> l(mutex_);
+    return buffer_[j * width_ + i];
+}
+
+void Canvas::Flush(const std::string& filename) {
+    // TODO: Check if dir exists
+    // If it fails, write to a dummy location
+
+    std::filesystem::path dir = std::filesystem::current_path().parent_path() / "image";
+    std::filesystem::path output_path = dir / ((filename.empty()) ? "image.ppm" : filename);
+
+    std::stringstream image_content;
+
+    image_content << "P3\n";
+    image_content << std::to_string(width_) +  " " + std::to_string(height_) + "\n";
+    image_content << std::to_string(255) + "\n";
+
+    for(auto& color : buffer_) {
+        image_content << std::to_string(static_cast<uint8_t>(color[0] * 255)) + " "
+                       + std::to_string(static_cast<uint8_t>(color[1] * 255)) + " "
+                       + std::to_string(static_cast<uint8_t>(color[2] * 255)) + "\n";
+    }
+
+    std::ofstream image { output_path };
+    if(!image.is_open()) {
+        std::cerr << "Image failed to open!";
+    }
+    image << image_content.rdbuf();
+
+    image.flush();
+    flushed_ = true;
+}

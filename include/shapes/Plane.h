@@ -1,0 +1,35 @@
+//
+// Created by Advil on 11/6/2024.
+//
+
+#ifndef WHITTED_PLANE_H
+#define WHITTED_PLANE_H
+
+#include "../Util.h"
+#include "../math/Normal.h"
+#include "../math/Point.h"
+#include "ShapeInterface.h"
+
+#include <cmath>
+#include <memory>
+
+class Plane : public ShapeInterface {
+public:
+    Plane();
+    Plane(const Point<double, 3>& point, const Normal<double, 3>& normal);
+    ~Plane() override = default;
+
+    Normal<double, 3> NormalAt(const Point<double, 3>& p) const override;
+    bool Hit(const Ray& r, ShadeContext& context) const override;
+    BoundingBox BBox() const override;
+    std::vector<std::shared_ptr<ShapeInterface>> Decompose() const override;
+
+    std::string toString() const;
+
+private:
+    Point<double, 3> point_;
+    Normal<double, 3> normal_;
+};
+
+
+#endif //WHITTED_PLANE_H

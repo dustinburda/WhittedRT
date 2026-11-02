@@ -26,7 +26,7 @@ void Renderer::SetThreads(std::size_t num_threads) {
     threads_.reserve(num_threads);
 }
 
-void Renderer::Render( Scene& scene, Canvas& canvas) {
+void Renderer::Render(const Scene& scene, Canvas& canvas) {
     auto&& tile_queue = GenerateTiles(canvas);
 
     auto run_thread = [&tile_queue, &scene, &canvas, this]() {
@@ -71,33 +71,28 @@ TileQueue Renderer::GenerateTiles( const Canvas& canvas) const {
     return queue;
 }
 
-void Renderer::RenderTile(const Tile& t, Scene& scene, Canvas& canvas) const {
+void Renderer::RenderTile(const Tile& t, const Scene& scene, Canvas& canvas) const {
     ImagePlane p {canvas.Height(), canvas.Width()};
 
     for (std::size_t y = t.y_; y < t.y_ + t.y_length_; y++)
         for (std::size_t x = t.x_; x < t.x_ + t.x_length_; x++) {
 
             Color pixel_color;
-            // How will this work with adaptive super sampling?
-            // Perhaps
 
-            auto samples = scene.sampler_->Sample();
-
+            auto samples = scene.sampler_->Samples();
             for (auto& sample : samples) {
-                // TODO: Use sample
-                auto ray = scene.camera_->GetRayAt(x, y, p);
+                // TODO: sampler samples from [0,1]^2 but GetRayAt samples from center
+                auto ray = scene.camera_->GetRayAt(x + sample[0], y + sample[1], p);
                 ShadeContext context;
-                pixel_color += Trace(scene, ray, context);
+                pixel_color += Trace(scene, ray, context) / static_cast<float> (samples.size());
             }
-
-            pixel_color /= static_cast<float> (samples.size());
 
             canvas.SetColorAt(pixel_color, x, y);
         }
 }
 
-Color Renderer::Trace(Scene& scene, Ray& r, ShadeContext& context) const {
-    if(scene.world_->Hit(r, context))
+Color Renderer::Trace(const Scene& scene, Ray& r, ShadeContext& context) const {
+    if(scene.Hit(r, context))
         return context.mat_->Shade(context, scene.lights_);
 
     return {0.0, 0.0, 0.0};
