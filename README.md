@@ -10,6 +10,8 @@ This is a Whitted Ray Tracer written in C++.
 * Anti-Aliasing with Adaptive Super Sampling
 * Bounding Volume Hierarchies, KD Trees
 * Phong Shading, Reflections, and Refractions
+* Shadows and Area Lights
+* Configurable Depth of Field
 * Scene Parsing
 * Linear Algebra Library
 * XML Parser
