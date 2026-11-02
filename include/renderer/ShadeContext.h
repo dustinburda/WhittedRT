@@ -5,9 +5,9 @@
 #ifndef WHITTED_SHADECONTEXT_H
 #define WHITTED_SHADECONTEXT_H
 
-#include "Canvas.h"
-#include "Normal.h"
-#include "Point.h"
+#include "../util/Canvas.h"
+#include "../math/Normal.h"
+#include "../math/Point.h"
 
 #include <memory>
 #include <limits>

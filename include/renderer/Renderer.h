@@ -5,12 +5,12 @@
 #ifndef WHITTED_RENDERER_H
 #define WHITTED_RENDERER_H
 
-#include "Color.h"
+#include "../util/Color.h"
 #include "ImagePlane.h"
-#include "Material.h"
-#include "SceneParser.h"
-#include "ShadeContext.h"
-#include "TileQueue.h"
+#include "../materials/Material.h"
+#include "../parsers/SceneParser.h"
+#include "../ShadeContext.h"
+#include "../util/TileQueue.h"
 
 #include <thread>
 #include <vector>
@@ -21,15 +21,15 @@ public:
     ~Renderer();
 
     void SetThreads(std::size_t num_threads);
-    void Render(Scene& scene, Canvas& canvas) ;
+    void Render(const Scene& scene, Canvas& canvas) ;
 
 
 private:
     Renderer();
 
     TileQueue GenerateTiles(const Canvas& canvas) const;
-    void RenderTile(const Tile& t, Scene& scene, Canvas& canvas) const ;
-    Color Trace(Scene& scene, Ray& r, ShadeContext& context) const ;
+    void RenderTile(const Tile& t, const Scene& scene, Canvas& canvas) const ;
+    Color Trace(const Scene& scene, Ray& r, ShadeContext& context) const ;
 
 private:
     std::vector<std::thread> threads_;

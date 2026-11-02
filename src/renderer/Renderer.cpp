@@ -2,7 +2,7 @@
 // Created by Dustin on 7/4/26.
 //
 
-#include "../include/Renderer.h"
+#include "../../include/renderer/Renderer.h"
 
 Renderer& Renderer::GetInstance() {
     static Renderer renderer;

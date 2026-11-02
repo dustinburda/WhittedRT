@@ -1,6 +1,6 @@
-#include "../include/ConfigParser.h"
+#include "../include/parsers/ConfigParser.h"
 #include "../include/parsers/SceneParser.h"
-#include "../include/Renderer.h"
+#include "../include/renderer/Renderer.h"
 
 #include "../include/shapes/Cylinder.h"
 

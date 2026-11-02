@@ -4,7 +4,7 @@
 
 #include "../../include/lights/LightInterface.h"
 #include "../../include/materials/Material.h"
-#include "../../include/ShadeContext.h"
+#include "../../include/renderer/ShadeContext.h"
 
 MaterialInterface::MaterialInterface(MaterialType mat_type)
     : mat_type_{mat_type} {}
