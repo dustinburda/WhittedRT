@@ -91,7 +91,7 @@ void Renderer::RenderTile(const Tile& t, const Scene& scene, Canvas& canvas) con
         }
 }
 
-Color Renderer::Trace(const Scene& scene, Ray& r, ShadeContext& context) const {
+Color Trace(const Scene& scene, Ray& r, ShadeContext& context) {
     if(scene.Hit(r, context))
         return context.mat_->Shade(context, scene.lights_);
 
