@@ -6,15 +6,17 @@
 
 int main(int, char**)
 {
-    Config config = ConfigParser::GetInstance().ParseConfig("../config/Config.xml");
+    std::string config_path = "../config/Config.xml";
+    Config config = ConfigParser::GetInstance().ParseConfig(config_path);
 
-    auto scene = SceneParser::GetInstance().ParseScene(config.scene_description_path_);
+    std::string scene_description_path = config.scene_description_path_;
+    auto scene = SceneParser::GetInstance().ParseScene(scene_description_path);
 
     scene->Build();
-
     Canvas canvas {config.width_, config.height_};
 
     Renderer::GetInstance().Render(*scene, canvas);
 
-    canvas.Flush(config.output_path_);
+    std::string output_path = config.output_path_;
+    canvas.Flush(output_path);
 }
