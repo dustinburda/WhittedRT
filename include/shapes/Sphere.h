@@ -5,11 +5,11 @@
 #ifndef WHITTED_SPHERE_H
 #define WHITTED_SPHERE_H
 
-#include "../BoundingBox.h"
-#include "../Material.h"
+#include "../accelerators/BoundingBox.h"
+#include "../materials/Material.h"
 #include "../math/Point.h"
 #include "../ShapeInterface.h"
-#include "../ShadeContext.h"
+#include "../renderer/ShadeContext.h"
 #include "Vector.h"
 
 #include <utility>

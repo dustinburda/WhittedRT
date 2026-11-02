@@ -9,7 +9,7 @@
 #include "ImagePlane.h"
 #include "../materials/Material.h"
 #include "../parsers/SceneParser.h"
-#include "../ShadeContext.h"
+#include "../renderer/ShadeContext.h"
 #include "../util/TileQueue.h"
 
 #include <thread>
@@ -29,11 +29,12 @@ private:
 
     TileQueue GenerateTiles(const Canvas& canvas) const;
     void RenderTile(const Tile& t, const Scene& scene, Canvas& canvas) const ;
-    Color Trace(const Scene& scene, Ray& r, ShadeContext& context) const ;
 
 private:
     std::vector<std::thread> threads_;
     std::size_t num_threads_;
 };
+
+Color Trace(const Scene& scene, Ray& r, ShadeContext& context);
 
 #endif //WHITTED_RENDERER_H

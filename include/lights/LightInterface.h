@@ -10,11 +10,11 @@
 
 struct ShadeContext;
 
-class Light {
+class LightInterface {
 public:
-    Light();
-    Light(double intensity, Color light_color);
-    virtual ~Light() = default;
+    LightInterface();
+    LightInterface(double intensity, Color light_color);
+    virtual ~LightInterface() = default;
 
     // TODO: Change interface to accomodate AmbientLight
     virtual Vec3D GetDirection(ShadeContext& ctx) const = 0;

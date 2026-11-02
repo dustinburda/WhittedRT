@@ -4,9 +4,9 @@
 
 #include <gtest/gtest.h>
 
-#include "../include/BoundingBox.h"
-#include "../include/Ray.h"
-#include "../include/ShadeContext.h"
+#include "../include/accelerators/BoundingBox.h"
+#include "../include/math/Ray.h"
+#include "../include/renderer/ShadeContext.h"
 
 TEST(BoundingBoxTest, ConstructorOrdersMinAndMaxCoordinates) {
     BoundingBox box{{3.0, -2.0, 5.0}, {-1.0, 4.0, 2.0}};

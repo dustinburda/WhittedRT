@@ -7,10 +7,10 @@
 #include <vector>
 
 // Interface to sample a square
-class Sampler {
+class SamplerInterface {
 public:
-  Sampler(int num_samples) : num_samples_{num_samples} {}
-  virtual ~Sampler() = default;
+  SamplerInterface(int num_samples) : num_samples_{num_samples} {}
+  virtual ~SamplerInterface() = default;
   virtual std::vector<Point2D> Samples() = 0;
   virtual Point2D Sample() = 0;
 

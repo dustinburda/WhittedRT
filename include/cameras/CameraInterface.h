@@ -5,13 +5,13 @@
 #ifndef CAMERAINTERFACE_H
 #define CAMERAINTERFACE_H
 
-#include "../ImagePlane.h"
+#include "../renderer/ImagePlane.h"
 #include "../math/Ray.h"
-#include "../Sampler.h"
+#include "../samplers/SamplerInterface.h"
 
 #include <memory>
 
-#include "../Transformation.h"
+#include "../math/Transformation.h"
 
 class CameraInterface {
 public:
@@ -21,12 +21,12 @@ public:
     virtual ~CameraInterface() = default;
 
     const Point3D& Origin() const;
-    void SetSampler(std::shared_ptr<Sampler> s);
+    void SetSampler(std::shared_ptr<SamplerInterface> s);
 
     virtual Ray GetRayAt(std::size_t x, std::size_t y, const ImagePlane& p) const = 0;
 
 protected:
-    std::shared_ptr<Sampler> s_;
+    std::shared_ptr<SamplerInterface> s_;
 
     Point3D origin_;
     Transformation t_;

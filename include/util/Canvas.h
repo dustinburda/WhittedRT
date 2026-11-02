@@ -17,7 +17,7 @@
 #include <vector>
 
 // TODO TEST THIS
-#include "../Color.h"
+#include "Color.h"
 
 class Canvas {
 public:

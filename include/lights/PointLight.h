@@ -6,12 +6,12 @@
 #define WHITTED_POINTLIGHT_H
 
 
-#include "../Color.h"
-#include "Light.h"
+#include "../util/Color.h"
+#include "LightInterface.h"
 #include "../math/Point.h"
 
 
-class PointLight : public Light {
+class PointLight : public LightInterface {
 public:
     PointLight(Point3D position, double intensity, Color light_color);
     Vec3D GetDirection(ShadeContext& ctx) const override;

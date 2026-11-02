@@ -14,13 +14,13 @@
 #include <fstream>
 #include <vector>
 
-class Texture {
+class TextureInterface {
 public:
-    virtual ~Texture();
+    virtual ~TextureInterface();
     virtual Color GetTexel(Point2D texture_coordinates) = 0;
 };
 
-class ImageTexture : public Texture {
+class ImageTexture : public TextureInterface {
 public:
     ImageTexture(std::string& filename) {
         int x;
@@ -47,7 +47,7 @@ private:
     std::size_t num_cols_;
 };
 
-class CheckerTexture : public Texture {
+class CheckerTexture : public TextureInterface {
 public:
     ~CheckerTexture() override;
 
@@ -56,7 +56,7 @@ public:
     }
 };
 
-class NoiseTexture : public Texture {
+class NoiseTexture : public TextureInterface {
 public:
     ~NoiseTexture() override;
 

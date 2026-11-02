@@ -7,7 +7,7 @@
 
 #include "../math/Point.h"
 #include "../math/Ray.h"
-#include "../ShadeContext.h"
+#include "../renderer/ShadeContext.h"
 
 #include <algorithm>
 

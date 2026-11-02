@@ -4,11 +4,11 @@
 
 #include <gtest/gtest.h>
 
-#include "../include/BVH.h"
-#include "../include/Instance.h"
-#include "../include/Ray.h"
-#include "../include/ShadeContext.h"
-#include "../include/Sphere.h"
+#include "../include/accelerators/BVH.h"
+#include "../include/shapes/Instance.h"
+#include "../include/math/Ray.h"
+#include "../include/renderer/ShadeContext.h"
+#include "../include/shapes/Sphere.h"
 
 TEST(BVHTest, EmptyBVHReturnsNoHit) {
     BVH bvh {8, BVH::SplitMethod::CentroidCountMedianSplit};

@@ -4,5 +4,5 @@
 
 #include <gtest/gtest.h>
 
-#include "../include/Triangle.h"
+#include "../include/shapes/Triangle.h"
 

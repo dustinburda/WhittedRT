@@ -6,8 +6,8 @@
 #define MESH_H
 
 
-#include "../OBJParser.h"
-#include "../ShapeInterface.h"
+#include "../parsers/OBJParser.h"
+#include "ShapeInterface.h"
 #include "../Triangle.h"
 
 #include <filesystem>

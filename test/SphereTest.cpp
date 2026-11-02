@@ -3,9 +3,9 @@
 //
 #include <gtest/gtest.h>
 
-#include "../include/Ray.h"
-#include "../include/ShadeContext.h"
-#include "../include/Sphere.h"
+#include "../include/math/Ray.h"
+#include "../include/renderer/ShadeContext.h"
+#include "../include/shapes/Sphere.h"
 
 TEST(SphereTest, RayHitsSphereAtClosestPositiveIntersection) {
     Sphere sphere{{0.0, 0.0, 0.0}, 1.0};

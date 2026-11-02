@@ -5,7 +5,7 @@
 #ifndef WHITTED_BOX_H
 #define WHITTED_BOX_H
 
-#include "../ShapeInterface.h"
+#include "ShapeInterface.h"
 
 class Box : public ShapeInterface {
     Box();

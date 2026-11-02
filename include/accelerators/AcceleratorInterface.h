@@ -5,9 +5,9 @@
 #ifndef WHITTED_ACCELERATORINTERFACE_H
 #define WHITTED_ACCELERATORINTERFACE_H
 
-#include "../Instance.h"
+#include "../shapes/Instance.h"
 #include "../math/Ray.h"
-#include "../ShadeContext.h"
+#include "../renderer/ShadeContext.h"
 
 #include <memory>
 #include <span>

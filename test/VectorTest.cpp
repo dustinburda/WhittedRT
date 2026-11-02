@@ -5,7 +5,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../include/Point.h"
+#include "../include/math/Point.h"
 #include "../include/Vector.h"
 
 

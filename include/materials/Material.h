@@ -5,13 +5,13 @@
 #ifndef WHITTED_MATERIAL_H
 #define WHITTED_MATERIAL_H
 
-#include "../Canvas.h"
+#include "../util/Canvas.h"
 #include "../math/Point.h"
 
 #include <vector>
 #include <memory>
 
-class Light;
+class LightInterface;
 struct ShadeContext;
 
 #define MATERIAL_TYPES \
@@ -32,7 +32,7 @@ public:
     explicit MaterialInterface(MaterialType mat_type);
     virtual ~MaterialInterface() = default;
 
-    virtual Color Shade(ShadeContext& context, const std::vector<std::shared_ptr<Light>>& lights) = 0;
+    virtual Color Shade(ShadeContext& context, const std::vector<std::shared_ptr<LightInterface>>& lights) = 0;
     MaterialType mat_type_;
 };
 
@@ -42,7 +42,7 @@ public:
 
     }
 
-    Color Shade( [[ maybe_unused ]] ShadeContext& context, [[ maybe_unused ]] const std::vector<std::shared_ptr<Light>>& lights) {
+    Color Shade( [[ maybe_unused ]] ShadeContext& context, [[ maybe_unused ]] const std::vector<std::shared_ptr<LightInterface>>& lights) {
         return color_;
     }
 private:
@@ -52,7 +52,7 @@ private:
 class BlackMaterial : public MaterialInterface {
 public:
     BlackMaterial();
-    Color Shade(ShadeContext& context, const std::vector<std::shared_ptr<Light>>& lights) override;
+    Color Shade(ShadeContext& context, const std::vector<std::shared_ptr<LightInterface>>& lights) override;
 };
 
 class SimplePhongMaterial : public MaterialInterface {
@@ -60,7 +60,7 @@ public:
     SimplePhongMaterial();
     SimplePhongMaterial(Color ka, Color kd, Color ks, double p);
 
-    Color Shade(ShadeContext& context, const std::vector<std::shared_ptr<Light>>& lights) override;
+    Color Shade(ShadeContext& context, const std::vector<std::shared_ptr<LightInterface>>& lights) override;
 
     Color ka_;
     Color kd_;

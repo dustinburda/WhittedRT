@@ -4,8 +4,8 @@
 
 #include <gtest/gtest.h>
 
-#include "../include/Normal.h"
-#include "../include/Vector.h"
+#include "../include/math/Normal.h"
+#include "../include/math/Vector.h"
 
 TEST(NormalTest, DefaultConstructor) {
     Normal<double, 4> normal;

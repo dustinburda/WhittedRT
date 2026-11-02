@@ -4,7 +4,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../include/TileQueue.h"
+#include "../include/util/TileQueue.h"
 
 #include <algorithm>
 #include <mutex>

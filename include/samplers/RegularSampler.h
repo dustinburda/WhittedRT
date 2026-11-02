@@ -1,8 +1,8 @@
-#include "../Sampler.h"
+#include "SamplerInterface.h"
 
-class RegularSampler : public Sampler
+class RegularSampler : public SamplerInterface
 {
 public:
-    RegularSampler(int num_samples) : Sampler{num_samples} {}
+    RegularSampler(int num_samples) : SamplerInterface{num_samples} {}
     std::vector<Point2D> Samples() override;
 };

@@ -1,0 +1,8 @@
+//
+// Created by Dustin on 11/1/26.
+//
+
+#ifndef WHITTED_SUPERSAMPLING_H
+#define WHITTED_SUPERSAMPLING_H
+
+#endif //WHITTED_SUPERSAMPLING_H

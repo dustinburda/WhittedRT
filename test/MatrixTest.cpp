@@ -4,8 +4,8 @@
 
 #include <gtest/gtest.h>
 
-#include "../include/Matrix.h"
-#include "../include/Vector.h"
+#include "../include/math/Matrix.h"
+#include "../include/math/Vector.h"
 
 TEST(MatrixTest, DefaultConstructor) {
     Matrix<double, 2, 3> matrix;

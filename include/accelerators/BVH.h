@@ -5,9 +5,9 @@
 #ifndef BVH_H
 #define BVH_H
 
-#include "../AcceleratorInterface.h"
-#include "../BoundingBox.h"
-#include "../Instance.h"
+#include "AcceleratorInterface.h"
+#include "BoundingBox.h"
+#include "../shapes/Instance.h"
 
 #include <span>
 #include <memory>

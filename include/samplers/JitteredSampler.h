@@ -1,9 +1,9 @@
-#include "../Sampler.h"
-#include "../Util.h"
+#include "SamplerInterface.h"
+#include "../util/Util.h"
 
-class JitteredSampler : public Sampler
+class JitteredSampler : public SamplerInterface
 {
 public:
-    JitteredSampler(int num_samples) : Sampler{num_samples} {}
+    JitteredSampler(int num_samples) : SamplerInterface{num_samples} {}
     std::vector<Point2D> Samples() override;
 };

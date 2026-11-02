@@ -6,7 +6,7 @@
 #define WHITTED_CYLINDER_H
 
 #include "../Disk.h"
-#include "../ShapeInterface.h"
+#include "ShapeInterface.h"
 
 class UncappedCylinder : public ShapeInterface {
     UncappedCylinder();

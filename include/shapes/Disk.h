@@ -5,7 +5,7 @@
 #ifndef WHITTED_DISK_H
 #define WHITTED_DISK_H
 
-#include "../ShapeInterface.h"
+#include "ShapeInterface.h"
 
 class Disk : public ShapeInterface {
 public:

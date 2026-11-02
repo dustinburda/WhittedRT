@@ -5,9 +5,9 @@
 #ifndef SCENEPARSER_H
 #define SCENEPARSER_H
 
-#include "../CameraInterface.h"
-#include "../Light.h"
-#include "../Sampler.h"
+#include "../cameras/CameraInterface.h"
+#include "../lights/LightInterface.h"
+#include "../samplers/SamplerInterface.h"
 #include "../shapes/Triangle.h"
 #include "XMLParser.h"
 
@@ -16,9 +16,9 @@
 
 struct Scene {
     std::unique_ptr<AcceleratorInterface> accelerator_;
-    std::shared_ptr<Sampler> sampler_;
+    std::shared_ptr<SamplerInterface> sampler_;
     std::unique_ptr<CameraInterface> camera_;
-    std::vector<std::shared_ptr<Light>> lights_;
+    std::vector<std::shared_ptr<LightInterface>> lights_;
     std::vector<InstancePtr> instances_;
 
     Scene() {
@@ -66,10 +66,10 @@ private:
     Color ParseColor(const XMLNode* node);
 
     std::shared_ptr<MaterialInterface> ParseMaterial(std::unique_ptr<XMLNode>& node);
-    std::shared_ptr<Sampler> ParseSampler(std::unique_ptr<XMLNode>& node);
-    std::shared_ptr<Light> ParsePointLight(std::unique_ptr<XMLNode>& node);
-    std::shared_ptr<Light> ParseAmbientLight(std::unique_ptr<XMLNode>& node);
-    std::shared_ptr<Light> ParseLight(std::unique_ptr<XMLNode>& node);
+    std::shared_ptr<SamplerInterface> ParseSampler(std::unique_ptr<XMLNode>& node);
+    std::shared_ptr<LightInterface> ParsePointLight(std::unique_ptr<XMLNode>& node);
+    std::shared_ptr<LightInterface> ParseAmbientLight(std::unique_ptr<XMLNode>& node);
+    std::shared_ptr<LightInterface> ParseLight(std::unique_ptr<XMLNode>& node);
     std::unique_ptr<AcceleratorInterface> ParseAccelerator(std::unique_ptr<XMLNode>& node);
 
 
@@ -77,7 +77,7 @@ private:
         std::unordered_map<std::string, std::shared_ptr<Transformation>> name_transformation_;
         std::unordered_map<std::string, std::shared_ptr<Instance>> name_instance_;
         std::unordered_map<std::string, std::shared_ptr<MaterialInterface>> name_material_;
-        std::unordered_map<std::string, std::shared_ptr<Sampler>> name_sampler_;
+        std::unordered_map<std::string, std::shared_ptr<SamplerInterface>> name_sampler_;
     } parsing_context_;
 
     XMLParser& xml_parser_;

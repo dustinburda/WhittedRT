@@ -1,9 +1,9 @@
-#include "../Sampler.h"
+#include "SamplerInterface.h"
 
-class HammersleySampler : public Sampler
+class HammersleySampler : public SamplerInterface
 {
 public:
-    HammersleySampler(int num_samples) : Sampler{num_samples} {}
+    HammersleySampler(int num_samples) : SamplerInterface{num_samples} {}
     std::vector<Point2D> Samples() override;
 };
 

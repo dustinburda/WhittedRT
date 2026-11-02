@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../include/HammersleySampler.h"
+#include "../include/samplers/HammersleySampler.h"
 
 
 TEST(PhiTest, SimpleTest) {

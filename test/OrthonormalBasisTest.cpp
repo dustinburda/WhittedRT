@@ -4,8 +4,8 @@
 
 #include <gtest/gtest.h>
 
-#include "../include/OrthnormalBasis.h"
-#include "../include/Util.h"
+#include "../include/math/OrthnormalBasis.h"
+#include "../include/util/Util.h"
 
 TEST(OrthonormalBasisTest, ForwardUpConstructorBuildsDirectXStyleBasis) {
     OrthonormalBasis basis{Vec3D{0.0, 0.0, 1.0}, Vec3D{0.0, 1.0, 0.0}};

@@ -5,8 +5,8 @@
 #ifndef WHITTED_TRIANGLE_H
 #define WHITTED_TRIANGLE_H
 
-#include "../Point.h"
-#include "../ShapeInterface.h"
+#include "../math/Point.h"
+#include "ShapeInterface.h"
 
 #include <array>
 #include <optional>

@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "../include/OrthographicCamera.h"
+#include "../include/cameras/OrthographicCamera.h"
 
 TEST(OrthographicCameraTest, AllRaysPointForward) {
     OrthographicCamera camera{

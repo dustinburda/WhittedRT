@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
-#include "../include/ProjectiveCamera.h"
-#include "../include/Util.h"
+#include "../include/cameras/ProjectiveCamera.h"
+#include "../include/util/Util.h"
 
 TEST(ProjectiveCameraTest, CenterPixelRayPointsForward) {
     ProjectiveCamera camera{

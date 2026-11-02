@@ -5,10 +5,10 @@
 #include <gtest/gtest.h>
 
 #include "../include/Normal.h"
-#include "../include/Point.h"
-#include "../include/Ray.h"
-#include "../include/Transformation.h"
-#include "../include/Util.h"
+#include "../include/math/Point.h"
+#include "../include/math/Ray.h"
+#include "../include/math/Transformation.h"
+#include "../include/util/Util.h"
 #include "../include/Vector.h"
 
 TEST(TransformationTest, IdentityTransformVector) {

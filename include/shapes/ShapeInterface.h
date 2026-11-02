@@ -5,9 +5,9 @@
 #ifndef WHITTED_SHAPE_H
 #define WHITTED_SHAPE_H
 
-#include "../BoundingBox.h"
+#include "../accelerators/BoundingBox.h"
 #include "../math/Ray.h"
-#include "../ShadeContext.h"
+#include "../renderer/ShadeContext.h"
 
 #define SHAPE_TYPES \
     X(Sphere) \
