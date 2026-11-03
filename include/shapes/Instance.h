@@ -5,7 +5,6 @@
 #ifndef INSTANCE_H
 #define INSTANCE_H
 
-#include "../parsers/OBJParser.h"
 #include "ShapeInterface.h"
 #include "../math/Transformation.h"
 
@@ -17,7 +16,7 @@ public:
     Instance(std::shared_ptr<ShapeInterface> shape, std::shared_ptr<MaterialInterface> mat);
     Instance(std::shared_ptr<Transformation> t, std::shared_ptr<ShapeInterface> shape, std::shared_ptr<MaterialInterface> mat);
 
-    Normal<double, 3> NormalAt(const Point<double, 3>& p) const;
+    std::optional<Normal<double, 3>> NormalAt(const Point<double, 3>& p) const;
     bool Hit(const Ray& r, ShadeContext& context) const;
     BoundingBox BBox() const;
     std::vector<Instance> Decompose() const;;

@@ -7,7 +7,7 @@
 
 #include "CameraInterface.h"
 #include "../math/Point.h"
-#include "Vector.h"
+#include "../math/Vector.h"
 #include "../math/Ray.h"
 
 #include <cstdint>

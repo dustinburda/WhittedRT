@@ -5,7 +5,9 @@
 #ifndef SCENEPARSER_H
 #define SCENEPARSER_H
 
+#include "../accelerators/AcceleratorInterface.h"
 #include "../cameras/CameraInterface.h"
+#include "../shapes/Instance.h"
 #include "../lights/LightInterface.h"
 #include "../samplers/SamplerInterface.h"
 #include "../shapes/Triangle.h"

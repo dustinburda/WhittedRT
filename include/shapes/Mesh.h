@@ -8,7 +8,7 @@
 
 #include "../parsers/OBJParser.h"
 #include "ShapeInterface.h"
-#include "../Triangle.h"
+#include "../shapes/Triangle.h"
 
 #include <filesystem>
 #include <vector>
@@ -18,7 +18,7 @@ public:
     Mesh();
     Mesh(std::shared_ptr<MeshData> mesh_data);
 
-    Normal<double, 3> NormalAt(const Point<double, 3>& p) const override;
+    std::optional<Normal<double, 3>> NormalAt(const Point<double, 3>& p) const override;
     bool Hit(const Ray& r, ShadeContext& context) const override;
     BoundingBox BBox() const override;
     std::vector<std::shared_ptr<ShapeInterface>> Decompose() const override;

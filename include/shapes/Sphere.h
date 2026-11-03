@@ -8,9 +8,9 @@
 #include "../accelerators/BoundingBox.h"
 #include "../materials/Material.h"
 #include "../math/Point.h"
-#include "../ShapeInterface.h"
+#include "../shapes/ShapeInterface.h"
 #include "../renderer/ShadeContext.h"
-#include "Vector.h"
+#include "../math/Vector.h"
 
 #include <utility>
 #include <memory>
@@ -22,7 +22,7 @@ public:
     ~Sphere() override = default;
 
     bool Hit(const Ray& r, ShadeContext& context) const override;
-    Normal<double, 3> NormalAt(const Point<double, 3>& p) const override;
+    std::optional<Normal<double, 3>> NormalAt(const Point<double, 3>& p) const override;
     BoundingBox BBox() const override;
     std::vector<std::shared_ptr<ShapeInterface>> Decompose() const override;
 

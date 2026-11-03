@@ -2,7 +2,7 @@
 #define WHITTED_SAMPLER_H
 
 #include "../math/Point.h"
-#include "Vector.h"
+#include "../math/Vector.h"
 
 #include <vector>
 
@@ -12,7 +12,6 @@ public:
   SamplerInterface(int num_samples) : num_samples_{num_samples} {}
   virtual ~SamplerInterface() = default;
   virtual std::vector<Point2D> Samples() = 0;
-  virtual Point2D Sample() = 0;
 
 protected:
   int num_samples_;
