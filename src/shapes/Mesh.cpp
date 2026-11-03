@@ -24,10 +24,10 @@ Mesh::Mesh(std::shared_ptr<MeshData> mesh_data)
     }
 }
 
-Normal<double, 3> Mesh::NormalAt(const Point<double, 3>& p) const {
+std::optional<Normal<double, 3>> Mesh::NormalAt(const Point<double, 3>& p) const {
     // TODO: Remove, we don't directly render a mesh anymore
     if (curr_triangle_index_ == -1)
-        return {-1.0, -1.0, -1.0};
+        return Normal<double, 3> {-1.0, -1.0, -1.0};
 
     auto& triangle = triangles_[curr_triangle_index_];
     return triangle->NormalAt(p);

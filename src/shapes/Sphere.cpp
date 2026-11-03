@@ -39,7 +39,7 @@ bool Sphere::Hit(const Ray& r, ShadeContext& context) const {
 
     context.t_max_ = hit_time;
     context.point_ = r.At(hit_time);
-    context.normal_ = NormalAt(r.At(hit_time));
+    context.normal_ = NormalAt(r.At(hit_time)).value();
 
     // TODO: check this over
     auto phi = std::atan(context.point_[2] / -context.point_[1]) / 2 * pi;
@@ -49,7 +49,7 @@ bool Sphere::Hit(const Ray& r, ShadeContext& context) const {
     return true;
 }
 
-Normal<double, 3> Sphere::NormalAt(const Point<double, 3>& p) const {
+std::optional<Normal<double, 3>> Sphere::NormalAt(const Point<double, 3>& p) const {
     Vector<double, 3> diff = p - center_;
     return Normal<double, 3> {diff[0], diff[1], diff[2]};
 }

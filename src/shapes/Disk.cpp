@@ -13,7 +13,7 @@ Disk::Disk(Normal<double, 3> normal, Point3D center)
 
 }
 
-Normal<double, 3> Disk::NormalAt( [[ maybe_unused]] const Point<double, 3>& p) const {
+std::optional<Normal<double, 3>> Disk::NormalAt( [[ maybe_unused]] const Point<double, 3>& p) const {
     return normal_;
 }
 

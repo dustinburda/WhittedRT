@@ -8,11 +8,11 @@ Box::Box() : ShapeInterface(ShapeType::Box) {
 
 }
 
-Normal<double, 3> Box::NormalAt( [[ maybe_unused ]] const Point<double, 3>& p) const {
+std::optional<Normal<double, 3>> Box::NormalAt( [[ maybe_unused ]] const Point<double, 3>& p) const {
     return Normal<double, 3> {};
 }
 bool Box::Hit( [[ maybe_unused ]] const Ray& r, [[ maybe_unused ]] ShadeContext& context) const {
-
+    return true;
 }
 
 BoundingBox Box::BBox() const {

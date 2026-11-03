@@ -15,7 +15,7 @@ Triangle::Triangle() : ShapeInterface(ShapeType::Triangle) {}
 Triangle::Triangle(Vertex a, Vertex b, Vertex c)
     : ShapeInterface(ShapeType::Triangle), vertices_{a,b,c}, is_textured_{false} {}
 
-Normal<double, 3> Triangle::NormalAt(const Point<double, 3> &) const
+std::optional<Normal<double, 3>> Triangle::NormalAt(const Point<double, 3> &) const
 {
     auto cross_product = Cross(vertices_[1].position_ - vertices_[0].position_,
                                vertices_[2].position_ - vertices_[0].position_);
@@ -26,7 +26,7 @@ Normal<double, 3> Triangle::NormalAt(const Point<double, 3> &) const
 
 bool Triangle::Hit(const Ray &r, ShadeContext &context) const
 {
-    auto normal = NormalAt(vertices_[0].position_);
+    auto normal = NormalAt(vertices_[0].position_).value();
     if(std::abs(Dot(r.Direction(), normal)) <= epsilon)
         return false;
 

@@ -12,11 +12,12 @@ Instance::Instance(std::shared_ptr<ShapeInterface> shape, std::shared_ptr<Materi
 Instance::Instance(std::shared_ptr<Transformation> t, std::shared_ptr<ShapeInterface> shape, std::shared_ptr<MaterialInterface> mat)
     :transform_{t}, shape_{std::move(shape)}, mat_{std::move(mat)}, bounding_box_(ComputeBBox()) {}
 
-Normal<double, 3> Instance::NormalAt(const Point<double, 3>& p) const {
-    if(transform_ == nullptr)
+std::optional<Normal<double, 3>> Instance::NormalAt(const Point<double, 3>& p) const {
+    auto normal_opt = shape_->NormalAt(p);
+    if(transform_ == nullptr || normal_opt == std::nullopt)
         return shape_->NormalAt(p);
 
-    return (*transform_)(shape_->NormalAt(p));
+    return (*transform_)(shape_->NormalAt(p).value());
 };
 
 bool Instance::Hit(const Ray& r, ShadeContext& context) const {
@@ -38,7 +39,7 @@ bool Instance::Hit(const Ray& r, ShadeContext& context) const {
     if(!shape_->Hit(transformed_ray, context))
         return false;
 
-    context.normal_ = NormalAt(context.point_);
+    context.normal_ = NormalAt(context.point_).value(); // Okay to invoke this because ShadeContext holds a point on the surface
     context.point_ = (*transform_)(context.point_);
     context.mat_ = mat_;
 

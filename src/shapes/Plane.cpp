@@ -11,7 +11,7 @@ Plane::Plane() : ShapeInterface(ShapeType::Plane), point_{1.0, 0.0, 0.0}, normal
 Plane::Plane(const Point<double, 3>& point, const Normal<double, 3>& normal)
     : ShapeInterface(ShapeType::Plane), point_{point}, normal_{normal} {}
 
-Normal<double, 3> Plane::NormalAt([[ maybe_unused ]] const Point<double, 3>& p) const
+std::optional<Normal<double, 3>> Plane::NormalAt([[ maybe_unused ]] const Point<double, 3>& p) const
 {
     return normal_;
 }
