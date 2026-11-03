@@ -44,16 +44,3 @@ BoundingBox Plane::BBox() const {
 std::vector<std::shared_ptr<ShapeInterface>> Plane::Decompose() const {
     return {};
 }
-
-std::string Plane::toString() const {
-    std::stringstream ss;
-
-    ss << "Plane: [\n";
-
-    ss << point_.toString() << "\n";
-    ss << normal_.toString() << "\n";
-
-    ss << "]";
-
-    return ss.str();
-}

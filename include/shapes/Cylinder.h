@@ -17,6 +17,9 @@ public:
     bool Hit(const Ray& r, ShadeContext& context) const override;
     BoundingBox BBox() const override;
     std::vector<std::shared_ptr<ShapeInterface>> Decompose() const override;
+
+private:
+
 };
 
 class Cylinder : public ShapeInterface {

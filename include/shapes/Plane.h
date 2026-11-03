@@ -24,8 +24,6 @@ public:
     BoundingBox BBox() const override;
     std::vector<std::shared_ptr<ShapeInterface>> Decompose() const override;
 
-    std::string toString() const;
-
 private:
     Point<double, 3> point_;
     Normal<double, 3> normal_;

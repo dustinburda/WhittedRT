@@ -14,6 +14,10 @@ class Box : public ShapeInterface {
     virtual std::optional<Normal<double, 3>> NormalAt(const Point<double, 3>& p) const override;
     virtual bool Hit(const Ray& r, ShadeContext& context) const override;
     virtual BoundingBox BBox() const override;
+
+
+
+
 };
 
 #endif //WHITTED_BOX_H

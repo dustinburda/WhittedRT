@@ -32,8 +32,6 @@ public:
     std::vector<std::shared_ptr<ShapeInterface>> Decompose() const override;
 
     void SetIsTextured(bool is_textured); // TODO: Does this belong here?
-
-    std::string toString() const;
 private:
 
     [[nodiscard]] bool InTriangle(const Point<double, 3>& hit_point) const;

@@ -28,13 +28,13 @@ bool Sphere::Hit(const Ray& r, ShadeContext& context) const {
     double t1 = (-b - std::sqrt(discriminant)) / (2 * a);
     double t2 = (-b + std::sqrt(discriminant)) / (2 * a);
 
-    double hit_time = t1;
-    if (t1 > context.t_max_ || t1 < context.t_min_)
-    {
+    double hit_time = 0.0;
+    if (t1 < context.t_max_ && t1 > context.t_min_)
+        hit_time = t1;
+    else if (t2 < context.t_max_ && t2 > context.t_min_)
         hit_time = t2;
-        if (t2 > context.t_max_ || t2 < context.t_min_)
-            return false;
-    }
+    else
+        return false;
 
 
     context.t_max_ = hit_time;
@@ -42,7 +42,7 @@ bool Sphere::Hit(const Ray& r, ShadeContext& context) const {
     context.normal_ = NormalAt(r.At(hit_time)).value();
 
     // TODO: check this over
-    auto phi = std::atan(context.point_[2] / -context.point_[1]) / 2 * pi;
+    auto phi = std::atan(context.point_[2] / -context.point_[1]) / (2 * pi);
     auto theta = std::acos(-context.point_[1]) / pi;
     context.uv_ = {phi, theta};
 
@@ -63,17 +63,4 @@ BoundingBox Sphere::BBox() const {
 
 std::vector<std::shared_ptr<ShapeInterface>> Sphere::Decompose() const {
     return {};
-}
-
-std::string Sphere::toString() const {
-    std::stringstream ss;
-
-    ss << "Sphere: \n[\n";
-
-    ss << "\t"  << center_.toString() << "\n";
-    ss << "\t" << "Radius: " << radius_ << "\n";
-
-    ss << "]";
-
-    return ss.str();
 }

@@ -68,14 +68,6 @@ double BoundingBox::Length() const {
     return std::abs(max_[2] - min_[2]);
 }
 
-std::string BoundingBox::toString() const {
-    std::stringstream ss;
-
-    ss << min_.toString() << "\n" << max_.toString();
-
-    return ss.str();
-}
-
 Point3D BoundingBox::Centroid() const {
     auto centroid_vector = 0.5 * (min_.ToVector() + max_.ToVector() );
 

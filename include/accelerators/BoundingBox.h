@@ -40,9 +40,6 @@ public:
     Point3D Centroid() const;
     double SurfaceArea() const;
 
-    std::string toString() const;
-
-
 private:
     Point3D min_;
     Point3D max_;

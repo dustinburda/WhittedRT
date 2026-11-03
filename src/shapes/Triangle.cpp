@@ -104,20 +104,3 @@ std::array<double, 3> Triangle::BarycentricCoordinates(const Point<double, 3>& h
     return barycentric_coordinates;
 }
 
-std::string Triangle::toString() const {
-    std::stringstream ss;
-
-    ss << "Triangle: [\n";
-
-    ss << vertices_[0].position_.toString();
-    ss << "\n";
-    ss << vertices_[1].position_.toString();
-    ss << "\n";
-    ss << vertices_[2].position_.toString();
-    ss << "\n";
-
-    ss <<"]";
-
-    return ss.str();
-}
-
