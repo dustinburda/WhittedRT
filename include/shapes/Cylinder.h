@@ -35,6 +35,7 @@ public:
 
 private:
     std::shared_ptr<UncappedCylinder> cylinder_;
+    // TODO: move these caps to -1, 1
     std::shared_ptr<Disk> cap1_;
     std::shared_ptr<Disk> cap2_;
 };

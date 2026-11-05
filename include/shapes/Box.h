@@ -11,12 +11,11 @@ class Box : public ShapeInterface {
     Box();
     virtual ~Box() = default;
 
-    virtual std::optional<Normal<double, 3>> NormalAt(const Point<double, 3>& p) const override;
-    virtual bool Hit(const Ray& r, ShadeContext& context) const override;
-    virtual BoundingBox BBox() const override;
+    std::optional<Normal<double, 3>> NormalAt(const Point<double, 3>& p) const override;
+    bool Hit(const Ray& r, ShadeContext& context) const override;
+    BoundingBox BBox() const override;
 
-
-
+    std::vector<std::shared_ptr<ShapeInterface>> Decompose() const override;
 
 };
 

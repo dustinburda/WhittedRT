@@ -2,36 +2,9 @@
 // Created by Dustin on 12/22/24.
 //
 
+
 #include "../../include/accelerators/BoundingBox.h"
-
-
-bool Interval::operator<(const Interval& other) const {
-    if (t_min_ < other.t_min_)
-        return true;
-    if (t_min_ > other.t_min_)
-        return false;
-    return t_max_ < other.t_max_;
-}
-
-bool Interval::Intersects(std::vector<Interval> intervals) {
-    if (intervals.size() == 0)
-        return true;
-
-    std::sort(intervals.begin(), intervals.end());
-
-    Interval intersection = intervals[0];
-    for(std::size_t i = 1; i < intervals.size(); i++) {
-        const Interval& curr_interval = intervals[i];
-        if(curr_interval.t_min_ > intersection.t_max_)
-            return false;
-
-        intersection.t_min_ = std::max(intersection.t_min_, curr_interval.t_min_);
-        intersection.t_max_ = std::min(intersection.t_max_, curr_interval.t_max_);
-
-    }
-
-    return true;
-}
+#include "../../include/util/Interval.h"
 
 BoundingBox::BoundingBox(Point3D p1, Point3D p2) {
     for(int i = 0; i < 3; i++) {
@@ -47,13 +20,9 @@ bool BoundingBox::Hit(const Ray& r, [[ maybe_unused ]] ShadeContext& context) co
     Interval x_interval {(min_[0] - orig[0])/dir[0], (max_[0] - orig[0])/dir[0] };
     Interval y_interval {(min_[1] - orig[1])/dir[1], (max_[1] - orig[1])/dir[1] };
     Interval z_interval {(min_[2] - orig[2])/dir[2], (max_[2] - orig[2])/dir[2] };
+    Interval allowable {context.t_min_, context.t_max_};
 
-    if (context.t_max_ < std::max({x_interval.t_min_, y_interval.t_min_, z_interval.t_min_}) ||
-        context.t_min_ > std::min({x_interval.t_max_, y_interval.t_max_, z_interval.t_max_})) {
-        return false;
-    }
-
-    return Interval::Intersects({x_interval, y_interval, z_interval});
+    return Interval::Intersects({x_interval, y_interval, z_interval, allowable});
 }
 
 double BoundingBox::Width() const {
