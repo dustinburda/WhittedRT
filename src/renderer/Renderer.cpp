@@ -3,6 +3,7 @@
 //
 
 #include "../../include/renderer/Renderer.h"
+#include "../../include/Util/Trace.h"
 
 Renderer& Renderer::GetInstance() {
     static Renderer renderer;
@@ -76,24 +77,7 @@ void Renderer::RenderTile(const Tile& t, const Scene& scene, Canvas& canvas) con
 
     for (std::size_t y = t.y_; y < t.y_ + t.y_length_; y++)
         for (std::size_t x = t.x_; x < t.x_ + t.x_length_; x++) {
-
-            Color pixel_color;
-
-            auto samples = scene.sampler_->Samples();
-            for (auto& sample : samples) {
-                // TODO: sampler samples from [0,1]^2 but GetRayAt samples from center
-                auto ray = scene.camera_->GetRayAt(x + sample[0], y + sample[1], p);
-                ShadeContext context;
-                pixel_color += Trace(scene, ray, context) / static_cast<float> (samples.size());
-            }
-
+            auto pixel_color = anti_aliaser_->SamplePixel(scene, p, x, y);
             canvas.SetColorAt(pixel_color, x, y);
         }
-}
-
-Color Trace(const Scene& scene, Ray& r, ShadeContext& context) {
-    if(scene.Hit(r, context))
-        return context.mat_->Shade(context, scene.lights_);
-
-    return {0.0, 0.0, 0.0};
 }

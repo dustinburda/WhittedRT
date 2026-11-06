@@ -5,6 +5,7 @@
 #ifndef WHITTED_RENDERER_H
 #define WHITTED_RENDERER_H
 
+#include "../antialiasing/AntiAliasingInterface.h"
 #include "../util/Color.h"
 #include "ImagePlane.h"
 #include "../materials/Material.h"
@@ -21,6 +22,9 @@ public:
     ~Renderer();
 
     void SetThreads(std::size_t num_threads);
+    void SetAntiAliasing(std::unique_ptr<AntiAliasingInterface> anti_aliaser);
+    // TODO: Remove singleton and pass in anti aliasing at runtime in the constructor
+
     void Render(const Scene& scene, Canvas& canvas) ;
 
 
@@ -31,10 +35,10 @@ private:
     void RenderTile(const Tile& t, const Scene& scene, Canvas& canvas) const ;
 
 private:
+    std::unique_ptr<AntiAliasingInterface> anti_aliaser_;
+
     std::vector<std::thread> threads_;
     std::size_t num_threads_;
 };
-
-Color Trace(const Scene& scene, Ray& r, ShadeContext& context);
 
 #endif //WHITTED_RENDERER_H

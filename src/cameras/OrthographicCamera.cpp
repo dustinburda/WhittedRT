@@ -4,7 +4,8 @@
 
 #include "../../include/cameras/OrthographicCamera.h"
 
-Ray OrthographicCamera::GetRayAt(std::size_t x, std::size_t y, const ImagePlane& p) const {
+
+Ray OrthographicCamera::GetRayAt(double x, double y, const ImagePlane& p) const {
     auto aspect_ratio = static_cast<double>(p.width_) / p.height_;
 
     auto ray_plane_width = 2.0;

@@ -4,18 +4,18 @@
 
 #ifndef WHITTED_ANTIALIASINGINTERFACE_H
 #define WHITTED_ANTIALIASINGINTERFACE_H
+
+#include "../../include/parsers/SceneParser.h"
 #include "../samplers/SamplerInterface.h"
 #include "../util/Color.h"
-
-class CameraInterface;
 
 class AntiAliasingInterface {
 public:
     AntiAliasingInterface(std::unique_ptr<SamplerInterface>& sampler);
     virtual ~AntiAliasingInterface();
 
-    virtual Color SamplePixel(const std::unique_ptr<CameraInterface>& camera, std::size_t x, std::size_t y) = 0;
-private:
+    virtual Color SamplePixel(const Scene& scene, const ImagePlane& p, std::size_t x, std::size_t y) = 0;
+protected:
     std::unique_ptr<SamplerInterface>& sampler_;
 };
 

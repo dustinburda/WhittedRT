@@ -23,7 +23,7 @@ public:
     const Point3D& Origin() const;
     void SetSampler(std::shared_ptr<SamplerInterface> s);
 
-    virtual Ray GetRayAt(std::size_t x, std::size_t y, const ImagePlane& p) const = 0;
+    virtual Ray GetRayAt(double x, double y, const ImagePlane& p) const = 0;
 
 protected:
     std::shared_ptr<SamplerInterface> s_;

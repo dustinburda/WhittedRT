@@ -5,7 +5,7 @@
 #include "../../include/cameras/ProjectiveCamera.h"
 #include "../../include/util/Util.h"
 
-Ray ProjectiveCamera::GetRayAt(std::size_t x, std::size_t y, const ImagePlane& p) const
+Ray ProjectiveCamera::GetRayAt(double x, double y, const ImagePlane& p) const
 {
     auto aspect_ratio = static_cast<double>(p.width_) / p.height_;
 
