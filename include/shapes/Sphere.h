@@ -24,10 +24,6 @@ public:
     bool Hit(const Ray& r, ShadeContext& context) const override;
     std::optional<Normal<double, 3>> NormalAt(const Point<double, 3>& p) const override;
     BoundingBox BBox() const override;
-    std::vector<std::shared_ptr<ShapeInterface>> Decompose() const override;
-private:
-    Point<double, 3> center_;
-    double radius_;
 };
 
 

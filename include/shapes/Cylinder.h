@@ -8,36 +8,17 @@
 #include "Disk.h"
 #include "ShapeInterface.h"
 
-class UncappedCylinder : public ShapeInterface {
+class Cylinder : public ShapeInterface {
 public:
-    UncappedCylinder();
-    virtual ~UncappedCylinder() override;
+    Cylinder();
+    virtual ~Cylinder() override;
 
     std::optional<Normal<double, 3>> NormalAt(const Point<double, 3>& p) const override;
     bool Hit(const Ray& r, ShadeContext& context) const override;
     BoundingBox BBox() const override;
-    std::vector<std::shared_ptr<ShapeInterface>> Decompose() const override;
 
 private:
 
 };
 
-class Cylinder : public ShapeInterface {
-public:
-    Cylinder();
-    ~Cylinder() override;
-
-    std::optional<Normal<double, 3>> NormalAt(const Point<double, 3>& p) const  override;
-    bool Hit(const Ray& r, ShadeContext& context) const  override;
-    BoundingBox BBox() const  override;
-
-    std::vector<std::shared_ptr<ShapeInterface>> Decompose() const override;
-
-private:
-    std::shared_ptr<UncappedCylinder> cylinder_;
-    // TODO: move these caps to -1, 1
-    std::shared_ptr<Disk> cap1_;
-    std::shared_ptr<Disk> cap2_;
-};
-
-#endif //WHITTED_CYLINDER_H
+#endif

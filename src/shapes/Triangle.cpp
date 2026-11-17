@@ -71,10 +71,6 @@ BoundingBox Triangle::BBox() const {
     return BoundingBox {min, max};
 }
 
-std::vector<std::shared_ptr<ShapeInterface>> Triangle::Decompose() const {
-    return {};
-}
-
 void Triangle::SetIsTextured(bool is_textured) {
     is_textured_ = is_textured;
 }

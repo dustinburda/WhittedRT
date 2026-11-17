@@ -19,7 +19,6 @@ public:
     std::optional<Normal<double, 3>> NormalAt(const Point<double, 3>& p) const;
     bool Hit(const Ray& r, ShadeContext& context) const;
     BoundingBox BBox() const;
-    std::vector<Instance> Decompose() const;;
 
     ShapeType Type() const;
     

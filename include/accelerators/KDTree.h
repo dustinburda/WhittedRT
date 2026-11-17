@@ -5,15 +5,23 @@
 #ifndef WHITTED_KDTREE_H
 #define WHITTED_KDTREE_H
 
-#include "../AcceleratorInterface.h"
+#include "AcceleratorInterface.h"
+
+#include <memory>
+
+class KDTreeNode {
+
+};
 
 class KDTree : public AcceleratorInterface {
 public:
     KDTree() = default;
     ~KDTree() override = default;
 
-    virtual bool Hit(const Ray& r, ShadeContext& s) override;
-    virtual void Build(std::vector<InstancePtr> instances) override;
+    bool Hit(const Ray& r, ShadeContext& s) override;
+    void Build(std::span<InstancePtr> instances) override;
+private:
+    std::unique_ptr<KDTree> root_;
 };
 
 #endif //WHITTED_KDTREE_H

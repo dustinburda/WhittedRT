@@ -29,7 +29,6 @@ public:
     std::optional<Normal<double, 3>> NormalAt(const Point<double, 3> &p) const override;
     bool Hit(const Ray &r, ShadeContext &context) const override;
     BoundingBox BBox() const override;
-    std::vector<std::shared_ptr<ShapeInterface>> Decompose() const override;
 
     void SetIsTextured(bool is_textured); // TODO: Does this belong here?
 private:

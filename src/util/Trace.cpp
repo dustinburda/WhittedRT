@@ -2,6 +2,7 @@
 // Created by Dustin on 11/5/26.
 //
 
+#include "../../include/materials/Material.h"
 #include "../../include/util/Trace.h"
 
 Color Trace(const Scene& scene, Ray& r, ShadeContext& context) {

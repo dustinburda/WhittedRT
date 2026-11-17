@@ -58,13 +58,3 @@ BoundingBox Mesh::BBox() const {
 
     return b;
 }
-
-std::vector<std::shared_ptr<ShapeInterface>> Mesh::Decompose() const {
-    std::vector<std::shared_ptr<ShapeInterface>> decomposition;
-    decomposition.reserve(triangles_.size());
-
-    for (auto& triangle : triangles_)
-        decomposition.push_back(triangle);
-
-    return decomposition;
-}

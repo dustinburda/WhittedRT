@@ -50,20 +50,6 @@ BoundingBox Instance::BBox() const {
     return bounding_box_;
 }
 
-std::vector<Instance> Instance::Decompose() const {
-    auto shape_decomposition = shape_->Decompose();
-
-    if (shape_decomposition.empty())
-        return {*this};
-
-    std::vector<Instance> instance_decomposition;
-    instance_decomposition.reserve(shape_decomposition.size());
-    for (auto& shape_primitive : shape_decomposition)
-        instance_decomposition.emplace_back(transform_, shape_primitive, mat_);
-
-    return instance_decomposition;
-}
-
 
 ShapeType Instance::Type() const {
     return shape_->Type();

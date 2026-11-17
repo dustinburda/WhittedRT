@@ -17,7 +17,8 @@
     X(UncappedCylinder) \
     X(Cylinder) \
     X(Disk) \
-    X(Box)
+    X(Box) \
+    X(Cone)
 
 enum class ShapeType {
 #define X(name) name,
@@ -35,8 +36,6 @@ public:
     // TODO: make the return type std::optional
     virtual std::optional<Normal<double, 3>> NormalAt(const Point<double, 3>& p) const = 0;
     virtual BoundingBox BBox() const = 0;
-
-    virtual std::vector<std::shared_ptr<ShapeInterface>> Decompose() const = 0;
 
     ShapeType Type() const;
 private:

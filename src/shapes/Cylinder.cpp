@@ -5,19 +5,19 @@
 #include "../../include/shapes/Cylinder.h"
 
 
-UncappedCylinder::UncappedCylinder() : ShapeInterface(ShapeType::UncappedCylinder) {
+Cylinder::Cylinder() : ShapeInterface(ShapeType::UncappedCylinder) {
 
 }
 
-std::optional<Normal<double, 3>> UncappedCylinder::NormalAt(const Point<double, 3>& p) const {
+std::optional<Normal<double, 3>> Cylinder::NormalAt(const Point<double, 3>& p) const {
     // Not on surface
     if (std::abs(p[2]) > 1.0 || std::abs(p[0] * p[0] + p[1] * p[1] - 1.0) > epsilon)
         return std::nullopt;
 
-    return Normal<double, 3> {p[0], p[1], 0.0};
+    return Normal<double, 3> {p[0], p[1], 0.0}.UnitNormal();
 }
 
-bool UncappedCylinder::Hit(const Ray& r, ShadeContext& context) const {
+bool Cylinder::Hit(const Ray& r, ShadeContext& context) const {
     auto a = r.Direction()[0] * r.Direction()[0] + r.Direction()[1] * r.Direction()[1];
     auto b = 2 * (r.Direction()[0] * r.Origin()[0] + r.Direction()[1] * r.Origin()[1]);
     auto c = r.Origin()[0] * r.Origin()[0] + r.Origin()[1] * r.Origin()[1] - 1;
@@ -53,41 +53,6 @@ bool UncappedCylinder::Hit(const Ray& r, ShadeContext& context) const {
     return true;
 }
 
-BoundingBox UncappedCylinder::BBox() const {
-    return BoundingBox{ Point3D{-1, -1, -1}, Point3D{1, 1, 1} };
-}
-
-
-std::vector<std::shared_ptr<ShapeInterface>> UncappedCylinder::Decompose() const {
-    return {};
-}
-
-Cylinder::Cylinder() : ShapeInterface(ShapeType::Cylinder), cylinder_{}, cap1_{}, cap2_{} {
-}
-
-std::optional<Normal<double, 3>> Cylinder::NormalAt(const Point<double, 3>& p) const {
-    for (auto& shape : Decompose()) {
-        auto normal = shape->NormalAt(p);
-        if (normal != std::nullopt)
-            return normal;
-    }
-
-    return std::nullopt;
-}
-
-bool Cylinder::Hit( [[ maybe_unused ]] const Ray& r, [[ maybe_unused ]] ShadeContext& context) const {
-    bool hit = false;
-    for (auto& shape : Decompose()) {
-        hit |= shape->Hit(r, context);
-    }
-
-    return hit;
-}
-
 BoundingBox Cylinder::BBox() const {
-    return Union(Union(cap1_->BBox(), cap2_->BBox()), cylinder_->BBox());
-}
-
-std::vector<std::shared_ptr<ShapeInterface>> Cylinder::Decompose() const {
-    return {cylinder_, cap1_, cap2_};
+    return BoundingBox{ Point3D{-1, -1, -1}, Point3D{1, 1, 1} };
 }

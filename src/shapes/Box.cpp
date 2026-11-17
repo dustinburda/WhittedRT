@@ -21,25 +21,25 @@ std::optional<Normal<double, 3>> Box::NormalAt( const Point<double, 3>& p) const
 
 
     if (x_one + y_one + z_one == 3) // Corner
-        return Normal<double, 3> {2.0 * (p[0] > 0) - 1, 0, 0};
+        return Normal<double, 3> {2.0 * (p[0] > 0) - 1, 0, 0}.UnitNormal();
 
     if (x_one + y_one + z_one == 2) {
         if (x_one + y_one == 2)
-            return Normal<double, 3> {2.0 * (p[0] > 0) - 1, 0, 0};
+            return Normal<double, 3> {2.0 * (p[0] > 0) - 1, 0, 0}.UnitNormal();
         if (y_one + z_one == 2)
-            return Normal<double, 3> {0, 2.0 * (p[1] > 0) - 1, 0};
+            return Normal<double, 3> {0, 2.0 * (p[1] > 0) - 1, 0}.UnitNormal();
         if (z_one + x_one == 2)
-            return Normal<double, 3> {0, 0, 2.0 * (p[2] > 0) - 1};
+            return Normal<double, 3> {0, 0, 2.0 * (p[2] > 0) - 1}.UnitNormal();
     }
 
     if (x_one)
-        return Normal<double, 3> {2.0 * (p[0] > 0) - 1, 0, 0};
+        return Normal<double, 3> {2.0 * (p[0] > 0) - 1, 0, 0}.UnitNormal();
 
     if (y_one)
-        return Normal<double, 3> {0, 2.0 * (p[1] > 0) - 1, 0};
+        return Normal<double, 3> {0, 2.0 * (p[1] > 0) - 1, 0}.UnitNormal();
 
     if (z_one)
-        return Normal<double, 3> {0, 0, 2.0 * (p[2] > 0) - 1};
+        return Normal<double, 3> {0, 0, 2.0 * (p[2] > 0) - 1}.UnitNormal();
 
     return std::nullopt;
 }
@@ -78,8 +78,4 @@ bool Box::Hit(const Ray& r, ShadeContext& context) const {
 
 BoundingBox Box::BBox() const {
     return BoundingBox{Point3D {-1, -1, -1}, Point3D {1, 1, 1}};
-}
-
-std::vector<std::shared_ptr<ShapeInterface>> Box::Decompose() const {
-    return {};
 }

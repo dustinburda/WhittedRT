@@ -13,7 +13,7 @@ Plane::Plane(const Point<double, 3>& point, const Normal<double, 3>& normal)
 
 std::optional<Normal<double, 3>> Plane::NormalAt([[ maybe_unused ]] const Point<double, 3>& p) const
 {
-    return normal_;
+    return normal_.UnitNormal();
 }
 
 bool Plane::Hit(const Ray& r, ShadeContext& context) const
@@ -39,8 +39,4 @@ BoundingBox Plane::BBox() const {
     Point3D max { std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max() };
 
     return BoundingBox {min, max};
-}
-
-std::vector<std::shared_ptr<ShapeInterface>> Plane::Decompose() const {
-    return {};
 }

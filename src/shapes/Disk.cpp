@@ -35,7 +35,3 @@ bool Disk::Hit( const Ray& r, ShadeContext& context) const {
 BoundingBox Disk::BBox() const {
     return BoundingBox { Point3D {-1, -1, -0.1}, Point3D {1, 1, 0.1}};
 }
-
-std::vector<std::shared_ptr<ShapeInterface>> Disk::Decompose() const {
-    return {};
-}
