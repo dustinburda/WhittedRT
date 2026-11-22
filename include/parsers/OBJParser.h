@@ -38,14 +38,14 @@ struct MeshData {
 
 class OBJParser {
 public:
-    std::shared_ptr<MeshData> ParseOBJ(std::filesystem::path path);
+    std::unique_ptr<MeshData> ParseOBJ(std::filesystem::path path);
     static OBJParser& GetInstance();
 private:
     OBJParser() = default;
-    void ParseVertex(std::string line, std::shared_ptr<MeshData> mesh_data);
-    void ParseFace(std::string line, std::shared_ptr<MeshData> mesh_data);
-    void ParseNormal(std::string line, std::shared_ptr<MeshData> mesh_data);
-    void ParseTexture(std::string line, std::shared_ptr<MeshData> mesh_data);
+    void ParseVertex(std::string line, std::unique_ptr<MeshData>& mesh_data);
+    void ParseFace(std::string line, std::unique_ptr<MeshData>& mesh_data);
+    void ParseNormal(std::string line, std::unique_ptr<MeshData>& mesh_data);
+    void ParseTexture(std::string line, std::unique_ptr<MeshData>& mesh_data);
 };
 
 

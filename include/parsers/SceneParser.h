@@ -9,6 +9,7 @@
 #include "../cameras/CameraInterface.h"
 #include "../shapes/Instance.h"
 #include "../lights/LightInterface.h"
+#include "../parsers/OBJParser.h"
 #include "../samplers/SamplerInterface.h"
 #include "../shapes/Triangle.h"
 #include "XMLParser.h"
@@ -16,27 +17,22 @@
 #include <string>
 #include <vector>
 
-struct Scene {
-    std::unique_ptr<AcceleratorInterface> accelerator_;
+struct SceneData {
     std::unique_ptr<CameraInterface> camera_;
     std::vector<std::shared_ptr<LightInterface>> lights_;
-    std::vector<InstancePtr> instances_;
 
-    Scene() {
-        accelerator_ = nullptr;
-        camera_ = nullptr;
-        lights_ = {};
-        instances_ = {};
-    }
+    std::unordered_map<std::string, std::shared_ptr<Transformation>> name_transformation_;
+    std::unordered_map<std::string, std::shared_ptr<ShapeInterface>> name_shape_;
+    std::unordered_map<std::string, std::shared_ptr<MaterialInterface>> name_material_;
+    std::unordered_map<std::string, std::unique_ptr<MeshData>> name_meshdata_;
 
-    Scene(const Scene&) = delete;
-    Scene& operator=(const Scene&) = delete;
+    SceneData() = default;
 
-    Scene(Scene&&) = default;
-    Scene& operator=(Scene&&) = default;
+    SceneData(const SceneData&) = delete;
+    SceneData& operator=(const SceneData&) = delete;
 
-    void Build();
-    bool Hit(const Ray& r, ShadeContext& s) const;
+    SceneData(SceneData&&) = default;
+    SceneData& operator=(SceneData&&) = default;
 };
 
 class SceneParser {
@@ -47,7 +43,7 @@ public:
         return p;
     }
 
-    std::unique_ptr<Scene> ParseScene(std::string path);
+    std::unique_ptr<SceneData> ParseScene(std::string path);
 private:
     SceneParser();
 
@@ -57,9 +53,11 @@ private:
     std::shared_ptr<Transformation> ParseScale(std::unique_ptr<XMLNode>& node);
     std::shared_ptr<Transformation> ParseTransformation(std::unique_ptr<XMLNode>& node);
 
+    std::unique_ptr<MeshData> ParseMesh(std::unique_ptr<XMLNode>& node);
+
     Point3D ParseVertex (std::string point);
     std::shared_ptr<Triangle> ParseTriangle(std::unique_ptr<XMLNode>& node);
-    std::shared_ptr<Instance> ParseShape(std::unique_ptr<XMLNode>& node);
+    std::shared_ptr<ShapeInterface> ParseShape(std::unique_ptr<XMLNode>& node);
 
     Color ParseColor(const XMLNode* node);
 
@@ -68,12 +66,6 @@ private:
     std::shared_ptr<LightInterface> ParsePointLight(std::unique_ptr<XMLNode>& node);
     std::shared_ptr<LightInterface> ParseAmbientLight(std::unique_ptr<XMLNode>& node);
     std::shared_ptr<LightInterface> ParseLight(std::unique_ptr<XMLNode>& node);
-
-    struct {
-        std::unordered_map<std::string, std::shared_ptr<Transformation>> name_transformation_;
-        std::unordered_map<std::string, std::shared_ptr<Instance>> name_instance_;
-        std::unordered_map<std::string, std::shared_ptr<MaterialInterface>> name_material_;
-    } parsing_context_;
 
     XMLParser& xml_parser_;
 };

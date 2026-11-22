@@ -3,9 +3,15 @@
 //
 
 #include "../../include/antialiasing/AdaptiveSuperSampling.h"
+#include "../../include/renderer/ImagePlane.h"
+#include "../../include/renderer/Scene.h"
 #include "../../include/util/Trace.h"
 
 #include <ranges>
+
+
+AdaptiveSuperSampling::AdaptiveSuperSampling(std::unique_ptr<SamplerInterface> sampler, int depth, double threshold)
+    : AntiAliasingInterface{std::move(sampler)}, depth_guard_{depth}, threshold_{threshold} {}
 
 Color AdaptiveSuperSampling::SamplePixel(const Scene& scene, const ImagePlane& p, std::size_t x, std::size_t y)  {
     return SamplePixelInternal(scene, p, static_cast<double>(x), static_cast<double>(y), 1.0, 0);

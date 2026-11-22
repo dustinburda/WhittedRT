@@ -9,7 +9,6 @@
 #include "../../include/cameras/OrthographicCamera.h"
 #include "../../include/lights/PointLight.h"
 #include "../../include/cameras/ProjectiveCamera.h"
-#include "../../include/shapes/Mesh.h"
 #include "../../include/shapes/Plane.h"
 #include "../../include/parsers/SceneParser.h"
 #include "../../include/shapes/ShapeInterface.h"
@@ -95,6 +94,11 @@ std::shared_ptr<Transformation> SceneParser::ParseTransformation(std::unique_ptr
     return transformation;
 }
 
+std::unique_ptr<MeshData> SceneParser::ParseMesh(std::unique_ptr<XMLNode>& node) {
+    std::string filename = node->attributes_["filename"];
+    return  OBJParser::GetInstance().ParseOBJ( "../models/" + filename);
+}
+
 // TODO: Get rid of this diabolically stupid function
 Point3D SceneParser::ParseVertex (std::string point) {
     std::stringstream ss {point};
@@ -122,26 +126,14 @@ std::shared_ptr<Triangle> SceneParser::ParseTriangle(std::unique_ptr<XMLNode>& n
     return std::make_shared<Triangle>(vertex1, vertex2, vertex3);
 }
 
-std::shared_ptr<Instance> SceneParser::ParseShape(std::unique_ptr<XMLNode>& node) {
+std::shared_ptr<ShapeInterface> SceneParser::ParseShape(std::unique_ptr<XMLNode>& node) {
     std::string type = node->attributes_["type"];
 
-    // Handle case where transformation is not provided
-    std::string transformation_name = node->attributes_["transformation"];
-    std::string material_name = node->attributes_["material"];
-
-    auto material_ptr = parsing_context_.name_material_[material_name];
-    auto transformation_ptr = parsing_context_.name_transformation_[transformation_name]; // Confusing, fix this
     std::shared_ptr<ShapeInterface> shape_ptr = nullptr;
-
     if (type == "sphere") {
         shape_ptr = std::make_shared<Sphere>();
     } else if (type == "plane") {
         shape_ptr = std::make_shared<Plane>();
-    } else if (type == "mesh") {
-        std::string filename = node->attributes_["filename"];
-        auto mesh_data = OBJParser::GetInstance().ParseOBJ( "../models/" + filename);
-
-        shape_ptr = std::make_shared<Mesh>(mesh_data);
     } else if (type == "triangle") {
         shape_ptr = ParseTriangle(node);
     } else if (type == "cone") {
@@ -150,7 +142,7 @@ std::shared_ptr<Instance> SceneParser::ParseShape(std::unique_ptr<XMLNode>& node
         shape_ptr = std::make_shared<Cylinder>();
     }
 
-    return std::make_shared<Instance>(transformation_ptr, shape_ptr, material_ptr);
+    return shape_ptr;
 }
 
 Color SceneParser::ParseColor(const XMLNode* node) {
@@ -258,7 +250,7 @@ std::shared_ptr<LightInterface> SceneParser::ParseLight(std::unique_ptr<XMLNode>
     return light;
 }
 
-std::unique_ptr<Scene> SceneParser::ParseScene(std::string path) {
+std::unique_ptr<SceneData> SceneParser::ParseScene(std::string path) {
     std::ifstream file {path};
     auto file_size = std::filesystem::file_size(path);
 
@@ -268,33 +260,24 @@ std::unique_ptr<Scene> SceneParser::ParseScene(std::string path) {
 
     auto node = xml_parser_.Parse(src);
 
-    std::unique_ptr<Scene> scene = nullptr;
+    std::unique_ptr<SceneData> scene_data = nullptr;
     for (auto& child : node->children_) {
         if (child->tag_ == "transformation")
-            parsing_context_.name_transformation_[child->attributes_["name"]] = ParseTransformation(child);
+            scene_data->name_transformation_[child->attributes_["name"]] = ParseTransformation(child);
         else if (child->tag_ == "shape") {
-            auto instance_ptr = ParseShape(child);
-            parsing_context_.name_instance_[child->attributes_["name"]] = instance_ptr;
-            scene->instances_.push_back(instance_ptr);
-        }
-        else if (child->tag_ == "material")
-            parsing_context_.name_material_[child->attributes_["name"]] = ParseMaterial(child);
+            scene_data->name_shape_[child->attributes_["name"]] = ParseShape(child);
+        } else if (child->tag_ == "mesh") {
+            scene_data->name_meshdata_[child->attributes_["name"]] = ParseMesh(child);
+        } else if (child->tag_ == "material")
+            scene_data->name_material_[child->attributes_["name"]] = ParseMaterial(child);
         else if (child->tag_ == "camera")
-            scene->camera_ = ParseCamera(child);
+            scene_data->camera_ = ParseCamera(child);
         else if (child->tag_ == "light") {
-            scene->lights_.push_back(ParseLight(child));
+            scene_data->lights_.push_back(ParseLight(child));
         }
     }
 
-    return scene;
+    return scene_data;
 }
 
 SceneParser::SceneParser() : xml_parser_{XMLParser::GetInstance()} {}
-
-void Scene::Build() {
-    accelerator_->Build(instances_);
-}
-
-bool Scene::Hit(const Ray &r, ShadeContext &s) const {
-    return accelerator_->Hit(r, s);
-}

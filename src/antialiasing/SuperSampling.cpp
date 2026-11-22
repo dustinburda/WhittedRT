@@ -2,8 +2,13 @@
 // Created by Dustin on 11/2/26.
 //
 
+#include "../../include/renderer/ImagePlane.h"
+#include "../../include/renderer/Scene.h"
 #include "../../include/antialiasing/SuperSampling.h"
 #include "../../include/util/Trace.h"
+
+SuperSampling::SuperSampling(std::unique_ptr<SamplerInterface> sampler)
+    : AntiAliasingInterface{std::move(sampler)} {}
 
 Color SuperSampling::SamplePixel(const Scene& scene, const ImagePlane& p, std::size_t x, std::size_t y) {
     Color pixel_color;

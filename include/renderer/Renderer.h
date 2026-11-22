@@ -9,6 +9,7 @@
 #include "../util/Color.h"
 #include "ImagePlane.h"
 #include "../materials/Material.h"
+#include "Scene.h"
 #include "../parsers/SceneParser.h"
 #include "../renderer/ShadeContext.h"
 #include "../util/TileQueue.h"
@@ -18,19 +19,15 @@
 
 class Renderer {
 public:
-    static Renderer& GetInstance();
+    Renderer();
     ~Renderer();
 
-    void SetThreads(std::size_t num_threads);
-    void SetAntiAliasing(std::unique_ptr<AntiAliasingInterface> anti_aliaser);
-    // TODO: Remove singleton and pass in anti aliasing at runtime in the constructor
+    void Initalize(Config& config);
 
     void Render(const Scene& scene, Canvas& canvas) ;
 
 
 private:
-    Renderer();
-
     TileQueue GenerateTiles(const Canvas& canvas) const;
     void RenderTile(const Tile& t, const Scene& scene, Canvas& canvas) const ;
 

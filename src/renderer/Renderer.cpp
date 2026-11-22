@@ -2,14 +2,9 @@
 // Created by Dustin on 7/4/26.
 //
 
+#include "../../include/parsers/ConfigParser.h"
 #include "../../include/renderer/Renderer.h"
 #include "../../include/Util/Trace.h"
-
-Renderer& Renderer::GetInstance() {
-    static Renderer renderer;
-
-    return renderer;
-}
 
 Renderer::Renderer() {
     threads_.reserve(4);
@@ -18,18 +13,15 @@ Renderer::Renderer() {
     num_threads_ = 4;
 }
 
-Renderer::~Renderer() {
+Renderer::~Renderer() = default;
 
+void Renderer::Initalize(Config &config) {
+    num_threads_ = config.num_threads_;
+    threads_.reserve(num_threads_);
+
+    antialiasing_ = std::move(config.antialiasing_);
 }
 
-void Renderer::SetThreads(std::size_t num_threads) {
-    num_threads_ = num_threads;
-    threads_.reserve(num_threads);
-}
-
-void Renderer::SetAntiAliasing(std::unique_ptr<AntiAliasingInterface> antialiasing) {
-    antialiasing_ = std::move(antialiasing);
-}
 
 void Renderer::Render(const Scene& scene, Canvas& canvas) {
     auto&& tile_queue = GenerateTiles(canvas);

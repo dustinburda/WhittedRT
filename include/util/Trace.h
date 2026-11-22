@@ -6,6 +6,7 @@
 #define WHITTED_TRACE_H
 
 #include "Color.h"
+#include "../renderer/Scene.h"
 #include "../parsers/SceneParser.h"
 
 Color Trace(const Scene& scene, Ray& r, ShadeContext& context);

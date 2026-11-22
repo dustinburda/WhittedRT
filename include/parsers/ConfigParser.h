@@ -7,9 +7,7 @@
 
 #include "../accelerators/AcceleratorInterface.h"
 #include "../antialiasing/AntiAliasingInterface.h"
-#include "../accelerators/BVH.h"
 #include "XMLParser.h"
-
 
 struct Config {
     int num_threads_;

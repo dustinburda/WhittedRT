@@ -25,14 +25,14 @@ OBJParser& OBJParser::GetInstance() {
     return parser;
 }
 
-std::shared_ptr<MeshData> OBJParser::ParseOBJ(std::filesystem::path path)
+std::unique_ptr<MeshData> OBJParser::ParseOBJ(std::filesystem::path path)
 {
     std::ifstream mesh_file{path};
 
     if (!mesh_file.is_open())
         throw std::logic_error("Please provide a valid path");
 
-    auto mesh_data = std::make_shared<MeshData>();
+    auto mesh_data = std::make_unique<MeshData>();
 
     std::string line;
     while(std::getline(mesh_file, line)) {
@@ -49,7 +49,7 @@ std::shared_ptr<MeshData> OBJParser::ParseOBJ(std::filesystem::path path)
     return mesh_data;
 }
 
-void OBJParser::ParseVertex(std::string line, std::shared_ptr<MeshData> mesh_data) {
+void OBJParser::ParseVertex(std::string line, std::unique_ptr<MeshData>& mesh_data) {
     std::string token;
     std::stringstream s_line {line};
 
@@ -65,7 +65,7 @@ void OBJParser::ParseVertex(std::string line, std::shared_ptr<MeshData> mesh_dat
     mesh_data->vertices_.push_back(p);
 }
 
-void OBJParser::ParseFace(std::string line, std::shared_ptr<MeshData> mesh_data) {
+void OBJParser::ParseFace(std::string line, std::unique_ptr<MeshData>& mesh_data) {
     std::string token;
     std::stringstream s_line {line};
 
@@ -94,7 +94,7 @@ void OBJParser::ParseFace(std::string line, std::shared_ptr<MeshData> mesh_data)
     }
 }
 
-void OBJParser::ParseNormal(std::string line, std::shared_ptr<MeshData> mesh_data) {
+void OBJParser::ParseNormal(std::string line, std::unique_ptr<MeshData>& mesh_data) {
     std::string token;
     std::stringstream s_line {line};
 
@@ -110,7 +110,7 @@ void OBJParser::ParseNormal(std::string line, std::shared_ptr<MeshData> mesh_dat
     mesh_data->normals_.push_back(normal);
 }
 
-void OBJParser::ParseTexture(std::string line, std::shared_ptr<MeshData> mesh_data) {
+void OBJParser::ParseTexture(std::string line, std::unique_ptr<MeshData>& mesh_data) {
     std::string token;
     std::stringstream s_line {line};
 

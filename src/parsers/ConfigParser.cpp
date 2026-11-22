@@ -2,9 +2,9 @@
 // Created by Dustin on 7/2/26.
 //
 
-#include "../../include/parsers/ConfigParser.h"
-
 #include "../../include/antialiasing/AdaptiveSuperSampling.h"
+#include "../../include/accelerators/BVH.h"
+#include "../../include/parsers/ConfigParser.h"
 #include "../../include/antialiasing/SuperSampling.h"
 #include "../../include/samplers/RegularSampler.h"
 #include "../../include/samplers/JitteredSampler.h"

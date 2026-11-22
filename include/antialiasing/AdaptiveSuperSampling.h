@@ -7,10 +7,12 @@
 
 #include "AntiAliasingInterface.h"
 
+#include <memory>
+
 class AdaptiveSuperSampling : public AntiAliasingInterface {
 public:
     AdaptiveSuperSampling(std::unique_ptr<SamplerInterface> sampler, int depth, double threshold = 0.01);
-    virtual ~AdaptiveSuperSampling() = default;
+    ~AdaptiveSuperSampling() override = default;
 
     Color SamplePixel(const Scene& scene, const ImagePlane& p, std::size_t x, std::size_t y) override;
 

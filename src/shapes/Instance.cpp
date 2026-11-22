@@ -4,7 +4,6 @@
 
 #include "../../include/shapes/Instance.h"
 
-#include "../../include/shapes/Mesh.h"
 
 Instance::Instance(std::shared_ptr<ShapeInterface> shape, std::shared_ptr<MaterialInterface> mat)
     : transform_{nullptr}, shape_{std::move(shape)}, mat_{std::move(mat)}, bounding_box_(ComputeBBox()) {}
