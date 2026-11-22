@@ -5,7 +5,11 @@
 #ifndef WHITTED_CONFIGPARSER_H
 #define WHITTED_CONFIGPARSER_H
 
+#include "../accelerators/AcceleratorInterface.h"
+#include "../antialiasing/AntiAliasingInterface.h"
+#include "../accelerators/BVH.h"
 #include "XMLParser.h"
+
 
 struct Config {
     int num_threads_;
@@ -16,6 +20,9 @@ struct Config {
 
     std::string scene_description_path_;
     std::string output_path_;
+
+    std::unique_ptr<AcceleratorInterface> accelerator_;
+    std::unique_ptr<AntiAliasingInterface> antialiasing_;
 };
 
 class ConfigParser {
@@ -25,29 +32,15 @@ public:
         return parser;
     }
 
-    Config ParseConfig(std::string config_path) {
-        Config config;
-
-        std::fstream config_file {config_path};
-        std::stringstream ss;
-        ss << config_file.rdbuf();
-
-        auto config_contents = ss.str();
-
-        auto node_ptr = xml_parser_.Parse(ss.str());
-
-        config.num_threads_ = std::stoi(node_ptr->ChildValue("ThreadCount").value());
-        config.height_ = static_cast<std::uint16_t>(std::stoi(node_ptr->ChildValue("Height").value()));
-        config.width_ = static_cast<std::uint16_t>(std::stoi(node_ptr->ChildValue("Width").value()));
-        config.scene_description_path_ = node_ptr->ChildValue("SceneDescriptionPath").value();
-        config.output_path_ = node_ptr->ChildValue("OutputPath").value();
-
-        return config;
-    }
+    Config ParseConfig(std::string config_path);
 
 private:
     ConfigParser();
+    std::unique_ptr<AcceleratorInterface> ParseAccelerator(const XMLNode* node);
+    std::unique_ptr<AntiAliasingInterface> ParseAntiAliasing(const XMLNode* node);
+    std::unique_ptr<SamplerInterface> ParseSampler(const XMLNode* node);
 
+private:
     XMLParser& xml_parser_;
 };
 

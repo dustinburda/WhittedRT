@@ -27,6 +27,10 @@ void Renderer::SetThreads(std::size_t num_threads) {
     threads_.reserve(num_threads);
 }
 
+void Renderer::SetAntiAliasing(std::unique_ptr<AntiAliasingInterface> antialiasing) {
+    antialiasing_ = std::move(antialiasing);
+}
+
 void Renderer::Render(const Scene& scene, Canvas& canvas) {
     auto&& tile_queue = GenerateTiles(canvas);
 
@@ -77,7 +81,7 @@ void Renderer::RenderTile(const Tile& t, const Scene& scene, Canvas& canvas) con
 
     for (std::size_t y = t.y_; y < t.y_ + t.y_length_; y++)
         for (std::size_t x = t.x_; x < t.x_ + t.x_length_; x++) {
-            auto pixel_color = anti_aliaser_->SamplePixel(scene, p, x, y);
+            auto pixel_color = antialiasing_->SamplePixel(scene, p, x, y);
             canvas.SetColorAt(pixel_color, x, y);
         }
 }

@@ -21,13 +21,10 @@ public:
     virtual ~CameraInterface() = default;
 
     const Point3D& Origin() const;
-    void SetSampler(std::shared_ptr<SamplerInterface> s);
 
     virtual Ray GetRayAt(double x, double y, const ImagePlane& p) const = 0;
 
 protected:
-    std::shared_ptr<SamplerInterface> s_;
-
     Point3D origin_;
     Transformation t_;
 };

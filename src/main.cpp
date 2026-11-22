@@ -12,8 +12,14 @@ int main(int, char**)
     std::string scene_description_path = config.scene_description_path_;
     auto scene = SceneParser::GetInstance().ParseScene(scene_description_path);
 
+
+    scene->accelerator_ = std::move(config.accelerator_);
     scene->Build();
+
+
     Canvas canvas {config.width_, config.height_};
+
+    Renderer::GetInstance().SetAntiAliasing(std::move(config.antialiasing_));
 
     Renderer::GetInstance().Render(*scene, canvas);
 

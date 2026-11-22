@@ -13,5 +13,3 @@ CameraInterface::CameraInterface(Point3D origin, Point3D look_at, Vec3D up)
 }
 
 const Point3D& CameraInterface::Origin() const { return origin_; }
-
-void CameraInterface::SetSampler(std::shared_ptr<SamplerInterface> s) { s_ = s; }

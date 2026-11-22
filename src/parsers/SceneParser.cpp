@@ -2,21 +2,15 @@
 // Created by Dustin on 11/25/24.
 //
 #include "../../include/lights/AmbientLight.h"
-#include "../../include/accelerators/BVH.h"
 #include "../../include/shapes/Cone.h"
 #include "../../include/shapes/Cylinder.h"
-#include "../../include/samplers/HammersleySampler.h"
 #include "../../include/shapes/Instance.h"
-#include "../../include/samplers/JitteredSampler.h"
 #include "../../include/lights/LightInterface.h"
 #include "../../include/cameras/OrthographicCamera.h"
 #include "../../include/lights/PointLight.h"
 #include "../../include/cameras/ProjectiveCamera.h"
 #include "../../include/shapes/Mesh.h"
 #include "../../include/shapes/Plane.h"
-#include "../../include/samplers/RandomSampler.h"
-#include "../../include/samplers/RegularSampler.h"
-#include "../../include/samplers/SamplerInterface.h"
 #include "../../include/parsers/SceneParser.h"
 #include "../../include/shapes/ShapeInterface.h"
 #include "../../include/shapes/Sphere.h"
@@ -191,49 +185,6 @@ std::shared_ptr<MaterialInterface> SceneParser::ParseMaterial(std::unique_ptr<XM
     return mat;
 }
 
-std::shared_ptr<SamplerInterface> SceneParser::ParseSampler(std::unique_ptr<XMLNode>& node) {
-    // TODO: handle case where there is no sampler node
-    // ^^^ Which sampler is this... camera sampler, etc?
-
-    // If no camera sampler is specified, create a regular sampler with a sample count of 1
-
-    auto sampler_type = node->attributes_["type"];
-    auto name = node->attributes_["name"];
-
-    auto samples_node = node->ChildNode("samples");
-    if (samples_node == nullptr)
-        throw std::runtime_error("sampler node must have a samples child");
-
-    auto num_samples = std::stoi(samples_node->value_);
-
-    std::shared_ptr<SamplerInterface> sampler = nullptr;
-
-    if (sampler_type == "hammersley") {
-        sampler = std::make_shared<HammersleySampler>(num_samples);
-    } else if (sampler_type == "jittered") {
-        sampler = std::make_shared<JitteredSampler>(num_samples);
-    } else if (sampler_type == "regular") {
-        sampler = std::make_shared<RegularSampler>(num_samples);
-    } else if (sampler_type == "random") {
-        sampler = std::make_shared<RandomSampler>(num_samples);
-    }
-
-    return sampler;
-}
-
-std::unique_ptr<AcceleratorInterface> SceneParser::ParseAccelerator(std::unique_ptr<XMLNode>& node) {
-    auto type = node->attributes_["type"];
-
-    if (type == "bvh") {
-        auto primitive_leaf_count = std::stoi(node->ChildValue("primitive-leafcount").value());
-        auto split_method = BVH::StringToSplitMethod(node->ChildValue("splitmethod").value());
-
-        return std::make_unique<BVH>(primitive_leaf_count, split_method);
-    }
-
-    return nullptr;
-}
-
 template<typename T>
 T Parse3D(const XMLNode* node) {
     auto x = std::stod(node->attributes_.at("x"));
@@ -326,14 +277,8 @@ std::unique_ptr<Scene> SceneParser::ParseScene(std::string path) {
             parsing_context_.name_instance_[child->attributes_["name"]] = instance_ptr;
             scene->instances_.push_back(instance_ptr);
         }
-        else if (child->tag_ == "accelerator")
-            scene->accelerator_ = ParseAccelerator(child);
         else if (child->tag_ == "material")
             parsing_context_.name_material_[child->attributes_["name"]] = ParseMaterial(child);
-        else if (child->tag_ == "antialiasing")
-            scene->sampler_ = parsing_context_.name_sampler_[child->attributes_["sampler"]];
-        else if (child->tag_ == "sampler")
-            parsing_context_.name_sampler_[child->attributes_["name"]] = ParseSampler(child);
         else if (child->tag_ == "camera")
             scene->camera_ = ParseCamera(child);
         else if (child->tag_ == "light") {

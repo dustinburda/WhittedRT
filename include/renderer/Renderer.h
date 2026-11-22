@@ -35,7 +35,7 @@ private:
     void RenderTile(const Tile& t, const Scene& scene, Canvas& canvas) const ;
 
 private:
-    std::unique_ptr<AntiAliasingInterface> anti_aliaser_;
+    std::unique_ptr<AntiAliasingInterface> antialiasing_;
 
     std::vector<std::thread> threads_;
     std::size_t num_threads_;
