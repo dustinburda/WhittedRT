@@ -5,6 +5,8 @@
 #include "../../include/antialiasing/AdaptiveSuperSampling.h"
 #include "../../include/accelerators/BVH.h"
 #include "../../include/parsers/ConfigParser.h"
+
+#include "../../include/accelerators/KDTree.h"
 #include "../../include/antialiasing/SuperSampling.h"
 #include "../../include/samplers/RegularSampler.h"
 #include "../../include/samplers/JitteredSampler.h"
@@ -45,6 +47,10 @@ std::unique_ptr<AcceleratorInterface> ConfigParser::ParseAccelerator(const XMLNo
         auto split_method = BVH::StringToSplitMethod(node->ChildValue("SplitMethod").value());
 
         return std::make_unique<BVH>(primitive_leaf_count, split_method);
+    } else if (type == "KDTree") {
+        auto primitive_leaf_count = std::stoi(node->ChildValue("PrimitiveLeafCount").value());
+
+        return std::make_unique<KDTree>(primitive_leaf_count);
     }
 
     return nullptr;
