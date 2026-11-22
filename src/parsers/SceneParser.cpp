@@ -3,6 +3,8 @@
 //
 #include "../../include/lights/AmbientLight.h"
 #include "../../include/accelerators/BVH.h"
+#include "../../include/shapes/Cone.h"
+#include "../../include/shapes/Cylinder.h"
 #include "../../include/samplers/HammersleySampler.h"
 #include "../../include/shapes/Instance.h"
 #include "../../include/samplers/JitteredSampler.h"
@@ -148,6 +150,10 @@ std::shared_ptr<Instance> SceneParser::ParseShape(std::unique_ptr<XMLNode>& node
         shape_ptr = std::make_shared<Mesh>(mesh_data);
     } else if (type == "triangle") {
         shape_ptr = ParseTriangle(node);
+    } else if (type == "cone") {
+        shape_ptr = std::make_shared<Cone>();
+    } else if (type == "cylinder") {
+        shape_ptr = std::make_shared<Cylinder>();
     }
 
     return std::make_shared<Instance>(transformation_ptr, shape_ptr, material_ptr);

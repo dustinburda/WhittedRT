@@ -11,7 +11,7 @@
 class Cylinder : public ShapeInterface {
 public:
     Cylinder();
-    virtual ~Cylinder() override;
+    ~Cylinder() override = default;
 
     std::optional<Normal<double, 3>> NormalAt(const Point<double, 3>& p) const override;
     bool Hit(const Ray& r, ShadeContext& context) const override;

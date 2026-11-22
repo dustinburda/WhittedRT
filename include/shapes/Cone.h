@@ -12,7 +12,7 @@
 class Cone : public ShapeInterface {
 public:
     Cone();
-    virtual ~Cone() = default;
+    ~Cone() override = default;
 
     std::optional<Normal<double, 3>> NormalAt(const Point<double, 3>& p) const override;
     bool Hit(const Ray& r, ShadeContext& context) const override;

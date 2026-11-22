@@ -24,8 +24,6 @@ std::optional<Normal<double, 3>> Cone::NormalAt([[ maybe_unused ]] const Point<d
 }
 
 bool Cone::Hit( [[ maybe_unused ]] const Ray& r, [[ maybe_unused ]] ShadeContext& context) const {
-    const auto center = Point3D{0.0, 0.0, 0.0};
-
     double a = 4 * r.Direction()[0] * r.Direction()[0] + 4 * r.Direction()[1] * r.Direction()[1] - r.Direction()[2] * r.Direction()[2];
     double b = 8 * r.Origin()[0] * r.Direction()[0] + 8 * r.Origin()[1] * r.Direction()[1] - 2 * r.Origin()[2] * r.Direction()[2] + 2 * r.Direction()[2];
     double c = 4 * r.Origin()[0] * r.Origin()[0] + 4 * r.Origin()[1] * r.Origin()[1]- r.Origin()[2] * r.Origin()[2] + 2 * r.Origin()[2] - 1;
