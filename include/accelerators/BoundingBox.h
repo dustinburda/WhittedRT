@@ -16,6 +16,7 @@ public:
     BoundingBox(Point3D p1, Point3D p2);
 
     bool Hit(const Ray& r, ShadeContext& context) const;
+    std::optional<double> HitAt(const Ray& r, ShadeContext& context) const;
 
     Point3D Min() const { return min_; }
     Point3D Max() const { return max_; }

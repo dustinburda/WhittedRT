@@ -5,6 +5,7 @@
 #ifndef WHITTED_INTERVAL_H
 #define WHITTED_INTERVAL_H
 
+#include <optional>
 #include <vector>
 
 struct Interval {
@@ -13,6 +14,7 @@ struct Interval {
 
     bool operator<(const Interval& other) const;
     static bool Intersects(std::vector<Interval> intervals);
+    static std::optional<Interval> Intersection(std::vector<Interval> intervals);
 
     double t_min_;
     double t_max_;

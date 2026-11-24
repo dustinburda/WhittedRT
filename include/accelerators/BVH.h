@@ -15,7 +15,7 @@
 
 struct BVHNode {
 public:
-    explicit BVHNode(std::span<InstancePtr> instances);
+    explicit BVHNode(std::vector<InstancePtr> instances);
     BVHNode(std::unique_ptr<BVHNode> left, std::unique_ptr<BVHNode> right);
 
     bool Hit(const Ray& r, ShadeContext& context);
@@ -25,12 +25,12 @@ private:
     std::unique_ptr<BVHNode> right_;
     BoundingBox bounding_box_;
 
-    std::span<InstancePtr> instances_;
+    std::vector<InstancePtr> instances_;
     bool is_leaf_;
 
 };
 
-#define SPLIT_METHODS \
+#define BVH_SPLIT_METHODS \
     X(RandomSplitAxis) \
     X(CentroidCountMedianSplit) \
     X(CentroidSpatialMidpointSplit) \
@@ -40,7 +40,7 @@ class BVH : public AcceleratorInterface {
 public:
     enum class SplitMethod {
 #define X(SplitMethod) SplitMethod,
-        SPLIT_METHODS
+        BVH_SPLIT_METHODS
 #undef X
     };
 
@@ -48,7 +48,7 @@ public:
 #define X(Method) \
 if (#Method == s) \
 return SplitMethod::Method;
-        SPLIT_METHODS
+        BVH_SPLIT_METHODS
 #undef X
 
         throw std::logic_error("Unknown SplitMethod: " + s);
@@ -59,9 +59,9 @@ public:
     ~BVH() override = default;
 
     bool Hit(const Ray& r, ShadeContext& s) override;
-    void Build(std::span<InstancePtr> shapes) override;
+    void Build(std::vector<InstancePtr> shapes) override;
 private:
-    std::unique_ptr<BVHNode> BuildRecursive(std::span<InstancePtr> shapes) const;
+    std::unique_ptr<BVHNode> BuildRecursive(std::vector<InstancePtr> shapes) const;
 
 private:
     std::unique_ptr<BVHNode> root_;

@@ -15,8 +15,12 @@ bool Interval::operator<(const Interval& other) const {
 }
 
 bool Interval::Intersects(std::vector<Interval> intervals) {
+    return Intersection(intervals) != std::nullopt;
+}
+
+std::optional<Interval> Interval::Intersection(std::vector<Interval> intervals) {
     if (intervals.size() == 0)
-        return true;
+        return std::nullopt;
 
     std::sort(intervals.begin(), intervals.end());
 
@@ -24,12 +28,12 @@ bool Interval::Intersects(std::vector<Interval> intervals) {
     for(std::size_t i = 1; i < intervals.size(); i++) {
         const Interval& curr_interval = intervals[i];
         if(curr_interval.t_min_ > intersection.t_max_)
-            return false;
+            return std::nullopt;
 
         intersection.t_min_ = std::max(intersection.t_min_, curr_interval.t_min_);
         intersection.t_max_ = std::min(intersection.t_max_, curr_interval.t_max_);
 
     }
 
-    return true;
+    return intersection;
 }

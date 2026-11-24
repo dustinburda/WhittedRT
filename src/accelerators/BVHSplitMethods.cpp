@@ -5,7 +5,7 @@
 #include "../../include/accelerators/BVHSplitMethods.h"
 
 
-ShapePartition RandomSplitAxisMethod(std::span<InstancePtr> shapes) {
+ShapePartition RandomSplitAxisMethod(std::vector<InstancePtr> shapes) {
     int split_axis = RandomInt(0, 2);
 
     auto comparator = [&split_axis](const InstancePtr& i1, const InstancePtr& i2) {
@@ -14,13 +14,13 @@ ShapePartition RandomSplitAxisMethod(std::span<InstancePtr> shapes) {
 
     std::sort(shapes.begin(), shapes.end(), comparator);
 
-    std::span<InstancePtr> s1 {shapes.begin(), shapes.begin() + shapes.size() / 2};
-    std::span<InstancePtr> s2 {shapes.begin() + shapes.size() / 2, shapes.end()};
+    std::vector<InstancePtr> s1 {shapes.begin(), shapes.begin() + shapes.size() / 2};
+    std::vector<InstancePtr> s2 {shapes.begin() + shapes.size() / 2, shapes.end()};
 
     return {s1, s2};
 };
 
-int GetLargestSpatialExtent(std::span<InstancePtr> shapes) {
+int GetLargestSpatialExtent(std::vector<InstancePtr> shapes) {
     std::array<std::tuple<double, double>, 3> spatial_extents {{
         {std::numeric_limits<double>::max(), std::numeric_limits<double>::lowest()},
         {std::numeric_limits<double>::max(), std::numeric_limits<double>::lowest()},
@@ -48,7 +48,7 @@ int GetLargestSpatialExtent(std::span<InstancePtr> shapes) {
     return static_cast<int>(std::distance(spatial_extents.begin(), max_it));
 }
 
-double GetCentroidMidpoint(std::span<InstancePtr> shapes, int split_axis) {
+double GetCentroidMidpoint(std::vector<InstancePtr> shapes, int split_axis) {
     auto min = std::numeric_limits<double>::max();
     auto max = std::numeric_limits<double>::lowest();
 
@@ -60,7 +60,7 @@ double GetCentroidMidpoint(std::span<InstancePtr> shapes, int split_axis) {
     return (min + max) * 0.5;
 }
 
-ShapePartition CentroidCountMedianSplit (std::span<InstancePtr> shapes) {
+ShapePartition CentroidCountMedianSplit (std::vector<InstancePtr> shapes) {
     int split_axis = GetLargestSpatialExtent(shapes);
 
     auto comparator = [&split_axis](const InstancePtr& i1, const InstancePtr& i2) {
@@ -69,13 +69,13 @@ ShapePartition CentroidCountMedianSplit (std::span<InstancePtr> shapes) {
 
     std::sort(shapes.begin(), shapes.end(), comparator);
 
-    std::span s1 {shapes.begin(), shapes.begin() + shapes.size() / 2};
-    std::span s2 {shapes.begin() + shapes.size() / 2, shapes.end() };
+    std::vector<InstancePtr> s1 {shapes.begin(), shapes.begin() + shapes.size() / 2};
+    std::vector<InstancePtr> s2 {shapes.begin() + shapes.size() / 2, shapes.end() };
 
     return {s1, s2};
 };
 
-ShapePartition CentroidSpatialMidpointSplit (std::span<InstancePtr> shapes) {
+ShapePartition CentroidSpatialMidpointSplit (std::vector<InstancePtr> shapes) {
     int split_axis = GetLargestSpatialExtent(shapes);
 
     double centroid_midpoint = GetCentroidMidpoint(shapes, split_axis);
@@ -85,13 +85,13 @@ ShapePartition CentroidSpatialMidpointSplit (std::span<InstancePtr> shapes) {
         return i1->BBox().Centroid()[split_axis] < centroid_midpoint;
     });
 
-    std::span s1 {shapes.begin(), it};
-    std::span s2 {it, shapes.end()};
+    std::vector<InstancePtr> s1 {shapes.begin(), it};
+    std::vector<InstancePtr> s2 {it, shapes.end()};
 
     return {s1, s2};
 };
 
-std::pair<double, std::span<InstancePtr>::iterator> ComputeCheapestSAHSplit(std::span<InstancePtr> shapes) {
+std::pair<double, std::vector<InstancePtr>::iterator> ComputeCheapestSAHSplit(std::vector<InstancePtr> shapes) {
     int split_axis = GetLargestSpatialExtent(shapes);
 
     auto comparator = [&split_axis](const InstancePtr& i1, const InstancePtr& i2) {
@@ -101,7 +101,7 @@ std::pair<double, std::span<InstancePtr>::iterator> ComputeCheapestSAHSplit(std:
     std::sort(shapes.begin(), shapes.end(), comparator);
 
     double min_split_cost = std::numeric_limits<double>::max();
-    std::span<InstancePtr>::iterator min_split_it = shapes.begin();
+    std::vector<InstancePtr>::iterator min_split_it = shapes.begin();
     for (std::size_t i = 0; i < shapes.size() - 1; i++) {
         BoundingBox b1 = shapes[0]->BBox();
         for (std::size_t j = 0; j <= i; j++) {
@@ -125,7 +125,7 @@ std::pair<double, std::span<InstancePtr>::iterator> ComputeCheapestSAHSplit(std:
     return {min_split_cost, min_split_it};
 }
 
-ShapePartition SurfaceAreaHeuristic (std::span<InstancePtr> shapes) {
+ShapePartition SurfaceAreaHeuristic (std::vector<InstancePtr> shapes) {
     auto leaf_cost = static_cast<double>(shapes.size());
     auto split_cost = 0.125; // Initial cost
 
@@ -136,14 +136,14 @@ ShapePartition SurfaceAreaHeuristic (std::span<InstancePtr> shapes) {
     if (leaf_cost < split_cost) {
         return {shapes, {}};
     } else {
-        std::span<InstancePtr> s1 {shapes.begin(), min_split_it};
-        std::span<InstancePtr> s2 {min_split_it , shapes.end()};
+        std::vector<InstancePtr> s1 {shapes.begin(), min_split_it};
+        std::vector<InstancePtr> s2 {min_split_it , shapes.end()};
 
         return {s1, s2};
     }
 };
 
-ShapePartition Split(std::span<InstancePtr> shapes, BVH::SplitMethod split_method) {
+ShapePartition Split(std::vector<InstancePtr> shapes, BVH::SplitMethod split_method) {
 
     switch (split_method) {
         case BVH::SplitMethod::RandomSplitAxis:

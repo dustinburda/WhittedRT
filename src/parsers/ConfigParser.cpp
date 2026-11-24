@@ -49,8 +49,9 @@ std::unique_ptr<AcceleratorInterface> ConfigParser::ParseAccelerator(const XMLNo
         return std::make_unique<BVH>(primitive_leaf_count, split_method);
     } else if (type == "KDTree") {
         auto primitive_leaf_count = std::stoi(node->ChildValue("PrimitiveLeafCount").value());
+        auto split_method = KDTree::StringToSplitMethod(node->ChildValue("SplitMethod").value());
 
-        return std::make_unique<KDTree>(primitive_leaf_count);
+        return std::make_unique<KDTree>(primitive_leaf_count, split_method);
     }
 
     return nullptr;

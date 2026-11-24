@@ -9,7 +9,7 @@
 #include "../../include/accelerators/BVHSplitMethods.h"
 #include "../../include/util/Util.h"
 
-BVHNode::BVHNode(std::span<InstancePtr> instances)
+BVHNode::BVHNode(std::vector<InstancePtr> instances)
     : left_{nullptr}, right_{nullptr}, instances_ {instances}, is_leaf_{true}
 {
     for (auto& instance : instances_) {
@@ -26,7 +26,7 @@ bool BVHNode::Hit(const Ray& r, ShadeContext& context) {
 
     if (is_leaf_) {
         bool hit = false;
-        for (auto& instance : instances_) {
+        for (const auto& instance : instances_) {
             hit |= instance->Hit(r, context);
         }
         return hit;
@@ -48,15 +48,15 @@ bool BVH::Hit(const Ray& r, ShadeContext& s) {
     return root_->Hit(r, s);
 }
 
-void BVH::Build(std::span<InstancePtr> shapes) {
-    if (shapes.size() == 0)
+void BVH::Build(std::vector<InstancePtr> shapes) {
+    if (shapes.empty())
         return;
 
     root_ = BuildRecursive(shapes);
 }
 
-std::unique_ptr<BVHNode> BVH::BuildRecursive(std::span<InstancePtr> shapes) const {
-    if (shapes.size() == 0)
+std::unique_ptr<BVHNode> BVH::BuildRecursive(std::vector<InstancePtr> shapes) const {
+    if (shapes.empty())
         return nullptr;
 
     if (shapes.size() <= num_primitives_leaf_)

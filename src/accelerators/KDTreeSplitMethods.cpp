@@ -3,3 +3,8 @@
 //
 
 #include "../../include/accelerators/KDTreeSplitMethods.h"
+
+
+ShapeSplit Split( [[ maybe_unused ]] std::vector<InstancePtr> instances) {
+    return {};
+}

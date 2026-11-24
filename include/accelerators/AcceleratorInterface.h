@@ -10,15 +10,14 @@
 #include "../renderer/ShadeContext.h"
 
 #include <memory>
-#include <span>
+#include <vector>
 
-// TODO: remove virtual call
 class AcceleratorInterface {
 public:
     virtual ~AcceleratorInterface() = default;
 
     virtual bool Hit(const Ray& r, ShadeContext& s) = 0;
-    virtual void Build(std::span<InstancePtr> instances) = 0;
+    virtual void Build(std::vector<InstancePtr> instances) = 0;
 };
 
 #endif //WHITTED_ACCELERATORINTERFACE_H

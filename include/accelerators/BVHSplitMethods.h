@@ -9,13 +9,13 @@
 
 #include <span>
 
-using ShapePartition = std::pair<std::span<InstancePtr>, std::span<InstancePtr>>;
+using ShapePartition = std::pair<std::vector<InstancePtr>, std::vector<InstancePtr>>;
 
-ShapePartition RandomSplitAxisMethod(std::span<InstancePtr> shapes);
-ShapePartition CentroidCountMedianSplit(std::span<InstancePtr> shapes);
-ShapePartition CentroidSpatialMidpointSplit(std::span<InstancePtr> shapes);
-ShapePartition SurfaceAreaHeuristic(std::span<InstancePtr> shapes);
+ShapePartition RandomSplitAxisMethod(std::vector<InstancePtr> shapes);
+ShapePartition CentroidCountMedianSplit(std::vector<InstancePtr> shapes);
+ShapePartition CentroidSpatialMidpointSplit(std::vector<InstancePtr> shapes);
+ShapePartition SurfaceAreaHeuristic(std::vector<InstancePtr> shapes);
 
-ShapePartition Split(std::span<InstancePtr> shapes, BVH::SplitMethod split_method);
+ShapePartition Split(std::vector<InstancePtr> shapes, BVH::SplitMethod split_method);
 
 #endif //WHITTED_BVHSPLITMETHODS_H

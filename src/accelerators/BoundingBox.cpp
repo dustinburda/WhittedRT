@@ -13,7 +13,11 @@ BoundingBox::BoundingBox(Point3D p1, Point3D p2) {
     }
 }
 
-bool BoundingBox::Hit(const Ray& r, [[ maybe_unused ]] ShadeContext& context) const {
+bool BoundingBox::Hit(const Ray& r, ShadeContext& context) const {
+    return HitAt(r, context) != std::nullopt;
+}
+
+std::optional<double> BoundingBox::HitAt(const Ray& r, ShadeContext& context) const {
     Point3D orig = r.Origin();
     Vec3D dir = r.Direction();
 
@@ -22,7 +26,9 @@ bool BoundingBox::Hit(const Ray& r, [[ maybe_unused ]] ShadeContext& context) co
     Interval z_interval {(min_[2] - orig[2])/dir[2], (max_[2] - orig[2])/dir[2] };
     Interval allowable {context.t_min_, context.t_max_};
 
-    return Interval::Intersects({x_interval, y_interval, z_interval, allowable});
+    auto interval = Interval::Intersection({x_interval, y_interval, z_interval, allowable});
+
+    return interval != std::nullopt ? std::optional<double>(interval.value().t_min_) : std::nullopt;
 }
 
 double BoundingBox::Width() const {
